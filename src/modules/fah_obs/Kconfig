@@ -1,0 +1,5 @@
+menuconfig MODULES_FAH_OBS
+	bool "fah_obs"
+	default n
+	---help---
+		Enable Estimator Parameters for Simulink App
