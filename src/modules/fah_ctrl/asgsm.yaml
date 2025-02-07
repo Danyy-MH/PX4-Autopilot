@@ -1,0 +1,235 @@
+module_name: FAH_CTRL
+parameters:
+  - group: FAH_ASGSM
+    definitions:
+      X_XI1:
+        description:
+          short: Sliding Surface Design Parameters.
+          long: |
+            This guarantees finite time convergence as well as providing non-singularity
+        type: float
+        min: 0.0
+        max: 20.0
+        reboot_required: true
+        default: 2.5
+
+      X_XI2:
+        description:
+          short: Sliding Surface Design Parameters
+          long: |
+            This parameter is part of the sliding surface design to ensure convergence and stability.
+        type: float
+        min: 0.0
+        max: 20.0
+        reboot_required: true
+        default: 1.25
+
+      X_LAM1:
+        description:
+          short: Lambda Parameter 1
+          long: |
+            This parameter is part of the sliding surface design to ensure convergence and stability. This value must be greater than X_LAM2.
+        type: float
+        min: 0.0
+        max: 5.0
+        reboot_required: true
+        default: 1.5
+
+      X_LAM2:
+        description:
+          short: Lambda Parameter 2
+          long: |
+            This parameter is part of the sliding surface design to ensure convergence and stability.
+        type: float
+        min: 1.0
+        max: 2.0
+        reboot_required: true
+        default: 1.2
+
+      X_ALPHA_U:
+        description:
+          short: Alpha Control Parameter
+          long: |
+            Part of the Adaptive Single-Gain algorithm. Regulates sliding surface's precision.
+        type: float
+        min: 0.0
+        max: 20.0
+        reboot_required: true
+        default: 1.75
+
+      X_BETA_U:
+        description:
+          short: Beta Control Parameter
+          long: |
+            Part of the Adaptive Single-Gain algorithm. Adjusts the system control effort.
+        type: float
+        min: 0.0
+        max: 20.0
+        reboot_required: true
+        default: 2.5
+
+      X_EPS_U:
+        description:
+          short: Epsilon Control Parameter
+          long: |
+            Part of the Adaptive Single-Gain algorithm. Quiets the quadratic term in the auxiliary control.
+        type: float
+        min: 0.0
+        max: 20.0
+        reboot_required: true
+        default: 0.4
+        
+      Y_XI1:
+        description:
+          short: Sliding Surface Design Parameters.
+          long: |
+            This guarantees finite time convergence as well as providing non-singularity
+        type: float
+        min: 0.0
+        max: 20.0
+        reboot_required: true
+        default: 2.5
+
+      Y_XI2:
+        description:
+          short: Sliding Surface Design Parameters
+          long: |
+            This parameter is part of the sliding surface design to ensure convergence and stability.
+        type: float
+        min: 0.0
+        max: 20.0
+        reboot_required: true
+        default: 1.25
+
+      Y_LAM1:
+        description:
+          short: Lambda Parameter 1
+          long: |
+            This parameter is part of the sliding surface design to ensure convergence and stability. This value must be greater than Y_LAM2.
+        type: float
+        min: 0.0
+        max: 5.0
+        reboot_required: true
+        default: 1.5
+
+      Y_LAM2:
+        description:
+          short: Lambda Parameter 2
+          long: |
+            This parameter is part of the sliding surface design to ensure convergence and stability.
+        type: float
+        min: 1.0
+        max: 2.0
+        reboot_required: true
+        default: 1.2
+
+      Y_ALPHA_U:
+        description:
+          short: Alpha Control Parameter
+          long: |
+            Part of the Adaptive Single-Gain algorithm. Regulates sliding surface's precision.
+        type: float
+        min: 0.0
+        max: 20.0
+        reboot_required: true
+        default: 1.75
+
+      Y_BETA_U:
+        description:
+          short: Beta Control Parameter
+          long: |
+            Part of the Adaptive Single-Gain algorithm. Adjusts the system control effort.
+        type: float
+        min: 0.0
+        max: 20.0
+        reboot_required: true
+        default: 2.5
+
+      Y_EPS_U:
+        description:
+          short: Epsilon Control Parameter
+          long: |
+            Part of the Adaptive Single-Gain algorithm. Quiets the quadratic term in the auxiliary control.
+        type: float
+        min: 0.0
+        max: 20.0
+        reboot_required: true
+        default: 0.4
+
+      Z_XI1:
+        description:
+          short: Sliding Surface Design Parameters.
+          long: |
+            This guarantees finite time convergence as well as providing non-singularity
+        type: float
+        min: 0.0
+        max: 20.0
+        reboot_required: true
+        default: 2.5
+
+      Z_XI2:
+        description:
+          short: Sliding Surface Design Parameters
+          long: |
+            This parameter is part of the sliding surface design to ensure convergence and stability.
+        type: float
+        min: 0.0
+        max: 20.0
+        reboot_required: true
+        default: 1.25
+
+      Z_LAM1:
+        description:
+          short: Lambda Parameter 1
+          long: |
+            This parameter is part of the sliding surface design to ensure convergence and stability. This value must be greater than Z_LAM2.
+        type: float
+        min: 0.0
+        max: 5.0
+        reboot_required: true
+        default: 1.5
+
+      Z_LAM2:
+        description:
+          short: Lambda Parameter 2
+          long: |
+            This parameter is part of the sliding surface design to ensure convergence and stability.
+        type: float
+        min: 1.0
+        max: 2.0
+        reboot_required: true
+        default: 1.2
+
+      Z_ALPHA_U:
+        description:
+          short: Alpha Control Parameter
+          long: |
+            Part of the Adaptive Single-Gain algorithm. Regulates sliding surface's precision.
+        type: float
+        min: 0.0
+        max: 20.0
+        reboot_required: true
+        default: 1.75
+
+      Z_BETA_U:
+        description:
+          short: Beta Control Parameter
+          long: |
+            Part of the Adaptive Single-Gain algorithm. Adjusts the system control effort.
+        type: float
+        min: 0.0
+        max: 20.0
+        reboot_required: true
+        default: 2.5
+
+      Z_EPS_U:
+        description:
+          short: Epsilon Control Parameter
+          long: |
+            Part of the Adaptive Single-Gain algorithm. Quiets the quadratic term in the auxiliary control.
+        type: float
+        min: 0.0
+        max: 20.0
+        reboot_required: true
+        default: 0.4
+

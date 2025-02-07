@@ -1,0 +1,324 @@
+module_name: FAH_CTRL
+parameters:
+  - group: FAH_CTRL
+    definitions:
+      FAH_X_P:
+        description:
+          short: P Gain for x-axis
+          long: |
+            P Gain for the x-axis fo the FAH, based on a Nonlinear PD controller with gravity compensation.
+        type: float
+        units: ms
+        min: 0.0
+        max: 50.0
+        reboot_required: true
+        default: 2.5
+      
+      FAH_X_D:
+        description:
+          short: D Gain for x-axis
+          long: |
+            D Gain for the x-axis fo the FAH, based on a Nonlinear PD controller with gravity compensation.
+        type: float
+        units: ms
+        min: 0.0
+        max: 50.0
+        reboot_required: true
+        default: 2.0
+        
+      FAH_Y_P:
+        description:
+          short: P Gain for y-axis
+          long: |
+            P Gain for the y-axis fo the FAH, based on a Nonlinear PD controller with gravity compensation.
+        type: float
+        units: ms
+        min: 0.0
+        max: 50.0
+        reboot_required: true
+        default: 2.5
+      
+      FAH_Y_D:
+        description:
+          short: D Gain for y-axis
+          long: |
+            D Gain for the y-axis fo the FAH, based on a Nonlinear PD controller with gravity compensation.
+        type: float
+        units: ms
+        min: 0.0
+        max: 50.0
+        reboot_required: true
+        default: 2.0
+        
+      FAH_Z_P:
+        description:
+          short: P Gain for z-axis
+          long: |
+            P Gain for the z-axis fo the FAH, based on a Nonlinear PD controller with gravity compensation.
+        type: float
+        units: ms
+        min: 0.0
+        max: 50.0
+        reboot_required: true
+        default: 2.5
+      
+      FAH_Z_D:
+        description:
+          short: D Gain for z-axis
+          long: |
+            D Gain for the z-axis fo the FAH, based on a Nonlinear PD controller with gravity compensation.
+        type: float
+        units: ms
+        min: 0.0
+        max: 50.0
+        reboot_required: true
+        default: 2.0
+        
+      FAH_ROLL_P:
+        description:
+          short: P Gain for roll
+          long: |
+            P Gain for the roll of the FAH, based on a Nonlinear PD controller with gravity compensation.
+        type: float
+        units: ms
+        min: 0.0
+        max: 50.0
+        reboot_required: true
+        default: 2.5
+      
+      FAH_ROLL_D:
+        description:
+          short: D Gain for roll
+          long: |
+            D Gain for the roll of the FAH, based on a Nonlinear PD controller with gravity compensation.
+        type: float
+        units: ms
+        min: 0.0
+        max: 50.0
+        reboot_required: true
+        default: 2.0
+        
+      FAH_PITCH_P:
+        description:
+          short: P Gain for pitch
+          long: |
+            P Gain for the pithc of the FAH, based on a Nonlinear PD controller with gravity compensation.
+        type: float
+        units: ms
+        min: 0.0
+        max: 50.0
+        reboot_required: true
+        default: 2.5
+      
+      FAH_PITCH_D:
+        description:
+          short: D Gain for pitch
+          long: |
+            D Gain for the pitch fo the FAH, based on a Nonlinear PD controller with gravity compensation.
+        type: float
+        units: ms
+        min: 0.0
+        max: 50.0
+        reboot_required: true
+        default: 2.0
+        
+      FAH_YAW_P:
+        description:
+          short: P Gain for yaw
+          long: |
+            P Gain for the yaw of the FAH, based on a Nonlinear PD controller with gravity compensation.
+        type: float
+        units: ms
+        min: 0.0
+        max: 50.0
+        reboot_required: true
+        default: 2.5
+      
+      FAH_YAW_D:
+        description:
+          short: D Gain for yaw
+          long: |
+            D Gain for the yaw of the FAH, based on a Nonlinear PD controller with gravity compensation.
+        type: float
+        units: ms
+        min: 0.0
+        max: 50.0
+        reboot_required: true
+        default: 2.0
+        
+      FAH_X_I:
+        description:
+          short: Integral Gain for X-axis
+          long: |
+            Integral Gain for the X-axis for the FAH, based on a Nonlinear PD controller with gravity compensation.
+        type: float
+        units: ms
+        min: 0.0
+        max: 10.0
+        reboot_required: true
+        default: 0.1
+      FAH_Y_I:
+        description:
+          short: Integral Gain for Y-axis
+          long: |
+            Integral Gain for the Y-axis for the FAH, based on a Nonlinear PD controller with gravity compensation.
+        type: float
+        units: ms
+        min: 0.0
+        max: 10.0
+        reboot_required: true
+        default: 0.1
+      FAH_Z_I:
+        description:
+          short: Integral Gain for Z-axis
+          long: |
+            Integral Gain for the Z-axis for the FAH, based on a Nonlinear PD controller with gravity compensation.
+        type: float
+        units: ms
+        min: 0.0
+        max: 10.0
+        reboot_required: true
+        default: 0.1
+      FAH_ROLL_I:
+        description:
+          short: Integral Gain for Roll axis
+          long: |
+            Integral Gain for the Roll axis for the FAH, based on a Nonlinear PD controller with gravity compensation.
+        type: float
+        units: ms
+        min: 0.0
+        max: 10.0
+        reboot_required: true
+        default: 0.1
+      FAH_PITCH_I:
+        description:
+          short: Integral Gain for Pitch axis
+          long: |
+            Integral Gain for the Pitch axis for the FAH, based on a Nonlinear PD controller with gravity compensation.
+        type: float
+        units: ms
+        min: 0.0
+        max: 10.0
+        reboot_required: true
+        default: 0.1
+      FAH_YAW_I:
+        description:
+          short: Integral Gain for Yaw axis
+          long: |
+            Integral Gain for the Yaw axis for the FAH, based on a Nonlinear PD controller with gravity compensation.
+        type: float
+        units: ms
+        min: 0.0
+        max: 10.0
+        reboot_required: true
+        default: 0.1
+           
+      FAH_MASS:
+        description:
+          short: Mass of the vehicle
+          long: |
+            Mass of the vehicle.
+        type: float
+        units: kg
+        min: 0.1
+        max: 5.0
+        reboot_required: true
+        default: 1.5
+
+      FAH_I_XX:
+        description:
+          short: Inertia of the vehicle over the x-axis
+          long: |
+            Inertia of the vehicle over the x-axis, based on the Solidworks design.
+        type: float
+        units: kg
+        min: 0.00
+        max: 1.00
+        reboot_required: true
+        default: 0.03
+        
+      FAH_I_YY:
+        description:
+          short: Inertia of the vehicle over the y-axis
+          long: |
+            Inertia of the vehicle over the y-axis, based on the Solidworks design.
+        type: float
+        units: kg
+        min: 0.00
+        max: 1.00
+        reboot_required: true
+        default: 0.03
+        
+      FAH_I_ZZ:
+        description:
+          short: Inertia of the vehicle over the z-axis
+          long: |
+            Inertia of the vehicle over the z-axis, based on the Solidworks design.
+        type: float
+        units: kg
+        min: 0.00
+        max: 1.00
+        reboot_required: true
+        default: 0.05
+        
+      FAH_ALT_DES:
+        description:
+          short: Desired Altitude
+          long: |
+            Desired z-axis value for the FAH, can be used to set the altitude via the TRAJ_SEL All zeros option
+        type: float
+        units: m
+        min: 0.00
+        max: 2.50
+        reboot_required: true
+        default: 0.0
+      
+      FAH_X_DES:
+        description:
+          short: Desired X Position
+          long: |
+            Desired x-axis value for the FAH, can be used to set the altitude via the TRAJ_SEL All zeros option
+        type: float
+        units: m
+        min: -2.50
+        max: 2.50
+        reboot_required: true
+        default: 0.0
+      
+      FAH_Y_DES:
+        description:
+          short: Desired Y Position
+          long: |
+            Desired y-axis value for the FAH, can be used to set the altitude via the TRAJ_SEL All zeros option
+        type: float
+        units: m
+        min: -2.50
+        max: 2.50
+        reboot_required: true
+        default: 0.0
+        
+      TRAJ_SEL:
+        description:
+          short: Trajectory source selector
+          long: |
+            Desired trajectory selector for FAH. Options 0 - All zeros. 1 - Polynomial trajectory. 2 - Helicoidal trajectory.
+        type: enum
+        values:
+          0: 0
+          1: 1
+          2: 2
+          3: 3
+          4: 4
+        default: 0
+        
+      CTRL_SEL:
+        description:
+          short: Control Selector
+          long: |
+            Controller Selector for the FAH, be careful to select an appropiate estimator if using an obsever-based controller. Options 0 - PD. 1 - ASGSM. 2 - Quaternion ASGSM.
+        type: enum
+        values:
+          0: 0
+          1: 1
+          2: 2
+        default: 0

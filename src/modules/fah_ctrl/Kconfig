@@ -1,0 +1,5 @@
+menuconfig MODULES_FAH_CTRL
+	bool "fah_ctrl"
+	default n
+	---help---
+		Enable Controller Parameters for Simulink App
