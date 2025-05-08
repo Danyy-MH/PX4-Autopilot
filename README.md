@@ -20,6 +20,12 @@ PX4 is highly portable, OS-independent and supports Linux, NuttX and MacOS out o
   * many more experimental types (Blimps, Boats, Submarines, High altitude balloons, etc)
 * Releases: [Downloads](https://github.com/PX4/PX4-Autopilot/releases)
 
+## Matlab PX4 Toolbox implementation
+
+New folders are added into /src/modules/ as /fah_contro and /fah_obs, which contains the
+controller and estimators gains, available in QGroundControl in custom modules. This works with the
+Github repository of PX4-Controllers and CC2PX4. This serves as the custom firmware to be used to 
+develop and deploy custom controllers into flight computers running the PX4-Autopilot firmware.
 
 ## Building a PX4 based drone, rover, boat or robot
 
