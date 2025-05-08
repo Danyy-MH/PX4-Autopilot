@@ -1,0 +1,302 @@
+module_name: FAH_OBS
+parameters:
+  - group: FAH_FXTD
+    definitions:
+      X_G1:
+        description:
+          short: Observer parameter G1 for X state.
+          long: |
+            Defines the observer gain G1 for the X state, ensuring stability and convergence.
+            G1 is a tuning parameter.
+        type: float
+        min: 0.0
+        max: 20.0
+        reboot_required: true
+        default: 5.0
+
+      X_G2:
+        description:
+          short: Observer parameter G2 for X state.
+          long: |
+            Defines the observer gain G2 for the X state, ensuring stability and performance.
+            G2 is a tuning parameter.
+        type: float
+        min: 0.0
+        max: 20.0
+        reboot_required: true
+        default: 6.0
+
+      X_VPI:
+        description:
+          short: Observer parameter VPI for X state.
+          long: |
+            Defines the lambda parameter for the observer, influencing the convergence rate.
+            VPI helps to manage the convergence time and the noise sensitivity.
+        type: float
+        min: 0.0
+        max: 20.0
+        reboot_required: true
+        default: 0.6
+
+      X_VRHO:
+        description:
+          short: Observer parameter VRHO for X state.
+          long: |
+            Defines the VRHO parameter for robustness against disturbances in the X state.
+            VRHO influences the transitory of the estimation error.
+        type: float
+        min: 0.0
+        max: 20.0
+        reboot_required: true
+        default: 1.2
+
+      Y_G1:
+        description:
+          short: Observer parameter G1 for Y state.
+          long: |
+            Defines the observer gain G1 for the Y state, ensuring stability and convergence.
+            G1 is a tuning parameter.
+        type: float
+        min: 0.0
+        max: 20.0
+        reboot_required: true
+        default: 5.0
+
+      Y_G2:
+        description:
+          short: Observer parameter G2 for Y state.
+          long: |
+            Defines the observer gain G2 for the Y state, ensuring stability and performance.
+            G2 is a tuning parameter.
+        type: float
+        min: 0.0
+        max: 20.0
+        reboot_required: true
+        default: 6.0
+
+      Y_VPI:
+        description:
+          short: Observer parameter VPI for Y state.
+          long: |
+            Defines the lambda parameter for the observer, influencing the convergence rate.
+            VPI helps to manage the convergence time and the noise sensitivity.
+        type: float
+        min: 0.0
+        max: 20.0
+        reboot_required: true
+        default: 0.6
+
+      Y_VRHO:
+        description:
+          short: Observer parameter VRHO for Y state.
+          long: |
+            Defines the VRHO parameter for robustness against disturbances in the Y state.
+            VRHO influences the transitory of the estimation error.
+        type: float
+        min: 0.0
+        max: 20.0
+        reboot_required: true
+        default: 1.2
+
+      Z_G1:
+        description:
+          short: Observer parameter G1 for Z state.
+          long: |
+            Defines the observer gain G1 for the Z state, ensuring stability and convergence.
+            G1 is a tuning parameter.
+        type: float
+        min: 0.0
+        max: 20.0
+        reboot_required: true
+        default: 5.0
+
+      Z_G2:
+        description:
+          short: Observer parameter G2 for Z state.
+          long: |
+            Defines the observer gain G2 for the Z state, ensuring stability and performance.
+            G2 is a tuning parameter.
+        type: float
+        min: 0.0
+        max: 20.0
+        reboot_required: true
+        default: 6.0
+
+      Z_VPI:
+        description:
+          short: Observer parameter VPI for Z state.
+          long: |
+            Defines the lambda parameter for the observer, influencing the convergence rate.
+            VPI helps to manage the convergence time and the noise sensitivity.
+        type: float
+        min: 0.0
+        max: 20.0
+        reboot_required: true
+        default: 0.6
+
+      Z_VRHO:
+        description:
+          short: Observer parameter VRHO for Z state.
+          long: |
+            Defines the VRHO parameter for robustness against disturbances in the Z state.
+            VRHO influences the transitory of the estimation error.
+        type: float
+        min: 0.0
+        max: 20.0
+        reboot_required: true
+        default: 1.2
+
+      ROLL_G1:
+        description:
+          short: Observer parameter G1 for ROLL state.
+          long: |
+            Defines the observer gain G1 for the ROLL state, ensuring stability and convergence.
+            G1 is a tuning parameter.
+        type: float
+        min: 0.0
+        max: 20.0
+        reboot_required: true
+        default: 5.0
+
+      ROLL_G2:
+        description:
+          short: Observer parameter G2 for ROLL state.
+          long: |
+            Defines the observer gain G2 for the ROLL state, ensuring stability and performance.
+            G2 is a tuning parameter.
+        type: float
+        min: 0.0
+        max: 20.0
+        reboot_required: true
+        default: 6.0
+
+      ROLL_VPI:
+        description:
+          short: Observer parameter VPI for ROLL state.
+          long: |
+            Defines the lambda parameter for the observer, influencing the convergence rate.
+            VPI helps to manage the convergence time and the noise sensitivity.
+        type: float
+        min: 0.0
+        max: 20.0
+        reboot_required: true
+        default: 0.6
+
+      ROLL_VRHO:
+        description:
+          short: Observer parameter VRHO for ROLL state.
+          long: |
+            Defines the VRHO parameter for robustness against disturbances in the ROLL state.
+            VRHO influences the transitory of the estimation error.
+        type: float
+        min: 0.0
+        max: 20.0
+        reboot_required: true
+        default: 1.2
+
+      PITCH_G1:
+        description:
+          short: Observer parameter G1 for PITCH state.
+          long: |
+            Defines the observer gain G1 for the PITCH state, ensuring stability and convergence.
+            G1 is a tuning parameter.
+        type: float
+        min: 0.0
+        max: 20.0
+        reboot_required: true
+        default: 5.0
+
+      PITCH_G2:
+        description:
+          short: Observer parameter G2 for PITCH state.
+          long: |
+            Defines the observer gain G2 for the PITCH state, ensuring stability and performance.
+            G2 is a tuning parameter.
+        type: float
+        min: 0.0
+        max: 20.0
+        reboot_required: true
+        default: 6.0
+
+      PITCH_VPI:
+        description:
+          short: Observer parameter VPI for PITCH state.
+          long: |
+            Defines the lambda parameter for the observer, influencing the convergence rate.
+            VPI helps to manage the convergence time and the noise sensitivity.
+        type: float
+        min: 0.0
+        max: 20.0
+        reboot_required: true
+        default: 0.6
+
+      PITCH_VRHO:
+        description:
+          short: Observer parameter VRHO for PITCH state.
+          long: |
+            Defines the VRHO parameter for robustness against disturbances in the PITCH state.
+            VRHO influences the transitory of the estimation error.
+        type: float
+        min: 0.0
+        max: 20.0
+        reboot_required: true
+        default: 1.2
+
+      YAW_G1:
+        description:
+          short: Observer parameter G1 for YAW state.
+          long: |
+            Defines the observer gain G1 for the YAW state, ensuring stability and convergence.
+            G1 is a tuning parameter.
+        type: float
+        min: 0.0
+        max: 20.0
+        reboot_required: true
+        default: 5.0
+
+      YAW_G2:
+        description:
+          short: Observer parameter G2 for YAW state.
+          long: |
+            Defines the observer gain G2 for the YAW state, ensuring stability and performance.
+            G2 is a tuning parameter.
+        type: float
+        min: 0.0
+        max: 20.0
+        reboot_required: true
+        default: 6.0
+
+      YAW_VPI:
+        description:
+          short: Observer parameter VPI for YAW state.
+          long: |
+            Defines the lambda parameter for the observer, influencing the convergence rate.
+            VPI helps to manage the convergence time and the noise sensitivity.
+        type: float
+        min: 0.0
+        max: 20.0
+        reboot_required: true
+        default: 0.6
+
+      YAW_VRHO:
+        description:
+          short: Observer parameter VRHO for YAW state.
+          long: |
+            Defines the VRHO parameter for robustness against disturbances in the YAW state.
+            VRHO influences the transitory of the estimation error.
+        type: float
+        min: 0.0
+        max: 20.0
+        reboot_required: true
+        default: 1.2
+
+      CTRL2:                                                                                                    
+        description:                                                                                               
+          short: Placeholder.                                                            
+          long: |
+            Place holder, order the groups in QGC
+        type: float                                                                                                
+        min: 0.0                                                                                                   
+        max: 20.0                                                                                                  
+        reboot_required: true                                                                                      
+        default: 1.2 

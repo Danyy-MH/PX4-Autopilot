@@ -335,3 +335,6 @@ fi
 
 mavlink boot_complete
 replay trystart
+
+fah_ctrl start -f -p 42
+fah_obs start -f -p 42

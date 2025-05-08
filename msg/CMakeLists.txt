@@ -221,6 +221,19 @@ set(msg_files
 	VtolVehicleStatus.msg
 	Wind.msg
 	YawEstimatorStatus.msg
+	CustomQuaternion.msg
+	CustomExtendedState.msg
+	CustomEstError.msg
+	CustomKt.msg
+	CustomSigma.msg
+	CustomPwm.msg
+	CustomError.msg
+	CustomEstVel.msg
+	CustomEstPos.msg
+	CustomDesPos.msg
+	CustomPos.msg
+	CustomForces.msg
+	#SimulinkCustomMessage.msg
 )
 list(SORT msg_files)
 

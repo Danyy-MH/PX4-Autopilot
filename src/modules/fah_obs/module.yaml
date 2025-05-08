@@ -1,0 +1,73 @@
+module_name: FAH_OBS
+parameters:
+  - group: FAH_OBS
+    definitions:
+      FAH_SOF_X:
+        description:
+          short: SOF Gain for x-axis
+          long: |
+            SOF Gain for the x-axis of the FAH, part of a stabilization or control algorithm.
+        type: float
+        units: ms
+        min: 0.0
+        max: 50.0
+        reboot_required: true
+        default: 30.0
+      FAH_SOF_Y:
+        description:
+          short: SOF Gain for y-axis
+          long: |
+            SOF Gain for the y-axis of the FAH, part of a stabilization or control algorithm.
+        type: float
+        units: ms
+        min: 0.0
+        max: 50.0
+        reboot_required: true
+        default: 30.0
+      FAH_SOF_Z:
+        description:
+          short: SOF Gain for z-axis
+          long: |
+            SOF Gain for the z-axis of the FAH, part of a stabilization or control algorithm.
+        type: float
+        units: ms
+        min: 0.0
+        max: 50.0
+        reboot_required: true
+        default: 30.0
+      FAH_SOF_ROLL:
+        description:
+          short: SOF Gain for roll axis
+          long: |
+            SOF Gain for the roll axis of the FAH, part of a stabilization or control algorithm.
+        type: float
+        units: ms
+        min: 0.0
+        max: 50.0
+        reboot_required: true
+        default: 30.0
+        
+      FAH_SOF_PITCH:
+        description:
+          short: SOF Gain for pitch axis
+          long: |
+            SOF Gain for the pitch axis of the FAH, part of a stabilization or control algorithm.
+        type: float
+        units: ms
+        min: 0.0
+        max: 50.0
+        reboot_required: true
+        default: 30.0
+        
+      FAH_SOF_YAW:
+        description:
+          short: SOF Gain for yaw axis
+          long: |
+            SOF Gain for the yaw axis of the FAH, part of a stabilization or control algorithm.
+        type: float
+        units: ms
+        min: 0.0
+        max: 50.0
+        reboot_required: true
+        default: 30.0
+
