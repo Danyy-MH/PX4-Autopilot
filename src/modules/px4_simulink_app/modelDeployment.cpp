@@ -7,9 +7,9 @@
 //
 // Code generated for Simulink model 'modelDeployment'.
 //
-// Model version                  : 1.199
+// Model version                  : 1.215
 // Simulink Coder version         : 24.2 (R2024b) 21-Jun-2024
-// C/C++ source code generated on : Mon Apr 28 16:20:26 2025
+// C/C++ source code generated on : Mon Jun  9 16:25:09 2025
 //
 // Target selection: ert.tlc
 // Embedded hardware selection: ARM Compatible->ARM Cortex
@@ -83,10 +83,17 @@ static void PolyTrajSys_updateStoredPPF_fjc(robotics_slcore_internal__fjc_T *obj
 static void modelDeployment_ppval_fjc(const real_T pp_breaks[14], const real_T
   pp_coefs[312], real_T x, real_T v[6]);
 static real_T modelDeployment_rt_atan2d_snf(real_T u0, real_T u1);
+static void addFlatSegmentsToPPFormPar_fjc1(const real_T oldbreaks[7], const
+  real_T oldCoeffs[48], real_T newBreaks[9], real_T newCoefs[64]);
+static void PolyTrajSys_updateStoredPP_fjc1(robotics_slcore_internal_fjc1_T *obj,
+  const real_T pp_breaks[9], const real_T pp_coefs[64]);
+static void modelDeployment_ppval_fjc1(const real_T pp_breaks[9], const real_T
+  pp_coefs[64], real_T x, real_T v[2]);
 static void modelDepl_PolyTrajSys_setupImpl(robotics_slcore_internal_bloc_T *obj);
 static void modelDe_PolyTrajSys_setupImpl_f(robotics_slcore_internal_bl_f_T *obj);
 static void modelD_PolyTrajSys_setupImpl_fj(robotics_slcore_internal_b_fj_T *obj);
 static void model_PolyTrajSys_setupImpl_fjc(robotics_slcore_internal__fjc_T *obj);
+static void mode_PolyTrajSys_setupImpl_fjc1(robotics_slcore_internal_fjc1_T *obj);
 static void modelDep_PX4Actuators_setupImpl(px4_internal_block_PX4Actuato_T *obj);
 
 // System initialize for atomic system:
@@ -230,6 +237,7 @@ static void modelDeploy_generateCubicCoeffs(const real_T posPts[2], const real_T
   // Start for MATLABSystem: '<S93>/Polynomial Trajectory2' incorporates:
   //   MATLABSystem: '<S89>/Polynomial Trajectory3'
   //   MATLABSystem: '<S90>/Polynomial Trajectory'
+  //   MATLABSystem: '<S94>/Polynomial Trajectory3'
 
   modelDeployment_B.posPts_idx_0 = posPts[1] - (finalTime * velPts[0] + posPts[0]);
   modelDeployment_B.posPts_idx_1 = velPts[1] - (0.0 * posPts[0] + velPts[0]);
@@ -247,128 +255,129 @@ static void modelDeploy_generateCubicCoeffs(const real_T posPts[2], const real_T
 static void mo_addFlatSegmentsToPPFormParts(const real_T oldbreaks[10], const
   real_T oldCoeffs[216], real_T newBreaks[12], real_T newCoefs[264])
 {
-  memset(&modelDeployment_B.newSegmentCoeffs_l[0], 0, 24U * sizeof(real_T));
-  for (modelDeployment_B.i3 = 0; modelDeployment_B.i3 < 6; modelDeployment_B.i3
+  memset(&modelDeployment_B.newSegmentCoeffs_b[0], 0, 24U * sizeof(real_T));
+  for (modelDeployment_B.i5 = 0; modelDeployment_B.i5 < 6; modelDeployment_B.i5
        ++) {
     // Start for MATLABSystem: '<S93>/Polynomial Trajectory2'
-    modelDeployment_B.newSegmentCoeffs_l[modelDeployment_B.i3 + 18] =
-      ((oldCoeffs[modelDeployment_B.i3 + 54] * 0.0 +
-        oldCoeffs[modelDeployment_B.i3] * 0.0) + oldCoeffs[modelDeployment_B.i3
-       + 108] * 0.0) + oldCoeffs[modelDeployment_B.i3 + 162];
+    modelDeployment_B.newSegmentCoeffs_b[modelDeployment_B.i5 + 18] =
+      ((oldCoeffs[modelDeployment_B.i5 + 54] * 0.0 +
+        oldCoeffs[modelDeployment_B.i5] * 0.0) + oldCoeffs[modelDeployment_B.i5
+       + 108] * 0.0) + oldCoeffs[modelDeployment_B.i5 + 162];
   }
 
   memset(&modelDeployment_B.coefsWithFlatStart_g[0], 0, 240U * sizeof(real_T));
-  for (modelDeployment_B.i3 = 0; modelDeployment_B.i3 < 6; modelDeployment_B.i3
+  for (modelDeployment_B.i5 = 0; modelDeployment_B.i5 < 6; modelDeployment_B.i5
        ++) {
-    modelDeployment_B.coefsWithFlatStart_g[modelDeployment_B.i3] =
-      modelDeployment_B.newSegmentCoeffs_l[modelDeployment_B.i3];
-    modelDeployment_B.coefsWithFlatStart_g[modelDeployment_B.i3 + 60] =
-      modelDeployment_B.newSegmentCoeffs_l[modelDeployment_B.i3 + 6];
-    modelDeployment_B.coefsWithFlatStart_g[modelDeployment_B.i3 + 120] =
-      modelDeployment_B.newSegmentCoeffs_l[modelDeployment_B.i3 + 12];
-    modelDeployment_B.coefsWithFlatStart_g[modelDeployment_B.i3 + 180] =
-      modelDeployment_B.newSegmentCoeffs_l[modelDeployment_B.i3 + 18];
+    modelDeployment_B.coefsWithFlatStart_g[modelDeployment_B.i5] =
+      modelDeployment_B.newSegmentCoeffs_b[modelDeployment_B.i5];
+    modelDeployment_B.coefsWithFlatStart_g[modelDeployment_B.i5 + 60] =
+      modelDeployment_B.newSegmentCoeffs_b[modelDeployment_B.i5 + 6];
+    modelDeployment_B.coefsWithFlatStart_g[modelDeployment_B.i5 + 120] =
+      modelDeployment_B.newSegmentCoeffs_b[modelDeployment_B.i5 + 12];
+    modelDeployment_B.coefsWithFlatStart_g[modelDeployment_B.i5 + 180] =
+      modelDeployment_B.newSegmentCoeffs_b[modelDeployment_B.i5 + 18];
   }
 
-  for (modelDeployment_B.i3 = 0; modelDeployment_B.i3 < 54; modelDeployment_B.i3
+  for (modelDeployment_B.i5 = 0; modelDeployment_B.i5 < 54; modelDeployment_B.i5
        ++) {
     // Start for MATLABSystem: '<S93>/Polynomial Trajectory2'
-    modelDeployment_B.coefsWithFlatStart_g[modelDeployment_B.i3 + 6] =
-      oldCoeffs[modelDeployment_B.i3];
-    modelDeployment_B.coefsWithFlatStart_g[modelDeployment_B.i3 + 66] =
-      oldCoeffs[modelDeployment_B.i3 + 54];
-    modelDeployment_B.coefsWithFlatStart_g[modelDeployment_B.i3 + 126] =
-      oldCoeffs[modelDeployment_B.i3 + 108];
-    modelDeployment_B.coefsWithFlatStart_g[modelDeployment_B.i3 + 186] =
-      oldCoeffs[modelDeployment_B.i3 + 162];
+    modelDeployment_B.coefsWithFlatStart_g[modelDeployment_B.i5 + 6] =
+      oldCoeffs[modelDeployment_B.i5];
+    modelDeployment_B.coefsWithFlatStart_g[modelDeployment_B.i5 + 66] =
+      oldCoeffs[modelDeployment_B.i5 + 54];
+    modelDeployment_B.coefsWithFlatStart_g[modelDeployment_B.i5 + 126] =
+      oldCoeffs[modelDeployment_B.i5 + 108];
+    modelDeployment_B.coefsWithFlatStart_g[modelDeployment_B.i5 + 186] =
+      oldCoeffs[modelDeployment_B.i5 + 162];
   }
 
   // Start for MATLABSystem: '<S93>/Polynomial Trajectory2'
-  modelDeployment_B.breaksWithFlatStart_l[0] = oldbreaks[0] - 1.0;
-  memcpy(&modelDeployment_B.breaksWithFlatStart_l[1], &oldbreaks[0], 10U *
+  modelDeployment_B.breaksWithFlatStart_bj[0] = oldbreaks[0] - 1.0;
+  memcpy(&modelDeployment_B.breaksWithFlatStart_bj[1], &oldbreaks[0], 10U *
          sizeof(real_T));
-  modelDeployment_B.holdPoint_h = modelDeployment_B.breaksWithFlatStart_l[10] -
-    modelDeployment_B.breaksWithFlatStart_l[9];
-  modelDeployment_B.evalPointVector_idx_0_c = modelDeployment_rt_powd_snf
-    (modelDeployment_B.holdPoint_h, 3.0);
-  modelDeployment_B.evalPointVector_idx_1_c = modelDeployment_rt_powd_snf
-    (modelDeployment_B.holdPoint_h, 2.0);
-  modelDeployment_B.evalPointVector_idx_2_p = modelDeployment_rt_powd_snf
-    (modelDeployment_B.holdPoint_h, 1.0);
-  modelDeployment_B.holdPoint_h = modelDeployment_rt_powd_snf
-    (modelDeployment_B.holdPoint_h, 0.0);
-  memset(&modelDeployment_B.newSegmentCoeffs_l[0], 0, 24U * sizeof(real_T));
-  for (modelDeployment_B.i3 = 0; modelDeployment_B.i3 < 6; modelDeployment_B.i3
+  modelDeployment_B.holdPoint_ip = modelDeployment_B.breaksWithFlatStart_bj[10]
+    - modelDeployment_B.breaksWithFlatStart_bj[9];
+  modelDeployment_B.evalPointVector_idx_0_f = modelDeployment_rt_powd_snf
+    (modelDeployment_B.holdPoint_ip, 3.0);
+  modelDeployment_B.evalPointVector_idx_1_i = modelDeployment_rt_powd_snf
+    (modelDeployment_B.holdPoint_ip, 2.0);
+  modelDeployment_B.evalPointVector_idx_2_f = modelDeployment_rt_powd_snf
+    (modelDeployment_B.holdPoint_ip, 1.0);
+  modelDeployment_B.holdPoint_ip = modelDeployment_rt_powd_snf
+    (modelDeployment_B.holdPoint_ip, 0.0);
+  memset(&modelDeployment_B.newSegmentCoeffs_b[0], 0, 24U * sizeof(real_T));
+  for (modelDeployment_B.i5 = 0; modelDeployment_B.i5 < 6; modelDeployment_B.i5
        ++) {
     // Start for MATLABSystem: '<S93>/Polynomial Trajectory2'
-    modelDeployment_B.newSegmentCoeffs_l[modelDeployment_B.i3 + 18] =
-      ((modelDeployment_B.coefsWithFlatStart_g[modelDeployment_B.i3 + 54] *
-        modelDeployment_B.evalPointVector_idx_0_c +
-        modelDeployment_B.coefsWithFlatStart_g[modelDeployment_B.i3 + 114] *
-        modelDeployment_B.evalPointVector_idx_1_c) +
-       modelDeployment_B.coefsWithFlatStart_g[modelDeployment_B.i3 + 174] *
-       modelDeployment_B.evalPointVector_idx_2_p) +
-      modelDeployment_B.coefsWithFlatStart_g[modelDeployment_B.i3 + 234] *
-      modelDeployment_B.holdPoint_h;
+    modelDeployment_B.newSegmentCoeffs_b[modelDeployment_B.i5 + 18] =
+      ((modelDeployment_B.coefsWithFlatStart_g[modelDeployment_B.i5 + 54] *
+        modelDeployment_B.evalPointVector_idx_0_f +
+        modelDeployment_B.coefsWithFlatStart_g[modelDeployment_B.i5 + 114] *
+        modelDeployment_B.evalPointVector_idx_1_i) +
+       modelDeployment_B.coefsWithFlatStart_g[modelDeployment_B.i5 + 174] *
+       modelDeployment_B.evalPointVector_idx_2_f) +
+      modelDeployment_B.coefsWithFlatStart_g[modelDeployment_B.i5 + 234] *
+      modelDeployment_B.holdPoint_ip;
   }
 
   memset(&newCoefs[0], 0, 264U * sizeof(real_T));
-  for (modelDeployment_B.i3 = 0; modelDeployment_B.i3 < 60; modelDeployment_B.i3
+  for (modelDeployment_B.i5 = 0; modelDeployment_B.i5 < 60; modelDeployment_B.i5
        ++) {
     // Start for MATLABSystem: '<S93>/Polynomial Trajectory2'
-    newCoefs[modelDeployment_B.i3] =
-      modelDeployment_B.coefsWithFlatStart_g[modelDeployment_B.i3];
-    newCoefs[modelDeployment_B.i3 + 66] =
-      modelDeployment_B.coefsWithFlatStart_g[modelDeployment_B.i3 + 60];
-    newCoefs[modelDeployment_B.i3 + 132] =
-      modelDeployment_B.coefsWithFlatStart_g[modelDeployment_B.i3 + 120];
-    newCoefs[modelDeployment_B.i3 + 198] =
-      modelDeployment_B.coefsWithFlatStart_g[modelDeployment_B.i3 + 180];
+    newCoefs[modelDeployment_B.i5] =
+      modelDeployment_B.coefsWithFlatStart_g[modelDeployment_B.i5];
+    newCoefs[modelDeployment_B.i5 + 66] =
+      modelDeployment_B.coefsWithFlatStart_g[modelDeployment_B.i5 + 60];
+    newCoefs[modelDeployment_B.i5 + 132] =
+      modelDeployment_B.coefsWithFlatStart_g[modelDeployment_B.i5 + 120];
+    newCoefs[modelDeployment_B.i5 + 198] =
+      modelDeployment_B.coefsWithFlatStart_g[modelDeployment_B.i5 + 180];
   }
 
-  for (modelDeployment_B.i3 = 0; modelDeployment_B.i3 < 6; modelDeployment_B.i3
+  for (modelDeployment_B.i5 = 0; modelDeployment_B.i5 < 6; modelDeployment_B.i5
        ++) {
-    newCoefs[modelDeployment_B.i3 + 60] =
-      modelDeployment_B.newSegmentCoeffs_l[modelDeployment_B.i3];
-    newCoefs[modelDeployment_B.i3 + 126] =
-      modelDeployment_B.newSegmentCoeffs_l[modelDeployment_B.i3 + 6];
-    newCoefs[modelDeployment_B.i3 + 192] =
-      modelDeployment_B.newSegmentCoeffs_l[modelDeployment_B.i3 + 12];
-    newCoefs[modelDeployment_B.i3 + 258] =
-      modelDeployment_B.newSegmentCoeffs_l[modelDeployment_B.i3 + 18];
+    newCoefs[modelDeployment_B.i5 + 60] =
+      modelDeployment_B.newSegmentCoeffs_b[modelDeployment_B.i5];
+    newCoefs[modelDeployment_B.i5 + 126] =
+      modelDeployment_B.newSegmentCoeffs_b[modelDeployment_B.i5 + 6];
+    newCoefs[modelDeployment_B.i5 + 192] =
+      modelDeployment_B.newSegmentCoeffs_b[modelDeployment_B.i5 + 12];
+    newCoefs[modelDeployment_B.i5 + 258] =
+      modelDeployment_B.newSegmentCoeffs_b[modelDeployment_B.i5 + 18];
   }
 
   // Start for MATLABSystem: '<S93>/Polynomial Trajectory2'
-  memcpy(&newBreaks[0], &modelDeployment_B.breaksWithFlatStart_l[0], 11U *
+  memcpy(&newBreaks[0], &modelDeployment_B.breaksWithFlatStart_bj[0], 11U *
          sizeof(real_T));
-  newBreaks[11] = modelDeployment_B.breaksWithFlatStart_l[10] + 1.0;
+  newBreaks[11] = modelDeployment_B.breaksWithFlatStart_bj[10] + 1.0;
 }
 
 static void PolyTrajSys_updateStoredPPForms(robotics_slcore_internal_bloc_T *obj,
   const real_T pp_breaks[12], const real_T pp_coefs[264])
 {
   memset(&obj->PPDStruct.coefs[0], 0, 264U * sizeof(real_T));
-  for (modelDeployment_B.b_i_k = 0; modelDeployment_B.b_i_k < 3;
-       modelDeployment_B.b_i_k++) {
-    for (modelDeployment_B.i10 = 0; modelDeployment_B.i10 < 66;
-         modelDeployment_B.i10++) {
+  for (modelDeployment_B.b_i_af = 0; modelDeployment_B.b_i_af < 3;
+       modelDeployment_B.b_i_af++) {
+    for (modelDeployment_B.i13 = 0; modelDeployment_B.i13 < 66;
+         modelDeployment_B.i13++) {
       // Start for MATLABSystem: '<S93>/Polynomial Trajectory2'
-      obj->PPDStruct.coefs[modelDeployment_B.i10 + 66 * (modelDeployment_B.b_i_k
-        + 1)] = pp_coefs[modelDeployment_B.b_i_k * 66 + modelDeployment_B.i10] *
-        (3.0 - static_cast<real_T>(modelDeployment_B.b_i_k));
+      obj->PPDStruct.coefs[modelDeployment_B.i13 + 66 *
+        (modelDeployment_B.b_i_af + 1)] = pp_coefs[modelDeployment_B.b_i_af * 66
+        + modelDeployment_B.i13] * (3.0 - static_cast<real_T>
+        (modelDeployment_B.b_i_af));
     }
   }
 
   memset(&obj->PPDDStruct.coefs[0], 0, 264U * sizeof(real_T));
-  for (modelDeployment_B.b_i_k = 0; modelDeployment_B.b_i_k < 3;
-       modelDeployment_B.b_i_k++) {
-    for (modelDeployment_B.i10 = 0; modelDeployment_B.i10 < 66;
-         modelDeployment_B.i10++) {
+  for (modelDeployment_B.b_i_af = 0; modelDeployment_B.b_i_af < 3;
+       modelDeployment_B.b_i_af++) {
+    for (modelDeployment_B.i13 = 0; modelDeployment_B.i13 < 66;
+         modelDeployment_B.i13++) {
       // Start for MATLABSystem: '<S93>/Polynomial Trajectory2'
-      obj->PPDDStruct.coefs[modelDeployment_B.i10 + 66 *
-        (modelDeployment_B.b_i_k + 1)] = obj->
-        PPDStruct.coefs[modelDeployment_B.b_i_k * 66 + modelDeployment_B.i10] *
-        (3.0 - static_cast<real_T>(modelDeployment_B.b_i_k));
+      obj->PPDDStruct.coefs[modelDeployment_B.i13 + 66 *
+        (modelDeployment_B.b_i_af + 1)] = obj->
+        PPDStruct.coefs[modelDeployment_B.b_i_af * 66 + modelDeployment_B.i13] *
+        (3.0 - static_cast<real_T>(modelDeployment_B.b_i_af));
     }
   }
 
@@ -385,41 +394,41 @@ static void modelDeployment_ppval(const real_T pp_breaks[12], const real_T
 {
   // Start for MATLABSystem: '<S93>/Polynomial Trajectory2'
   if (rtIsNaN(x)) {
-    for (modelDeployment_B.low_ip1_h = 0; modelDeployment_B.low_ip1_h < 6;
-         modelDeployment_B.low_ip1_h++) {
-      v[modelDeployment_B.low_ip1_h] = (rtNaN);
+    for (modelDeployment_B.low_ip1_e = 0; modelDeployment_B.low_ip1_e < 6;
+         modelDeployment_B.low_ip1_e++) {
+      v[modelDeployment_B.low_ip1_e] = (rtNaN);
     }
   } else {
-    modelDeployment_B.low_i_o4 = 0;
-    modelDeployment_B.low_ip1_h = 1;
-    modelDeployment_B.high_i_l = 12;
-    while (modelDeployment_B.high_i_l > modelDeployment_B.low_ip1_h + 1) {
-      modelDeployment_B.mid_i_h = ((modelDeployment_B.low_i_o4 +
-        modelDeployment_B.high_i_l) + 1) >> 1;
+    modelDeployment_B.low_i_g = 0;
+    modelDeployment_B.low_ip1_e = 1;
+    modelDeployment_B.high_i_f = 12;
+    while (modelDeployment_B.high_i_f > modelDeployment_B.low_ip1_e + 1) {
+      modelDeployment_B.mid_i_h = ((modelDeployment_B.low_i_g +
+        modelDeployment_B.high_i_f) + 1) >> 1;
       if (x >= pp_breaks[modelDeployment_B.mid_i_h - 1]) {
-        modelDeployment_B.low_i_o4 = modelDeployment_B.mid_i_h - 1;
-        modelDeployment_B.low_ip1_h = modelDeployment_B.mid_i_h;
+        modelDeployment_B.low_i_g = modelDeployment_B.mid_i_h - 1;
+        modelDeployment_B.low_ip1_e = modelDeployment_B.mid_i_h;
       } else {
-        modelDeployment_B.high_i_l = modelDeployment_B.mid_i_h;
+        modelDeployment_B.high_i_f = modelDeployment_B.mid_i_h;
       }
     }
 
-    modelDeployment_B.low_ip1_h = modelDeployment_B.low_i_o4 * 6;
-    modelDeployment_B.xloc_e = x - pp_breaks[modelDeployment_B.low_i_o4];
-    for (modelDeployment_B.low_i_o4 = 0; modelDeployment_B.low_i_o4 < 6;
-         modelDeployment_B.low_i_o4++) {
-      v[modelDeployment_B.low_i_o4] = pp_coefs[modelDeployment_B.low_ip1_h +
-        modelDeployment_B.low_i_o4];
+    modelDeployment_B.low_ip1_e = modelDeployment_B.low_i_g * 6;
+    modelDeployment_B.xloc_l = x - pp_breaks[modelDeployment_B.low_i_g];
+    for (modelDeployment_B.low_i_g = 0; modelDeployment_B.low_i_g < 6;
+         modelDeployment_B.low_i_g++) {
+      v[modelDeployment_B.low_i_g] = pp_coefs[modelDeployment_B.low_ip1_e +
+        modelDeployment_B.low_i_g];
     }
 
-    for (modelDeployment_B.low_i_o4 = 0; modelDeployment_B.low_i_o4 < 3;
-         modelDeployment_B.low_i_o4++) {
-      modelDeployment_B.high_i_l = ((modelDeployment_B.low_i_o4 + 1) * 66 +
-        modelDeployment_B.low_ip1_h) - 1;
+    for (modelDeployment_B.low_i_g = 0; modelDeployment_B.low_i_g < 3;
+         modelDeployment_B.low_i_g++) {
+      modelDeployment_B.high_i_f = ((modelDeployment_B.low_i_g + 1) * 66 +
+        modelDeployment_B.low_ip1_e) - 1;
       for (modelDeployment_B.mid_i_h = 0; modelDeployment_B.mid_i_h < 6;
            modelDeployment_B.mid_i_h++) {
-        v[modelDeployment_B.mid_i_h] = pp_coefs[(modelDeployment_B.high_i_l +
-          modelDeployment_B.mid_i_h) + 1] + modelDeployment_B.xloc_e *
+        v[modelDeployment_B.mid_i_h] = pp_coefs[(modelDeployment_B.high_i_f +
+          modelDeployment_B.mid_i_h) + 1] + modelDeployment_B.xloc_l *
           v[modelDeployment_B.mid_i_h];
       }
     }
@@ -442,8 +451,8 @@ static void modelDepl_generateQuinticCoeffs(const real_T posPts[2], const real_T
   modelDeployment_B.coeffVec = modelDeployment_rt_powd_snf(finalTime, 4.0);
   modelDeployment_B.dv3[0] = 1.0;
   modelDeployment_B.dv3[3] = finalTime;
-  modelDeployment_B.coeffVec_m = finalTime * finalTime;
-  modelDeployment_B.dv3[6] = modelDeployment_B.coeffVec_m;
+  modelDeployment_B.coeffVec_p = finalTime * finalTime;
+  modelDeployment_B.dv3[6] = modelDeployment_B.coeffVec_p;
   modelDeployment_B.dv3[1] = 0.0;
   modelDeployment_B.dv3[4] = 1.0;
   modelDeployment_B.dv3[7] = 2.0 * finalTime;
@@ -454,37 +463,37 @@ static void modelDepl_generateQuinticCoeffs(const real_T posPts[2], const real_T
   modelDeployment_B.posPts[1] = velPts[1];
   modelDeployment_B.posPts[2] = accPts[1];
   modelDeployment_B.dv4[0] = 10.0 / modelDeployment_B.xtmp;
-  modelDeployment_B.dv4[3] = -4.0 / modelDeployment_B.coeffVec_m;
+  modelDeployment_B.dv4[3] = -4.0 / modelDeployment_B.coeffVec_p;
   modelDeployment_B.dv4[6] = 1.0 / (2.0 * finalTime);
   modelDeployment_B.dv4[1] = -15.0 / modelDeployment_B.coeffVec;
   modelDeployment_B.dv4[4] = 7.0 / modelDeployment_B.xtmp;
-  modelDeployment_B.dv4[7] = -1.0 / modelDeployment_B.coeffVec_m;
+  modelDeployment_B.dv4[7] = -1.0 / modelDeployment_B.coeffVec_p;
   modelDeployment_B.dv4[2] = 6.0 / modelDeployment_rt_powd_snf(finalTime, 5.0);
   modelDeployment_B.dv4[5] = -3.0 / modelDeployment_B.coeffVec;
   modelDeployment_B.dv4[8] = 1.0 / (2.0 * modelDeployment_B.xtmp);
   modelDeployment_B.xtmp = velPts[0];
   modelDeployment_B.coeffVec = posPts[0];
-  modelDeployment_B.coeffVec_m = coeffVec[2];
-  for (modelDeployment_B.i1 = 0; modelDeployment_B.i1 < 3; modelDeployment_B.i1
+  modelDeployment_B.coeffVec_p = coeffVec[2];
+  for (modelDeployment_B.i2 = 0; modelDeployment_B.i2 < 3; modelDeployment_B.i2
        ++) {
-    modelDeployment_B.posPts_j[modelDeployment_B.i1] =
-      modelDeployment_B.posPts[modelDeployment_B.i1] -
-      ((modelDeployment_B.dv3[modelDeployment_B.i1 + 3] * modelDeployment_B.xtmp
-        + modelDeployment_B.dv3[modelDeployment_B.i1] *
-        modelDeployment_B.coeffVec) + modelDeployment_B.dv3[modelDeployment_B.i1
-       + 6] * modelDeployment_B.coeffVec_m);
+    modelDeployment_B.posPts_i[modelDeployment_B.i2] =
+      modelDeployment_B.posPts[modelDeployment_B.i2] -
+      ((modelDeployment_B.dv3[modelDeployment_B.i2 + 3] * modelDeployment_B.xtmp
+        + modelDeployment_B.dv3[modelDeployment_B.i2] *
+        modelDeployment_B.coeffVec) + modelDeployment_B.dv3[modelDeployment_B.i2
+       + 6] * modelDeployment_B.coeffVec_p);
   }
 
-  modelDeployment_B.xtmp = modelDeployment_B.posPts_j[1];
-  modelDeployment_B.coeffVec = modelDeployment_B.posPts_j[0];
-  modelDeployment_B.coeffVec_m = modelDeployment_B.posPts_j[2];
-  for (modelDeployment_B.i1 = 0; modelDeployment_B.i1 < 3; modelDeployment_B.i1
+  modelDeployment_B.xtmp = modelDeployment_B.posPts_i[1];
+  modelDeployment_B.coeffVec = modelDeployment_B.posPts_i[0];
+  modelDeployment_B.coeffVec_p = modelDeployment_B.posPts_i[2];
+  for (modelDeployment_B.i2 = 0; modelDeployment_B.i2 < 3; modelDeployment_B.i2
        ++) {
-    coeffVec[modelDeployment_B.i1 + 3] =
-      (modelDeployment_B.dv4[modelDeployment_B.i1 + 3] * modelDeployment_B.xtmp
-       + modelDeployment_B.dv4[modelDeployment_B.i1] *
-       modelDeployment_B.coeffVec) + modelDeployment_B.dv4[modelDeployment_B.i1
-      + 6] * modelDeployment_B.coeffVec_m;
+    coeffVec[modelDeployment_B.i2 + 3] =
+      (modelDeployment_B.dv4[modelDeployment_B.i2 + 3] * modelDeployment_B.xtmp
+       + modelDeployment_B.dv4[modelDeployment_B.i2] *
+       modelDeployment_B.coeffVec) + modelDeployment_B.dv4[modelDeployment_B.i2
+      + 6] * modelDeployment_B.coeffVec_p;
   }
 
   modelDeployment_B.xtmp = coeffVec[0];
@@ -510,79 +519,79 @@ static void addFlatSegmentsToPPFormParts_f(const real_T oldbreaks[21], const
   static const int8_T tmp[6] = { 0, 0, 0, 0, 0, 1 };
 
   memset(&modelDeployment_B.newSegmentCoeffs[0], 0, 36U * sizeof(real_T));
-  for (modelDeployment_B.b_i_m = 0; modelDeployment_B.b_i_m < 6;
-       modelDeployment_B.b_i_m++) {
+  for (modelDeployment_B.b_i = 0; modelDeployment_B.b_i < 6;
+       modelDeployment_B.b_i++) {
     // Start for MATLABSystem: '<S91>/Polynomial Trajectory3'
-    modelDeployment_B.holdPoint_a = 0.0;
-    for (modelDeployment_B.i4 = 0; modelDeployment_B.i4 < 6;
-         modelDeployment_B.i4++) {
+    modelDeployment_B.holdPoint_m = 0.0;
+    for (modelDeployment_B.i6 = 0; modelDeployment_B.i6 < 6;
+         modelDeployment_B.i6++) {
       // Start for MATLABSystem: '<S91>/Polynomial Trajectory3'
-      modelDeployment_B.holdPoint_a += oldCoeffs[120 * modelDeployment_B.i4 +
-        modelDeployment_B.b_i_m] * static_cast<real_T>(tmp[modelDeployment_B.i4]);
+      modelDeployment_B.holdPoint_m += oldCoeffs[120 * modelDeployment_B.i6 +
+        modelDeployment_B.b_i] * static_cast<real_T>(tmp[modelDeployment_B.i6]);
     }
 
     // Start for MATLABSystem: '<S91>/Polynomial Trajectory3'
-    modelDeployment_B.newSegmentCoeffs[modelDeployment_B.b_i_m + 30] =
-      modelDeployment_B.holdPoint_a;
+    modelDeployment_B.newSegmentCoeffs[modelDeployment_B.b_i + 30] =
+      modelDeployment_B.holdPoint_m;
   }
 
-  for (modelDeployment_B.b_i_m = 0; modelDeployment_B.b_i_m < 6;
-       modelDeployment_B.b_i_m++) {
-    for (modelDeployment_B.i4 = 0; modelDeployment_B.i4 < 6;
-         modelDeployment_B.i4++) {
-      modelDeployment_B.coefsWithFlatStart[modelDeployment_B.i4 + 126 *
-        modelDeployment_B.b_i_m] = modelDeployment_B.newSegmentCoeffs[6 *
-        modelDeployment_B.b_i_m + modelDeployment_B.i4];
+  for (modelDeployment_B.b_i = 0; modelDeployment_B.b_i < 6;
+       modelDeployment_B.b_i++) {
+    for (modelDeployment_B.i6 = 0; modelDeployment_B.i6 < 6;
+         modelDeployment_B.i6++) {
+      modelDeployment_B.coefsWithFlatStart[modelDeployment_B.i6 + 126 *
+        modelDeployment_B.b_i] = modelDeployment_B.newSegmentCoeffs[6 *
+        modelDeployment_B.b_i + modelDeployment_B.i6];
     }
 
     // Start for MATLABSystem: '<S91>/Polynomial Trajectory3'
-    memcpy(&modelDeployment_B.coefsWithFlatStart[modelDeployment_B.b_i_m * 126 +
-           6], &oldCoeffs[modelDeployment_B.b_i_m * 120], 120U * sizeof(real_T));
+    memcpy(&modelDeployment_B.coefsWithFlatStart[modelDeployment_B.b_i * 126 + 6],
+           &oldCoeffs[modelDeployment_B.b_i * 120], 120U * sizeof(real_T));
   }
 
   // Start for MATLABSystem: '<S91>/Polynomial Trajectory3'
   modelDeployment_B.breaksWithFlatStart[0] = oldbreaks[0] - 1.0;
   memcpy(&modelDeployment_B.breaksWithFlatStart[1], &oldbreaks[0], 21U * sizeof
          (real_T));
-  modelDeployment_B.holdPoint_a = modelDeployment_B.breaksWithFlatStart[21] -
+  modelDeployment_B.holdPoint_m = modelDeployment_B.breaksWithFlatStart[21] -
     modelDeployment_B.breaksWithFlatStart[20];
-  for (modelDeployment_B.b_i_m = 0; modelDeployment_B.b_i_m < 6;
-       modelDeployment_B.b_i_m++) {
+  for (modelDeployment_B.b_i = 0; modelDeployment_B.b_i < 6;
+       modelDeployment_B.b_i++) {
     // Start for MATLABSystem: '<S91>/Polynomial Trajectory3'
-    modelDeployment_B.evalPointVector[modelDeployment_B.b_i_m] =
-      modelDeployment_rt_powd_snf(modelDeployment_B.holdPoint_a, 6.0 - (
-      static_cast<real_T>(modelDeployment_B.b_i_m) + 1.0));
+    modelDeployment_B.evalPointVector[modelDeployment_B.b_i] =
+      modelDeployment_rt_powd_snf(modelDeployment_B.holdPoint_m, 6.0 - (
+      static_cast<real_T>(modelDeployment_B.b_i) + 1.0));
   }
 
   memset(&modelDeployment_B.newSegmentCoeffs[0], 0, 36U * sizeof(real_T));
-  for (modelDeployment_B.b_i_m = 0; modelDeployment_B.b_i_m < 6;
-       modelDeployment_B.b_i_m++) {
+  for (modelDeployment_B.b_i = 0; modelDeployment_B.b_i < 6;
+       modelDeployment_B.b_i++) {
     // Start for MATLABSystem: '<S91>/Polynomial Trajectory3'
-    modelDeployment_B.holdPoint_a = 0.0;
-    for (modelDeployment_B.i4 = 0; modelDeployment_B.i4 < 6;
-         modelDeployment_B.i4++) {
+    modelDeployment_B.holdPoint_m = 0.0;
+    for (modelDeployment_B.i6 = 0; modelDeployment_B.i6 < 6;
+         modelDeployment_B.i6++) {
       // Start for MATLABSystem: '<S91>/Polynomial Trajectory3'
-      modelDeployment_B.holdPoint_a += modelDeployment_B.coefsWithFlatStart[(126
-        * modelDeployment_B.i4 + modelDeployment_B.b_i_m) + 120] *
-        modelDeployment_B.evalPointVector[modelDeployment_B.i4];
+      modelDeployment_B.holdPoint_m += modelDeployment_B.coefsWithFlatStart[(126
+        * modelDeployment_B.i6 + modelDeployment_B.b_i) + 120] *
+        modelDeployment_B.evalPointVector[modelDeployment_B.i6];
     }
 
     // Start for MATLABSystem: '<S91>/Polynomial Trajectory3'
-    modelDeployment_B.newSegmentCoeffs[modelDeployment_B.b_i_m + 30] =
-      modelDeployment_B.holdPoint_a;
+    modelDeployment_B.newSegmentCoeffs[modelDeployment_B.b_i + 30] =
+      modelDeployment_B.holdPoint_m;
   }
 
-  for (modelDeployment_B.b_i_m = 0; modelDeployment_B.b_i_m < 6;
-       modelDeployment_B.b_i_m++) {
+  for (modelDeployment_B.b_i = 0; modelDeployment_B.b_i < 6;
+       modelDeployment_B.b_i++) {
     // Start for MATLABSystem: '<S91>/Polynomial Trajectory3'
-    memcpy(&newCoefs[modelDeployment_B.b_i_m * 132],
-           &modelDeployment_B.coefsWithFlatStart[modelDeployment_B.b_i_m * 126],
+    memcpy(&newCoefs[modelDeployment_B.b_i * 132],
+           &modelDeployment_B.coefsWithFlatStart[modelDeployment_B.b_i * 126],
            126U * sizeof(real_T));
-    for (modelDeployment_B.i4 = 0; modelDeployment_B.i4 < 6;
-         modelDeployment_B.i4++) {
-      newCoefs[(modelDeployment_B.i4 + 132 * modelDeployment_B.b_i_m) + 126] =
-        modelDeployment_B.newSegmentCoeffs[6 * modelDeployment_B.b_i_m +
-        modelDeployment_B.i4];
+    for (modelDeployment_B.i6 = 0; modelDeployment_B.i6 < 6;
+         modelDeployment_B.i6++) {
+      newCoefs[(modelDeployment_B.i6 + 132 * modelDeployment_B.b_i) + 126] =
+        modelDeployment_B.newSegmentCoeffs[6 * modelDeployment_B.b_i +
+        modelDeployment_B.i6];
     }
   }
 
@@ -596,27 +605,28 @@ static void PolyTrajSys_updateStoredPPFor_f(robotics_slcore_internal_bl_f_T *obj
   const real_T pp_breaks[23], const real_T pp_coefs[792])
 {
   memset(&obj->PPDStruct.coefs[0], 0, 792U * sizeof(real_T));
-  for (modelDeployment_B.b_i_c = 0; modelDeployment_B.b_i_c < 5;
-       modelDeployment_B.b_i_c++) {
-    for (modelDeployment_B.i9 = 0; modelDeployment_B.i9 < 132;
-         modelDeployment_B.i9++) {
+  for (modelDeployment_B.b_i_d = 0; modelDeployment_B.b_i_d < 5;
+       modelDeployment_B.b_i_d++) {
+    for (modelDeployment_B.i12 = 0; modelDeployment_B.i12 < 132;
+         modelDeployment_B.i12++) {
       // Start for MATLABSystem: '<S91>/Polynomial Trajectory3'
-      obj->PPDStruct.coefs[modelDeployment_B.i9 + 132 * (modelDeployment_B.b_i_c
-        + 1)] = pp_coefs[modelDeployment_B.b_i_c * 132 + modelDeployment_B.i9] *
-        (5.0 - static_cast<real_T>(modelDeployment_B.b_i_c));
+      obj->PPDStruct.coefs[modelDeployment_B.i12 + 132 *
+        (modelDeployment_B.b_i_d + 1)] = pp_coefs[modelDeployment_B.b_i_d * 132
+        + modelDeployment_B.i12] * (5.0 - static_cast<real_T>
+        (modelDeployment_B.b_i_d));
     }
   }
 
   memset(&obj->PPDDStruct.coefs[0], 0, 792U * sizeof(real_T));
-  for (modelDeployment_B.b_i_c = 0; modelDeployment_B.b_i_c < 5;
-       modelDeployment_B.b_i_c++) {
-    for (modelDeployment_B.i9 = 0; modelDeployment_B.i9 < 132;
-         modelDeployment_B.i9++) {
+  for (modelDeployment_B.b_i_d = 0; modelDeployment_B.b_i_d < 5;
+       modelDeployment_B.b_i_d++) {
+    for (modelDeployment_B.i12 = 0; modelDeployment_B.i12 < 132;
+         modelDeployment_B.i12++) {
       // Start for MATLABSystem: '<S91>/Polynomial Trajectory3'
-      obj->PPDDStruct.coefs[modelDeployment_B.i9 + 132 *
-        (modelDeployment_B.b_i_c + 1)] = obj->
-        PPDStruct.coefs[modelDeployment_B.b_i_c * 132 + modelDeployment_B.i9] *
-        (5.0 - static_cast<real_T>(modelDeployment_B.b_i_c));
+      obj->PPDDStruct.coefs[modelDeployment_B.i12 + 132 *
+        (modelDeployment_B.b_i_d + 1)] = obj->
+        PPDStruct.coefs[modelDeployment_B.b_i_d * 132 + modelDeployment_B.i12] *
+        (5.0 - static_cast<real_T>(modelDeployment_B.b_i_d));
     }
   }
 
@@ -633,42 +643,42 @@ static void modelDeployment_ppval_f(const real_T pp_breaks[23], const real_T
 {
   // Start for MATLABSystem: '<S91>/Polynomial Trajectory3'
   if (rtIsNaN(x)) {
-    for (modelDeployment_B.low_ip1_f = 0; modelDeployment_B.low_ip1_f < 6;
-         modelDeployment_B.low_ip1_f++) {
-      v[modelDeployment_B.low_ip1_f] = (rtNaN);
+    for (modelDeployment_B.low_ip1_o = 0; modelDeployment_B.low_ip1_o < 6;
+         modelDeployment_B.low_ip1_o++) {
+      v[modelDeployment_B.low_ip1_o] = (rtNaN);
     }
   } else {
-    modelDeployment_B.low_i_c = 0;
-    modelDeployment_B.low_ip1_f = 1;
-    modelDeployment_B.high_i_p = 23;
-    while (modelDeployment_B.high_i_p > modelDeployment_B.low_ip1_f + 1) {
-      modelDeployment_B.mid_i_e = ((modelDeployment_B.low_i_c +
-        modelDeployment_B.high_i_p) + 1) >> 1;
-      if (x >= pp_breaks[modelDeployment_B.mid_i_e - 1]) {
-        modelDeployment_B.low_i_c = modelDeployment_B.mid_i_e - 1;
-        modelDeployment_B.low_ip1_f = modelDeployment_B.mid_i_e;
+    modelDeployment_B.low_i_e = 0;
+    modelDeployment_B.low_ip1_o = 1;
+    modelDeployment_B.high_i_b = 23;
+    while (modelDeployment_B.high_i_b > modelDeployment_B.low_ip1_o + 1) {
+      modelDeployment_B.mid_i_a = ((modelDeployment_B.low_i_e +
+        modelDeployment_B.high_i_b) + 1) >> 1;
+      if (x >= pp_breaks[modelDeployment_B.mid_i_a - 1]) {
+        modelDeployment_B.low_i_e = modelDeployment_B.mid_i_a - 1;
+        modelDeployment_B.low_ip1_o = modelDeployment_B.mid_i_a;
       } else {
-        modelDeployment_B.high_i_p = modelDeployment_B.mid_i_e;
+        modelDeployment_B.high_i_b = modelDeployment_B.mid_i_a;
       }
     }
 
-    modelDeployment_B.low_ip1_f = modelDeployment_B.low_i_c * 6;
-    modelDeployment_B.xloc_a = x - pp_breaks[modelDeployment_B.low_i_c];
-    for (modelDeployment_B.low_i_c = 0; modelDeployment_B.low_i_c < 6;
-         modelDeployment_B.low_i_c++) {
-      v[modelDeployment_B.low_i_c] = pp_coefs[modelDeployment_B.low_ip1_f +
-        modelDeployment_B.low_i_c];
+    modelDeployment_B.low_ip1_o = modelDeployment_B.low_i_e * 6;
+    modelDeployment_B.xloc_o = x - pp_breaks[modelDeployment_B.low_i_e];
+    for (modelDeployment_B.low_i_e = 0; modelDeployment_B.low_i_e < 6;
+         modelDeployment_B.low_i_e++) {
+      v[modelDeployment_B.low_i_e] = pp_coefs[modelDeployment_B.low_ip1_o +
+        modelDeployment_B.low_i_e];
     }
 
-    for (modelDeployment_B.low_i_c = 0; modelDeployment_B.low_i_c < 5;
-         modelDeployment_B.low_i_c++) {
-      modelDeployment_B.high_i_p = ((modelDeployment_B.low_i_c + 1) * 132 +
-        modelDeployment_B.low_ip1_f) - 1;
-      for (modelDeployment_B.mid_i_e = 0; modelDeployment_B.mid_i_e < 6;
-           modelDeployment_B.mid_i_e++) {
-        v[modelDeployment_B.mid_i_e] = pp_coefs[(modelDeployment_B.high_i_p +
-          modelDeployment_B.mid_i_e) + 1] + modelDeployment_B.xloc_a *
-          v[modelDeployment_B.mid_i_e];
+    for (modelDeployment_B.low_i_e = 0; modelDeployment_B.low_i_e < 5;
+         modelDeployment_B.low_i_e++) {
+      modelDeployment_B.high_i_b = ((modelDeployment_B.low_i_e + 1) * 132 +
+        modelDeployment_B.low_ip1_o) - 1;
+      for (modelDeployment_B.mid_i_a = 0; modelDeployment_B.mid_i_a < 6;
+           modelDeployment_B.mid_i_a++) {
+        v[modelDeployment_B.mid_i_a] = pp_coefs[(modelDeployment_B.high_i_b +
+          modelDeployment_B.mid_i_a) + 1] + modelDeployment_B.xloc_o *
+          v[modelDeployment_B.mid_i_a];
       }
     }
   }
@@ -679,139 +689,139 @@ static void modelDeployment_ppval_f(const real_T pp_breaks[23], const real_T
 static void addFlatSegmentsToPPFormParts_fj(const real_T oldbreaks[6], const
   real_T oldCoeffs[120], real_T newBreaks[8], real_T newCoefs[168])
 {
-  memset(&modelDeployment_B.newSegmentCoeffs_d[0], 0, 24U * sizeof(real_T));
-  for (modelDeployment_B.i2 = 0; modelDeployment_B.i2 < 6; modelDeployment_B.i2
+  memset(&modelDeployment_B.newSegmentCoeffs_n[0], 0, 24U * sizeof(real_T));
+  for (modelDeployment_B.i4 = 0; modelDeployment_B.i4 < 6; modelDeployment_B.i4
        ++) {
     // Start for MATLABSystem: '<S90>/Polynomial Trajectory'
-    modelDeployment_B.newSegmentCoeffs_d[modelDeployment_B.i2 + 18] =
-      ((oldCoeffs[modelDeployment_B.i2 + 30] * 0.0 +
-        oldCoeffs[modelDeployment_B.i2] * 0.0) + oldCoeffs[modelDeployment_B.i2
-       + 60] * 0.0) + oldCoeffs[modelDeployment_B.i2 + 90];
+    modelDeployment_B.newSegmentCoeffs_n[modelDeployment_B.i4 + 18] =
+      ((oldCoeffs[modelDeployment_B.i4 + 30] * 0.0 +
+        oldCoeffs[modelDeployment_B.i4] * 0.0) + oldCoeffs[modelDeployment_B.i4
+       + 60] * 0.0) + oldCoeffs[modelDeployment_B.i4 + 90];
   }
 
   memset(&modelDeployment_B.coefsWithFlatStart_l[0], 0, 144U * sizeof(real_T));
-  for (modelDeployment_B.i2 = 0; modelDeployment_B.i2 < 6; modelDeployment_B.i2
+  for (modelDeployment_B.i4 = 0; modelDeployment_B.i4 < 6; modelDeployment_B.i4
        ++) {
-    modelDeployment_B.coefsWithFlatStart_l[modelDeployment_B.i2] =
-      modelDeployment_B.newSegmentCoeffs_d[modelDeployment_B.i2];
-    modelDeployment_B.coefsWithFlatStart_l[modelDeployment_B.i2 + 36] =
-      modelDeployment_B.newSegmentCoeffs_d[modelDeployment_B.i2 + 6];
-    modelDeployment_B.coefsWithFlatStart_l[modelDeployment_B.i2 + 72] =
-      modelDeployment_B.newSegmentCoeffs_d[modelDeployment_B.i2 + 12];
-    modelDeployment_B.coefsWithFlatStart_l[modelDeployment_B.i2 + 108] =
-      modelDeployment_B.newSegmentCoeffs_d[modelDeployment_B.i2 + 18];
+    modelDeployment_B.coefsWithFlatStart_l[modelDeployment_B.i4] =
+      modelDeployment_B.newSegmentCoeffs_n[modelDeployment_B.i4];
+    modelDeployment_B.coefsWithFlatStart_l[modelDeployment_B.i4 + 36] =
+      modelDeployment_B.newSegmentCoeffs_n[modelDeployment_B.i4 + 6];
+    modelDeployment_B.coefsWithFlatStart_l[modelDeployment_B.i4 + 72] =
+      modelDeployment_B.newSegmentCoeffs_n[modelDeployment_B.i4 + 12];
+    modelDeployment_B.coefsWithFlatStart_l[modelDeployment_B.i4 + 108] =
+      modelDeployment_B.newSegmentCoeffs_n[modelDeployment_B.i4 + 18];
   }
 
-  for (modelDeployment_B.i2 = 0; modelDeployment_B.i2 < 30; modelDeployment_B.i2
+  for (modelDeployment_B.i4 = 0; modelDeployment_B.i4 < 30; modelDeployment_B.i4
        ++) {
     // Start for MATLABSystem: '<S90>/Polynomial Trajectory'
-    modelDeployment_B.coefsWithFlatStart_l[modelDeployment_B.i2 + 6] =
-      oldCoeffs[modelDeployment_B.i2];
-    modelDeployment_B.coefsWithFlatStart_l[modelDeployment_B.i2 + 42] =
-      oldCoeffs[modelDeployment_B.i2 + 30];
-    modelDeployment_B.coefsWithFlatStart_l[modelDeployment_B.i2 + 78] =
-      oldCoeffs[modelDeployment_B.i2 + 60];
-    modelDeployment_B.coefsWithFlatStart_l[modelDeployment_B.i2 + 114] =
-      oldCoeffs[modelDeployment_B.i2 + 90];
-  }
-
-  // Start for MATLABSystem: '<S90>/Polynomial Trajectory'
-  modelDeployment_B.breaksWithFlatStart_d[0] = oldbreaks[0] - 1.0;
-  for (modelDeployment_B.i2 = 0; modelDeployment_B.i2 < 6; modelDeployment_B.i2
-       ++) {
-    // Start for MATLABSystem: '<S90>/Polynomial Trajectory'
-    modelDeployment_B.breaksWithFlatStart_d[modelDeployment_B.i2 + 1] =
-      oldbreaks[modelDeployment_B.i2];
+    modelDeployment_B.coefsWithFlatStart_l[modelDeployment_B.i4 + 6] =
+      oldCoeffs[modelDeployment_B.i4];
+    modelDeployment_B.coefsWithFlatStart_l[modelDeployment_B.i4 + 42] =
+      oldCoeffs[modelDeployment_B.i4 + 30];
+    modelDeployment_B.coefsWithFlatStart_l[modelDeployment_B.i4 + 78] =
+      oldCoeffs[modelDeployment_B.i4 + 60];
+    modelDeployment_B.coefsWithFlatStart_l[modelDeployment_B.i4 + 114] =
+      oldCoeffs[modelDeployment_B.i4 + 90];
   }
 
   // Start for MATLABSystem: '<S90>/Polynomial Trajectory'
-  modelDeployment_B.holdPoint_c = modelDeployment_B.breaksWithFlatStart_d[6] -
-    modelDeployment_B.breaksWithFlatStart_d[5];
-  modelDeployment_B.evalPointVector_idx_0_m = modelDeployment_rt_powd_snf
-    (modelDeployment_B.holdPoint_c, 3.0);
-  modelDeployment_B.evalPointVector_idx_1_m = modelDeployment_rt_powd_snf
-    (modelDeployment_B.holdPoint_c, 2.0);
-  modelDeployment_B.evalPointVector_idx_2_j = modelDeployment_rt_powd_snf
-    (modelDeployment_B.holdPoint_c, 1.0);
-  modelDeployment_B.holdPoint_c = modelDeployment_rt_powd_snf
-    (modelDeployment_B.holdPoint_c, 0.0);
-  memset(&modelDeployment_B.newSegmentCoeffs_d[0], 0, 24U * sizeof(real_T));
-  for (modelDeployment_B.i2 = 0; modelDeployment_B.i2 < 6; modelDeployment_B.i2
+  modelDeployment_B.breaksWithFlatStart_j[0] = oldbreaks[0] - 1.0;
+  for (modelDeployment_B.i4 = 0; modelDeployment_B.i4 < 6; modelDeployment_B.i4
        ++) {
     // Start for MATLABSystem: '<S90>/Polynomial Trajectory'
-    modelDeployment_B.newSegmentCoeffs_d[modelDeployment_B.i2 + 18] =
-      ((modelDeployment_B.coefsWithFlatStart_l[modelDeployment_B.i2 + 30] *
-        modelDeployment_B.evalPointVector_idx_0_m +
-        modelDeployment_B.coefsWithFlatStart_l[modelDeployment_B.i2 + 66] *
-        modelDeployment_B.evalPointVector_idx_1_m) +
-       modelDeployment_B.coefsWithFlatStart_l[modelDeployment_B.i2 + 102] *
-       modelDeployment_B.evalPointVector_idx_2_j) +
-      modelDeployment_B.coefsWithFlatStart_l[modelDeployment_B.i2 + 138] *
-      modelDeployment_B.holdPoint_c;
+    modelDeployment_B.breaksWithFlatStart_j[modelDeployment_B.i4 + 1] =
+      oldbreaks[modelDeployment_B.i4];
+  }
+
+  // Start for MATLABSystem: '<S90>/Polynomial Trajectory'
+  modelDeployment_B.holdPoint_i = modelDeployment_B.breaksWithFlatStart_j[6] -
+    modelDeployment_B.breaksWithFlatStart_j[5];
+  modelDeployment_B.evalPointVector_idx_0_l = modelDeployment_rt_powd_snf
+    (modelDeployment_B.holdPoint_i, 3.0);
+  modelDeployment_B.evalPointVector_idx_1_o = modelDeployment_rt_powd_snf
+    (modelDeployment_B.holdPoint_i, 2.0);
+  modelDeployment_B.evalPointVector_idx_2_o = modelDeployment_rt_powd_snf
+    (modelDeployment_B.holdPoint_i, 1.0);
+  modelDeployment_B.holdPoint_i = modelDeployment_rt_powd_snf
+    (modelDeployment_B.holdPoint_i, 0.0);
+  memset(&modelDeployment_B.newSegmentCoeffs_n[0], 0, 24U * sizeof(real_T));
+  for (modelDeployment_B.i4 = 0; modelDeployment_B.i4 < 6; modelDeployment_B.i4
+       ++) {
+    // Start for MATLABSystem: '<S90>/Polynomial Trajectory'
+    modelDeployment_B.newSegmentCoeffs_n[modelDeployment_B.i4 + 18] =
+      ((modelDeployment_B.coefsWithFlatStart_l[modelDeployment_B.i4 + 30] *
+        modelDeployment_B.evalPointVector_idx_0_l +
+        modelDeployment_B.coefsWithFlatStart_l[modelDeployment_B.i4 + 66] *
+        modelDeployment_B.evalPointVector_idx_1_o) +
+       modelDeployment_B.coefsWithFlatStart_l[modelDeployment_B.i4 + 102] *
+       modelDeployment_B.evalPointVector_idx_2_o) +
+      modelDeployment_B.coefsWithFlatStart_l[modelDeployment_B.i4 + 138] *
+      modelDeployment_B.holdPoint_i;
   }
 
   memset(&newCoefs[0], 0, 168U * sizeof(real_T));
-  for (modelDeployment_B.i2 = 0; modelDeployment_B.i2 < 36; modelDeployment_B.i2
+  for (modelDeployment_B.i4 = 0; modelDeployment_B.i4 < 36; modelDeployment_B.i4
        ++) {
     // Start for MATLABSystem: '<S90>/Polynomial Trajectory'
-    newCoefs[modelDeployment_B.i2] =
-      modelDeployment_B.coefsWithFlatStart_l[modelDeployment_B.i2];
-    newCoefs[modelDeployment_B.i2 + 42] =
-      modelDeployment_B.coefsWithFlatStart_l[modelDeployment_B.i2 + 36];
-    newCoefs[modelDeployment_B.i2 + 84] =
-      modelDeployment_B.coefsWithFlatStart_l[modelDeployment_B.i2 + 72];
-    newCoefs[modelDeployment_B.i2 + 126] =
-      modelDeployment_B.coefsWithFlatStart_l[modelDeployment_B.i2 + 108];
+    newCoefs[modelDeployment_B.i4] =
+      modelDeployment_B.coefsWithFlatStart_l[modelDeployment_B.i4];
+    newCoefs[modelDeployment_B.i4 + 42] =
+      modelDeployment_B.coefsWithFlatStart_l[modelDeployment_B.i4 + 36];
+    newCoefs[modelDeployment_B.i4 + 84] =
+      modelDeployment_B.coefsWithFlatStart_l[modelDeployment_B.i4 + 72];
+    newCoefs[modelDeployment_B.i4 + 126] =
+      modelDeployment_B.coefsWithFlatStart_l[modelDeployment_B.i4 + 108];
   }
 
-  for (modelDeployment_B.i2 = 0; modelDeployment_B.i2 < 6; modelDeployment_B.i2
+  for (modelDeployment_B.i4 = 0; modelDeployment_B.i4 < 6; modelDeployment_B.i4
        ++) {
-    newCoefs[modelDeployment_B.i2 + 36] =
-      modelDeployment_B.newSegmentCoeffs_d[modelDeployment_B.i2];
-    newCoefs[modelDeployment_B.i2 + 78] =
-      modelDeployment_B.newSegmentCoeffs_d[modelDeployment_B.i2 + 6];
-    newCoefs[modelDeployment_B.i2 + 120] =
-      modelDeployment_B.newSegmentCoeffs_d[modelDeployment_B.i2 + 12];
-    newCoefs[modelDeployment_B.i2 + 162] =
-      modelDeployment_B.newSegmentCoeffs_d[modelDeployment_B.i2 + 18];
+    newCoefs[modelDeployment_B.i4 + 36] =
+      modelDeployment_B.newSegmentCoeffs_n[modelDeployment_B.i4];
+    newCoefs[modelDeployment_B.i4 + 78] =
+      modelDeployment_B.newSegmentCoeffs_n[modelDeployment_B.i4 + 6];
+    newCoefs[modelDeployment_B.i4 + 120] =
+      modelDeployment_B.newSegmentCoeffs_n[modelDeployment_B.i4 + 12];
+    newCoefs[modelDeployment_B.i4 + 162] =
+      modelDeployment_B.newSegmentCoeffs_n[modelDeployment_B.i4 + 18];
   }
 
-  for (modelDeployment_B.i2 = 0; modelDeployment_B.i2 < 7; modelDeployment_B.i2
+  for (modelDeployment_B.i4 = 0; modelDeployment_B.i4 < 7; modelDeployment_B.i4
        ++) {
     // Start for MATLABSystem: '<S90>/Polynomial Trajectory'
-    newBreaks[modelDeployment_B.i2] =
-      modelDeployment_B.breaksWithFlatStart_d[modelDeployment_B.i2];
+    newBreaks[modelDeployment_B.i4] =
+      modelDeployment_B.breaksWithFlatStart_j[modelDeployment_B.i4];
   }
 
   // Start for MATLABSystem: '<S90>/Polynomial Trajectory'
-  newBreaks[7] = modelDeployment_B.breaksWithFlatStart_d[6] + 1.0;
+  newBreaks[7] = modelDeployment_B.breaksWithFlatStart_j[6] + 1.0;
 }
 
 static void PolyTrajSys_updateStoredPPFo_fj(robotics_slcore_internal_b_fj_T *obj,
   const real_T pp_breaks[8], const real_T pp_coefs[168])
 {
   memset(&obj->PPDStruct.coefs[0], 0, 168U * sizeof(real_T));
-  for (modelDeployment_B.b_i_h = 0; modelDeployment_B.b_i_h < 3;
-       modelDeployment_B.b_i_h++) {
-    for (modelDeployment_B.i8 = 0; modelDeployment_B.i8 < 42;
-         modelDeployment_B.i8++) {
+  for (modelDeployment_B.b_i_a = 0; modelDeployment_B.b_i_a < 3;
+       modelDeployment_B.b_i_a++) {
+    for (modelDeployment_B.i11 = 0; modelDeployment_B.i11 < 42;
+         modelDeployment_B.i11++) {
       // Start for MATLABSystem: '<S90>/Polynomial Trajectory'
-      obj->PPDStruct.coefs[modelDeployment_B.i8 + 42 * (modelDeployment_B.b_i_h
-        + 1)] = pp_coefs[modelDeployment_B.b_i_h * 42 + modelDeployment_B.i8] *
-        (3.0 - static_cast<real_T>(modelDeployment_B.b_i_h));
+      obj->PPDStruct.coefs[modelDeployment_B.i11 + 42 * (modelDeployment_B.b_i_a
+        + 1)] = pp_coefs[modelDeployment_B.b_i_a * 42 + modelDeployment_B.i11] *
+        (3.0 - static_cast<real_T>(modelDeployment_B.b_i_a));
     }
   }
 
   memset(&obj->PPDDStruct.coefs[0], 0, 168U * sizeof(real_T));
-  for (modelDeployment_B.b_i_h = 0; modelDeployment_B.b_i_h < 3;
-       modelDeployment_B.b_i_h++) {
-    for (modelDeployment_B.i8 = 0; modelDeployment_B.i8 < 42;
-         modelDeployment_B.i8++) {
+  for (modelDeployment_B.b_i_a = 0; modelDeployment_B.b_i_a < 3;
+       modelDeployment_B.b_i_a++) {
+    for (modelDeployment_B.i11 = 0; modelDeployment_B.i11 < 42;
+         modelDeployment_B.i11++) {
       // Start for MATLABSystem: '<S90>/Polynomial Trajectory'
-      obj->PPDDStruct.coefs[modelDeployment_B.i8 + 42 * (modelDeployment_B.b_i_h
-        + 1)] = obj->PPDStruct.coefs[modelDeployment_B.b_i_h * 42 +
-        modelDeployment_B.i8] * (3.0 - static_cast<real_T>
-        (modelDeployment_B.b_i_h));
+      obj->PPDDStruct.coefs[modelDeployment_B.i11 + 42 *
+        (modelDeployment_B.b_i_a + 1)] = obj->
+        PPDStruct.coefs[modelDeployment_B.b_i_a * 42 + modelDeployment_B.i11] *
+        (3.0 - static_cast<real_T>(modelDeployment_B.b_i_a));
     }
   }
 
@@ -828,42 +838,42 @@ static void modelDeployment_ppval_fj(const real_T pp_breaks[8], const real_T
 {
   // Start for MATLABSystem: '<S90>/Polynomial Trajectory'
   if (rtIsNaN(x)) {
-    for (modelDeployment_B.low_ip1_l = 0; modelDeployment_B.low_ip1_l < 6;
-         modelDeployment_B.low_ip1_l++) {
-      v[modelDeployment_B.low_ip1_l] = (rtNaN);
+    for (modelDeployment_B.low_ip1_p = 0; modelDeployment_B.low_ip1_p < 6;
+         modelDeployment_B.low_ip1_p++) {
+      v[modelDeployment_B.low_ip1_p] = (rtNaN);
     }
   } else {
-    modelDeployment_B.low_i_o = 0;
-    modelDeployment_B.low_ip1_l = 1;
-    modelDeployment_B.high_i_m = 8;
-    while (modelDeployment_B.high_i_m > modelDeployment_B.low_ip1_l + 1) {
-      modelDeployment_B.mid_i_m = ((modelDeployment_B.low_i_o +
-        modelDeployment_B.high_i_m) + 1) >> 1;
-      if (x >= pp_breaks[modelDeployment_B.mid_i_m - 1]) {
-        modelDeployment_B.low_i_o = modelDeployment_B.mid_i_m - 1;
-        modelDeployment_B.low_ip1_l = modelDeployment_B.mid_i_m;
+    modelDeployment_B.low_i_p = 0;
+    modelDeployment_B.low_ip1_p = 1;
+    modelDeployment_B.high_i_a = 8;
+    while (modelDeployment_B.high_i_a > modelDeployment_B.low_ip1_p + 1) {
+      modelDeployment_B.mid_i_j = ((modelDeployment_B.low_i_p +
+        modelDeployment_B.high_i_a) + 1) >> 1;
+      if (x >= pp_breaks[modelDeployment_B.mid_i_j - 1]) {
+        modelDeployment_B.low_i_p = modelDeployment_B.mid_i_j - 1;
+        modelDeployment_B.low_ip1_p = modelDeployment_B.mid_i_j;
       } else {
-        modelDeployment_B.high_i_m = modelDeployment_B.mid_i_m;
+        modelDeployment_B.high_i_a = modelDeployment_B.mid_i_j;
       }
     }
 
-    modelDeployment_B.low_ip1_l = modelDeployment_B.low_i_o * 6;
-    modelDeployment_B.xloc_p = x - pp_breaks[modelDeployment_B.low_i_o];
-    for (modelDeployment_B.low_i_o = 0; modelDeployment_B.low_i_o < 6;
-         modelDeployment_B.low_i_o++) {
-      v[modelDeployment_B.low_i_o] = pp_coefs[modelDeployment_B.low_ip1_l +
-        modelDeployment_B.low_i_o];
+    modelDeployment_B.low_ip1_p = modelDeployment_B.low_i_p * 6;
+    modelDeployment_B.xloc_c = x - pp_breaks[modelDeployment_B.low_i_p];
+    for (modelDeployment_B.low_i_p = 0; modelDeployment_B.low_i_p < 6;
+         modelDeployment_B.low_i_p++) {
+      v[modelDeployment_B.low_i_p] = pp_coefs[modelDeployment_B.low_ip1_p +
+        modelDeployment_B.low_i_p];
     }
 
-    for (modelDeployment_B.low_i_o = 0; modelDeployment_B.low_i_o < 3;
-         modelDeployment_B.low_i_o++) {
-      modelDeployment_B.high_i_m = ((modelDeployment_B.low_i_o + 1) * 42 +
-        modelDeployment_B.low_ip1_l) - 1;
-      for (modelDeployment_B.mid_i_m = 0; modelDeployment_B.mid_i_m < 6;
-           modelDeployment_B.mid_i_m++) {
-        v[modelDeployment_B.mid_i_m] = pp_coefs[(modelDeployment_B.high_i_m +
-          modelDeployment_B.mid_i_m) + 1] + modelDeployment_B.xloc_p *
-          v[modelDeployment_B.mid_i_m];
+    for (modelDeployment_B.low_i_p = 0; modelDeployment_B.low_i_p < 3;
+         modelDeployment_B.low_i_p++) {
+      modelDeployment_B.high_i_a = ((modelDeployment_B.low_i_p + 1) * 42 +
+        modelDeployment_B.low_ip1_p) - 1;
+      for (modelDeployment_B.mid_i_j = 0; modelDeployment_B.mid_i_j < 6;
+           modelDeployment_B.mid_i_j++) {
+        v[modelDeployment_B.mid_i_j] = pp_coefs[(modelDeployment_B.high_i_a +
+          modelDeployment_B.mid_i_j) + 1] + modelDeployment_B.xloc_c *
+          v[modelDeployment_B.mid_i_j];
       }
     }
   }
@@ -874,41 +884,40 @@ static void modelDeployment_ppval_fj(const real_T pp_breaks[8], const real_T
 static void addFlatSegmentsToPPFormPart_fjc(const real_T oldbreaks[12], const
   real_T oldCoeffs[264], real_T newBreaks[14], real_T newCoefs[312])
 {
-  memset(&modelDeployment_B.newSegmentCoeffs_g[0], 0, 24U * sizeof(real_T));
-  for (modelDeployment_B.i_c = 0; modelDeployment_B.i_c < 6;
-       modelDeployment_B.i_c++) {
+  memset(&modelDeployment_B.newSegmentCoeffs_o[0], 0, 24U * sizeof(real_T));
+  for (modelDeployment_B.i1 = 0; modelDeployment_B.i1 < 6; modelDeployment_B.i1
+       ++) {
     // Start for MATLABSystem: '<S89>/Polynomial Trajectory3'
-    modelDeployment_B.newSegmentCoeffs_g[modelDeployment_B.i_c + 18] =
-      ((oldCoeffs[modelDeployment_B.i_c + 66] * 0.0 +
-        oldCoeffs[modelDeployment_B.i_c] * 0.0) +
-       oldCoeffs[modelDeployment_B.i_c + 132] * 0.0) +
-      oldCoeffs[modelDeployment_B.i_c + 198];
+    modelDeployment_B.newSegmentCoeffs_o[modelDeployment_B.i1 + 18] =
+      ((oldCoeffs[modelDeployment_B.i1 + 66] * 0.0 +
+        oldCoeffs[modelDeployment_B.i1] * 0.0) + oldCoeffs[modelDeployment_B.i1
+       + 132] * 0.0) + oldCoeffs[modelDeployment_B.i1 + 198];
   }
 
   memset(&modelDeployment_B.coefsWithFlatStart_b[0], 0, 288U * sizeof(real_T));
-  for (modelDeployment_B.i_c = 0; modelDeployment_B.i_c < 6;
-       modelDeployment_B.i_c++) {
-    modelDeployment_B.coefsWithFlatStart_b[modelDeployment_B.i_c] =
-      modelDeployment_B.newSegmentCoeffs_g[modelDeployment_B.i_c];
-    modelDeployment_B.coefsWithFlatStart_b[modelDeployment_B.i_c + 72] =
-      modelDeployment_B.newSegmentCoeffs_g[modelDeployment_B.i_c + 6];
-    modelDeployment_B.coefsWithFlatStart_b[modelDeployment_B.i_c + 144] =
-      modelDeployment_B.newSegmentCoeffs_g[modelDeployment_B.i_c + 12];
-    modelDeployment_B.coefsWithFlatStart_b[modelDeployment_B.i_c + 216] =
-      modelDeployment_B.newSegmentCoeffs_g[modelDeployment_B.i_c + 18];
+  for (modelDeployment_B.i1 = 0; modelDeployment_B.i1 < 6; modelDeployment_B.i1
+       ++) {
+    modelDeployment_B.coefsWithFlatStart_b[modelDeployment_B.i1] =
+      modelDeployment_B.newSegmentCoeffs_o[modelDeployment_B.i1];
+    modelDeployment_B.coefsWithFlatStart_b[modelDeployment_B.i1 + 72] =
+      modelDeployment_B.newSegmentCoeffs_o[modelDeployment_B.i1 + 6];
+    modelDeployment_B.coefsWithFlatStart_b[modelDeployment_B.i1 + 144] =
+      modelDeployment_B.newSegmentCoeffs_o[modelDeployment_B.i1 + 12];
+    modelDeployment_B.coefsWithFlatStart_b[modelDeployment_B.i1 + 216] =
+      modelDeployment_B.newSegmentCoeffs_o[modelDeployment_B.i1 + 18];
   }
 
-  for (modelDeployment_B.i_c = 0; modelDeployment_B.i_c < 66;
-       modelDeployment_B.i_c++) {
+  for (modelDeployment_B.i1 = 0; modelDeployment_B.i1 < 66; modelDeployment_B.i1
+       ++) {
     // Start for MATLABSystem: '<S89>/Polynomial Trajectory3'
-    modelDeployment_B.coefsWithFlatStart_b[modelDeployment_B.i_c + 6] =
-      oldCoeffs[modelDeployment_B.i_c];
-    modelDeployment_B.coefsWithFlatStart_b[modelDeployment_B.i_c + 78] =
-      oldCoeffs[modelDeployment_B.i_c + 66];
-    modelDeployment_B.coefsWithFlatStart_b[modelDeployment_B.i_c + 150] =
-      oldCoeffs[modelDeployment_B.i_c + 132];
-    modelDeployment_B.coefsWithFlatStart_b[modelDeployment_B.i_c + 222] =
-      oldCoeffs[modelDeployment_B.i_c + 198];
+    modelDeployment_B.coefsWithFlatStart_b[modelDeployment_B.i1 + 6] =
+      oldCoeffs[modelDeployment_B.i1];
+    modelDeployment_B.coefsWithFlatStart_b[modelDeployment_B.i1 + 78] =
+      oldCoeffs[modelDeployment_B.i1 + 66];
+    modelDeployment_B.coefsWithFlatStart_b[modelDeployment_B.i1 + 150] =
+      oldCoeffs[modelDeployment_B.i1 + 132];
+    modelDeployment_B.coefsWithFlatStart_b[modelDeployment_B.i1 + 222] =
+      oldCoeffs[modelDeployment_B.i1 + 198];
   }
 
   // Start for MATLABSystem: '<S89>/Polynomial Trajectory3'
@@ -925,45 +934,45 @@ static void addFlatSegmentsToPPFormPart_fjc(const real_T oldbreaks[12], const
     (modelDeployment_B.holdPoint, 1.0);
   modelDeployment_B.holdPoint = modelDeployment_rt_powd_snf
     (modelDeployment_B.holdPoint, 0.0);
-  memset(&modelDeployment_B.newSegmentCoeffs_g[0], 0, 24U * sizeof(real_T));
-  for (modelDeployment_B.i_c = 0; modelDeployment_B.i_c < 6;
-       modelDeployment_B.i_c++) {
+  memset(&modelDeployment_B.newSegmentCoeffs_o[0], 0, 24U * sizeof(real_T));
+  for (modelDeployment_B.i1 = 0; modelDeployment_B.i1 < 6; modelDeployment_B.i1
+       ++) {
     // Start for MATLABSystem: '<S89>/Polynomial Trajectory3'
-    modelDeployment_B.newSegmentCoeffs_g[modelDeployment_B.i_c + 18] =
-      ((modelDeployment_B.coefsWithFlatStart_b[modelDeployment_B.i_c + 66] *
+    modelDeployment_B.newSegmentCoeffs_o[modelDeployment_B.i1 + 18] =
+      ((modelDeployment_B.coefsWithFlatStart_b[modelDeployment_B.i1 + 66] *
         modelDeployment_B.evalPointVector_idx_0 +
-        modelDeployment_B.coefsWithFlatStart_b[modelDeployment_B.i_c + 138] *
+        modelDeployment_B.coefsWithFlatStart_b[modelDeployment_B.i1 + 138] *
         modelDeployment_B.evalPointVector_idx_1) +
-       modelDeployment_B.coefsWithFlatStart_b[modelDeployment_B.i_c + 210] *
+       modelDeployment_B.coefsWithFlatStart_b[modelDeployment_B.i1 + 210] *
        modelDeployment_B.evalPointVector_idx_2) +
-      modelDeployment_B.coefsWithFlatStart_b[modelDeployment_B.i_c + 282] *
+      modelDeployment_B.coefsWithFlatStart_b[modelDeployment_B.i1 + 282] *
       modelDeployment_B.holdPoint;
   }
 
   memset(&newCoefs[0], 0, 312U * sizeof(real_T));
-  for (modelDeployment_B.i_c = 0; modelDeployment_B.i_c < 72;
-       modelDeployment_B.i_c++) {
+  for (modelDeployment_B.i1 = 0; modelDeployment_B.i1 < 72; modelDeployment_B.i1
+       ++) {
     // Start for MATLABSystem: '<S89>/Polynomial Trajectory3'
-    newCoefs[modelDeployment_B.i_c] =
-      modelDeployment_B.coefsWithFlatStart_b[modelDeployment_B.i_c];
-    newCoefs[modelDeployment_B.i_c + 78] =
-      modelDeployment_B.coefsWithFlatStart_b[modelDeployment_B.i_c + 72];
-    newCoefs[modelDeployment_B.i_c + 156] =
-      modelDeployment_B.coefsWithFlatStart_b[modelDeployment_B.i_c + 144];
-    newCoefs[modelDeployment_B.i_c + 234] =
-      modelDeployment_B.coefsWithFlatStart_b[modelDeployment_B.i_c + 216];
+    newCoefs[modelDeployment_B.i1] =
+      modelDeployment_B.coefsWithFlatStart_b[modelDeployment_B.i1];
+    newCoefs[modelDeployment_B.i1 + 78] =
+      modelDeployment_B.coefsWithFlatStart_b[modelDeployment_B.i1 + 72];
+    newCoefs[modelDeployment_B.i1 + 156] =
+      modelDeployment_B.coefsWithFlatStart_b[modelDeployment_B.i1 + 144];
+    newCoefs[modelDeployment_B.i1 + 234] =
+      modelDeployment_B.coefsWithFlatStart_b[modelDeployment_B.i1 + 216];
   }
 
-  for (modelDeployment_B.i_c = 0; modelDeployment_B.i_c < 6;
-       modelDeployment_B.i_c++) {
-    newCoefs[modelDeployment_B.i_c + 72] =
-      modelDeployment_B.newSegmentCoeffs_g[modelDeployment_B.i_c];
-    newCoefs[modelDeployment_B.i_c + 150] =
-      modelDeployment_B.newSegmentCoeffs_g[modelDeployment_B.i_c + 6];
-    newCoefs[modelDeployment_B.i_c + 228] =
-      modelDeployment_B.newSegmentCoeffs_g[modelDeployment_B.i_c + 12];
-    newCoefs[modelDeployment_B.i_c + 306] =
-      modelDeployment_B.newSegmentCoeffs_g[modelDeployment_B.i_c + 18];
+  for (modelDeployment_B.i1 = 0; modelDeployment_B.i1 < 6; modelDeployment_B.i1
+       ++) {
+    newCoefs[modelDeployment_B.i1 + 72] =
+      modelDeployment_B.newSegmentCoeffs_o[modelDeployment_B.i1];
+    newCoefs[modelDeployment_B.i1 + 150] =
+      modelDeployment_B.newSegmentCoeffs_o[modelDeployment_B.i1 + 6];
+    newCoefs[modelDeployment_B.i1 + 228] =
+      modelDeployment_B.newSegmentCoeffs_o[modelDeployment_B.i1 + 12];
+    newCoefs[modelDeployment_B.i1 + 306] =
+      modelDeployment_B.newSegmentCoeffs_o[modelDeployment_B.i1 + 18];
   }
 
   // Start for MATLABSystem: '<S89>/Polynomial Trajectory3'
@@ -976,27 +985,27 @@ static void PolyTrajSys_updateStoredPPF_fjc(robotics_slcore_internal__fjc_T *obj
   const real_T pp_breaks[14], const real_T pp_coefs[312])
 {
   memset(&obj->PPDStruct.coefs[0], 0, 312U * sizeof(real_T));
-  for (modelDeployment_B.b_i_mc = 0; modelDeployment_B.b_i_mc < 3;
-       modelDeployment_B.b_i_mc++) {
-    for (modelDeployment_B.i7 = 0; modelDeployment_B.i7 < 78;
-         modelDeployment_B.i7++) {
+  for (modelDeployment_B.b_i_c = 0; modelDeployment_B.b_i_c < 3;
+       modelDeployment_B.b_i_c++) {
+    for (modelDeployment_B.i10 = 0; modelDeployment_B.i10 < 78;
+         modelDeployment_B.i10++) {
       // Start for MATLABSystem: '<S89>/Polynomial Trajectory3'
-      obj->PPDStruct.coefs[modelDeployment_B.i7 + 78 * (modelDeployment_B.b_i_mc
-        + 1)] = pp_coefs[modelDeployment_B.b_i_mc * 78 + modelDeployment_B.i7] *
-        (3.0 - static_cast<real_T>(modelDeployment_B.b_i_mc));
+      obj->PPDStruct.coefs[modelDeployment_B.i10 + 78 * (modelDeployment_B.b_i_c
+        + 1)] = pp_coefs[modelDeployment_B.b_i_c * 78 + modelDeployment_B.i10] *
+        (3.0 - static_cast<real_T>(modelDeployment_B.b_i_c));
     }
   }
 
   memset(&obj->PPDDStruct.coefs[0], 0, 312U * sizeof(real_T));
-  for (modelDeployment_B.b_i_mc = 0; modelDeployment_B.b_i_mc < 3;
-       modelDeployment_B.b_i_mc++) {
-    for (modelDeployment_B.i7 = 0; modelDeployment_B.i7 < 78;
-         modelDeployment_B.i7++) {
+  for (modelDeployment_B.b_i_c = 0; modelDeployment_B.b_i_c < 3;
+       modelDeployment_B.b_i_c++) {
+    for (modelDeployment_B.i10 = 0; modelDeployment_B.i10 < 78;
+         modelDeployment_B.i10++) {
       // Start for MATLABSystem: '<S89>/Polynomial Trajectory3'
-      obj->PPDDStruct.coefs[modelDeployment_B.i7 + 78 *
-        (modelDeployment_B.b_i_mc + 1)] = obj->
-        PPDStruct.coefs[modelDeployment_B.b_i_mc * 78 + modelDeployment_B.i7] *
-        (3.0 - static_cast<real_T>(modelDeployment_B.b_i_mc));
+      obj->PPDDStruct.coefs[modelDeployment_B.i10 + 78 *
+        (modelDeployment_B.b_i_c + 1)] = obj->
+        PPDStruct.coefs[modelDeployment_B.b_i_c * 78 + modelDeployment_B.i10] *
+        (3.0 - static_cast<real_T>(modelDeployment_B.b_i_c));
     }
   }
 
@@ -1013,42 +1022,42 @@ static void modelDeployment_ppval_fjc(const real_T pp_breaks[14], const real_T
 {
   // Start for MATLABSystem: '<S89>/Polynomial Trajectory3'
   if (rtIsNaN(x)) {
-    for (modelDeployment_B.low_ip1 = 0; modelDeployment_B.low_ip1 < 6;
-         modelDeployment_B.low_ip1++) {
-      v[modelDeployment_B.low_ip1] = (rtNaN);
+    for (modelDeployment_B.low_ip1_c = 0; modelDeployment_B.low_ip1_c < 6;
+         modelDeployment_B.low_ip1_c++) {
+      v[modelDeployment_B.low_ip1_c] = (rtNaN);
     }
   } else {
-    modelDeployment_B.low_i = 0;
-    modelDeployment_B.low_ip1 = 1;
-    modelDeployment_B.high_i = 14;
-    while (modelDeployment_B.high_i > modelDeployment_B.low_ip1 + 1) {
-      modelDeployment_B.mid_i = ((modelDeployment_B.low_i +
-        modelDeployment_B.high_i) + 1) >> 1;
-      if (x >= pp_breaks[modelDeployment_B.mid_i - 1]) {
-        modelDeployment_B.low_i = modelDeployment_B.mid_i - 1;
-        modelDeployment_B.low_ip1 = modelDeployment_B.mid_i;
+    modelDeployment_B.low_i_h = 0;
+    modelDeployment_B.low_ip1_c = 1;
+    modelDeployment_B.high_i_k = 14;
+    while (modelDeployment_B.high_i_k > modelDeployment_B.low_ip1_c + 1) {
+      modelDeployment_B.mid_i_p = ((modelDeployment_B.low_i_h +
+        modelDeployment_B.high_i_k) + 1) >> 1;
+      if (x >= pp_breaks[modelDeployment_B.mid_i_p - 1]) {
+        modelDeployment_B.low_i_h = modelDeployment_B.mid_i_p - 1;
+        modelDeployment_B.low_ip1_c = modelDeployment_B.mid_i_p;
       } else {
-        modelDeployment_B.high_i = modelDeployment_B.mid_i;
+        modelDeployment_B.high_i_k = modelDeployment_B.mid_i_p;
       }
     }
 
-    modelDeployment_B.low_ip1 = modelDeployment_B.low_i * 6;
-    modelDeployment_B.xloc = x - pp_breaks[modelDeployment_B.low_i];
-    for (modelDeployment_B.low_i = 0; modelDeployment_B.low_i < 6;
-         modelDeployment_B.low_i++) {
-      v[modelDeployment_B.low_i] = pp_coefs[modelDeployment_B.low_ip1 +
-        modelDeployment_B.low_i];
+    modelDeployment_B.low_ip1_c = modelDeployment_B.low_i_h * 6;
+    modelDeployment_B.xloc_g = x - pp_breaks[modelDeployment_B.low_i_h];
+    for (modelDeployment_B.low_i_h = 0; modelDeployment_B.low_i_h < 6;
+         modelDeployment_B.low_i_h++) {
+      v[modelDeployment_B.low_i_h] = pp_coefs[modelDeployment_B.low_ip1_c +
+        modelDeployment_B.low_i_h];
     }
 
-    for (modelDeployment_B.low_i = 0; modelDeployment_B.low_i < 3;
-         modelDeployment_B.low_i++) {
-      modelDeployment_B.high_i = ((modelDeployment_B.low_i + 1) * 78 +
-        modelDeployment_B.low_ip1) - 1;
-      for (modelDeployment_B.mid_i = 0; modelDeployment_B.mid_i < 6;
-           modelDeployment_B.mid_i++) {
-        v[modelDeployment_B.mid_i] = pp_coefs[(modelDeployment_B.high_i +
-          modelDeployment_B.mid_i) + 1] + modelDeployment_B.xloc *
-          v[modelDeployment_B.mid_i];
+    for (modelDeployment_B.low_i_h = 0; modelDeployment_B.low_i_h < 3;
+         modelDeployment_B.low_i_h++) {
+      modelDeployment_B.high_i_k = ((modelDeployment_B.low_i_h + 1) * 78 +
+        modelDeployment_B.low_ip1_c) - 1;
+      for (modelDeployment_B.mid_i_p = 0; modelDeployment_B.mid_i_p < 6;
+           modelDeployment_B.mid_i_p++) {
+        v[modelDeployment_B.mid_i_p] = pp_coefs[(modelDeployment_B.high_i_k +
+          modelDeployment_B.mid_i_p) + 1] + modelDeployment_B.xloc_g *
+          v[modelDeployment_B.mid_i_p];
       }
     }
   }
@@ -1063,19 +1072,19 @@ static real_T modelDeployment_rt_atan2d_snf(real_T u0, real_T u1)
     y = (rtNaN);
   } else if (rtIsInf(u0) && rtIsInf(u1)) {
     if (u0 > 0.0) {
-      modelDeployment_B.i5 = 1;
+      modelDeployment_B.i7 = 1;
     } else {
-      modelDeployment_B.i5 = -1;
+      modelDeployment_B.i7 = -1;
     }
 
     if (u1 > 0.0) {
-      modelDeployment_B.i6 = 1;
+      modelDeployment_B.i8 = 1;
     } else {
-      modelDeployment_B.i6 = -1;
+      modelDeployment_B.i8 = -1;
     }
 
-    y = atan2(static_cast<real_T>(modelDeployment_B.i5), static_cast<real_T>
-              (modelDeployment_B.i6));
+    y = atan2(static_cast<real_T>(modelDeployment_B.i7), static_cast<real_T>
+              (modelDeployment_B.i8));
   } else if (u1 == 0.0) {
     if (u0 > 0.0) {
       y = RT_PI / 2.0;
@@ -1089,6 +1098,188 @@ static real_T modelDeployment_rt_atan2d_snf(real_T u0, real_T u1)
   }
 
   return y;
+}
+
+static void addFlatSegmentsToPPFormPar_fjc1(const real_T oldbreaks[7], const
+  real_T oldCoeffs[48], real_T newBreaks[9], real_T newCoefs[64])
+{
+  memset(&modelDeployment_B.newSegmentCoeffs_j[0], 0, sizeof(real_T) << 3U);
+  for (modelDeployment_B.i3 = 0; modelDeployment_B.i3 < 2; modelDeployment_B.i3
+       ++) {
+    // Start for MATLABSystem: '<S94>/Polynomial Trajectory3'
+    modelDeployment_B.newSegmentCoeffs_j[modelDeployment_B.i3 + 6] =
+      ((oldCoeffs[modelDeployment_B.i3 + 12] * 0.0 +
+        oldCoeffs[modelDeployment_B.i3] * 0.0) + oldCoeffs[modelDeployment_B.i3
+       + 24] * 0.0) + oldCoeffs[modelDeployment_B.i3 + 36];
+  }
+
+  memset(&modelDeployment_B.coefsWithFlatStart_d[0], 0, 56U * sizeof(real_T));
+  for (modelDeployment_B.i3 = 0; modelDeployment_B.i3 < 4; modelDeployment_B.i3
+       ++) {
+    modelDeployment_B.coefsWithFlatStart_tmp = modelDeployment_B.i3 << 1;
+    modelDeployment_B.coefsWithFlatStart_d[14 * modelDeployment_B.i3] =
+      modelDeployment_B.newSegmentCoeffs_j[modelDeployment_B.coefsWithFlatStart_tmp];
+    modelDeployment_B.coefsWithFlatStart_d[14 * modelDeployment_B.i3 + 1] =
+      modelDeployment_B.newSegmentCoeffs_j[modelDeployment_B.coefsWithFlatStart_tmp
+      + 1];
+  }
+
+  for (modelDeployment_B.i3 = 0; modelDeployment_B.i3 < 12; modelDeployment_B.i3
+       ++) {
+    // Start for MATLABSystem: '<S94>/Polynomial Trajectory3'
+    modelDeployment_B.coefsWithFlatStart_d[modelDeployment_B.i3 + 2] =
+      oldCoeffs[modelDeployment_B.i3];
+    modelDeployment_B.coefsWithFlatStart_d[modelDeployment_B.i3 + 16] =
+      oldCoeffs[modelDeployment_B.i3 + 12];
+    modelDeployment_B.coefsWithFlatStart_d[modelDeployment_B.i3 + 30] =
+      oldCoeffs[modelDeployment_B.i3 + 24];
+    modelDeployment_B.coefsWithFlatStart_d[modelDeployment_B.i3 + 44] =
+      oldCoeffs[modelDeployment_B.i3 + 36];
+  }
+
+  // Start for MATLABSystem: '<S94>/Polynomial Trajectory3'
+  modelDeployment_B.breaksWithFlatStart_a[0] = oldbreaks[0] - 1.0;
+  for (modelDeployment_B.i3 = 0; modelDeployment_B.i3 < 7; modelDeployment_B.i3
+       ++) {
+    // Start for MATLABSystem: '<S94>/Polynomial Trajectory3'
+    modelDeployment_B.breaksWithFlatStart_a[modelDeployment_B.i3 + 1] =
+      oldbreaks[modelDeployment_B.i3];
+  }
+
+  // Start for MATLABSystem: '<S94>/Polynomial Trajectory3'
+  modelDeployment_B.holdPoint_p = modelDeployment_B.breaksWithFlatStart_a[7] -
+    modelDeployment_B.breaksWithFlatStart_a[6];
+  modelDeployment_B.evalPointVector_idx_0_a = modelDeployment_rt_powd_snf
+    (modelDeployment_B.holdPoint_p, 3.0);
+  modelDeployment_B.evalPointVector_idx_1_e = modelDeployment_rt_powd_snf
+    (modelDeployment_B.holdPoint_p, 2.0);
+  modelDeployment_B.evalPointVector_idx_2_a = modelDeployment_rt_powd_snf
+    (modelDeployment_B.holdPoint_p, 1.0);
+  modelDeployment_B.holdPoint_p = modelDeployment_rt_powd_snf
+    (modelDeployment_B.holdPoint_p, 0.0);
+  memset(&modelDeployment_B.newSegmentCoeffs_j[0], 0, sizeof(real_T) << 3U);
+  for (modelDeployment_B.i3 = 0; modelDeployment_B.i3 < 2; modelDeployment_B.i3
+       ++) {
+    // Start for MATLABSystem: '<S94>/Polynomial Trajectory3'
+    modelDeployment_B.newSegmentCoeffs_j[modelDeployment_B.i3 + 6] =
+      ((modelDeployment_B.coefsWithFlatStart_d[modelDeployment_B.i3 + 12] *
+        modelDeployment_B.evalPointVector_idx_0_a +
+        modelDeployment_B.coefsWithFlatStart_d[modelDeployment_B.i3 + 26] *
+        modelDeployment_B.evalPointVector_idx_1_e) +
+       modelDeployment_B.coefsWithFlatStart_d[modelDeployment_B.i3 + 40] *
+       modelDeployment_B.evalPointVector_idx_2_a) +
+      modelDeployment_B.coefsWithFlatStart_d[modelDeployment_B.i3 + 54] *
+      modelDeployment_B.holdPoint_p;
+  }
+
+  memset(&newCoefs[0], 0, sizeof(real_T) << 6U);
+  for (modelDeployment_B.i3 = 0; modelDeployment_B.i3 < 14; modelDeployment_B.i3
+       ++) {
+    // Start for MATLABSystem: '<S94>/Polynomial Trajectory3'
+    newCoefs[modelDeployment_B.i3] =
+      modelDeployment_B.coefsWithFlatStart_d[modelDeployment_B.i3];
+    newCoefs[modelDeployment_B.i3 + 16] =
+      modelDeployment_B.coefsWithFlatStart_d[modelDeployment_B.i3 + 14];
+    newCoefs[modelDeployment_B.i3 + 32] =
+      modelDeployment_B.coefsWithFlatStart_d[modelDeployment_B.i3 + 28];
+    newCoefs[modelDeployment_B.i3 + 48] =
+      modelDeployment_B.coefsWithFlatStart_d[modelDeployment_B.i3 + 42];
+  }
+
+  for (modelDeployment_B.i3 = 0; modelDeployment_B.i3 < 4; modelDeployment_B.i3
+       ++) {
+    modelDeployment_B.coefsWithFlatStart_tmp = modelDeployment_B.i3 << 1;
+    modelDeployment_B.newCoefs_tmp = modelDeployment_B.i3 << 4;
+    newCoefs[modelDeployment_B.newCoefs_tmp + 14] =
+      modelDeployment_B.newSegmentCoeffs_j[modelDeployment_B.coefsWithFlatStart_tmp];
+    newCoefs[modelDeployment_B.newCoefs_tmp + 15] =
+      modelDeployment_B.newSegmentCoeffs_j[modelDeployment_B.coefsWithFlatStart_tmp
+      + 1];
+  }
+
+  // Start for MATLABSystem: '<S94>/Polynomial Trajectory3'
+  memcpy(&newBreaks[0], &modelDeployment_B.breaksWithFlatStart_a[0], sizeof
+         (real_T) << 3U);
+  newBreaks[8] = modelDeployment_B.breaksWithFlatStart_a[7] + 1.0;
+}
+
+static void PolyTrajSys_updateStoredPP_fjc1(robotics_slcore_internal_fjc1_T *obj,
+  const real_T pp_breaks[9], const real_T pp_coefs[64])
+{
+  memset(&obj->PPDStruct.coefs[0], 0, sizeof(real_T) << 6U);
+  for (modelDeployment_B.b_i_e = 0; modelDeployment_B.b_i_e < 3;
+       modelDeployment_B.b_i_e++) {
+    for (modelDeployment_B.i9 = 0; modelDeployment_B.i9 < 16;
+         modelDeployment_B.i9++) {
+      // Start for MATLABSystem: '<S94>/Polynomial Trajectory3'
+      obj->PPDStruct.coefs[modelDeployment_B.i9 + ((modelDeployment_B.b_i_e + 1)
+        << 4)] = pp_coefs[(modelDeployment_B.b_i_e << 4) + modelDeployment_B.i9]
+        * (3.0 - static_cast<real_T>(modelDeployment_B.b_i_e));
+    }
+  }
+
+  memset(&obj->PPDDStruct.coefs[0], 0, sizeof(real_T) << 6U);
+  for (modelDeployment_B.b_i_e = 0; modelDeployment_B.b_i_e < 3;
+       modelDeployment_B.b_i_e++) {
+    for (modelDeployment_B.i9 = 0; modelDeployment_B.i9 < 16;
+         modelDeployment_B.i9++) {
+      // Start for MATLABSystem: '<S94>/Polynomial Trajectory3'
+      obj->PPDDStruct.coefs[modelDeployment_B.i9 + ((modelDeployment_B.b_i_e + 1)
+        << 4)] = obj->PPDStruct.coefs[(modelDeployment_B.b_i_e << 4) +
+        modelDeployment_B.i9] * (3.0 - static_cast<real_T>
+        (modelDeployment_B.b_i_e));
+    }
+  }
+
+  memcpy(&obj->PPStruct.breaks[0], &pp_breaks[0], 9U * sizeof(real_T));
+  memcpy(&obj->PPStruct.coefs[0], &pp_coefs[0], sizeof(real_T) << 6U);
+
+  // Start for MATLABSystem: '<S94>/Polynomial Trajectory3'
+  memcpy(&obj->PPDStruct.breaks[0], &pp_breaks[0], 9U * sizeof(real_T));
+  memcpy(&obj->PPDDStruct.breaks[0], &pp_breaks[0], 9U * sizeof(real_T));
+}
+
+static void modelDeployment_ppval_fjc1(const real_T pp_breaks[9], const real_T
+  pp_coefs[64], real_T x, real_T v[2])
+{
+  // Start for MATLABSystem: '<S94>/Polynomial Trajectory3'
+  if (rtIsNaN(x)) {
+    v[0] = (rtNaN);
+    v[1] = (rtNaN);
+  } else {
+    modelDeployment_B.low_i = 0;
+    modelDeployment_B.low_ip1 = 1;
+    modelDeployment_B.high_i = 9;
+    while (modelDeployment_B.high_i > modelDeployment_B.low_ip1 + 1) {
+      modelDeployment_B.mid_i = ((modelDeployment_B.low_i +
+        modelDeployment_B.high_i) + 1) >> 1;
+      if (x >= pp_breaks[modelDeployment_B.mid_i - 1]) {
+        modelDeployment_B.low_i = modelDeployment_B.mid_i - 1;
+        modelDeployment_B.low_ip1 = modelDeployment_B.mid_i;
+      } else {
+        modelDeployment_B.high_i = modelDeployment_B.mid_i;
+      }
+    }
+
+    modelDeployment_B.low_ip1 = modelDeployment_B.low_i << 1;
+    modelDeployment_B.xloc = x - pp_breaks[modelDeployment_B.low_i];
+    modelDeployment_B.v = pp_coefs[modelDeployment_B.low_ip1];
+    modelDeployment_B.v_a = pp_coefs[modelDeployment_B.low_ip1 + 1];
+    for (modelDeployment_B.low_i = 0; modelDeployment_B.low_i < 3;
+         modelDeployment_B.low_i++) {
+      modelDeployment_B.high_i = (((modelDeployment_B.low_i + 1) << 4) +
+        modelDeployment_B.low_ip1) - 1;
+      modelDeployment_B.v = modelDeployment_B.xloc * modelDeployment_B.v +
+        pp_coefs[modelDeployment_B.high_i + 1];
+      modelDeployment_B.v_a = modelDeployment_B.xloc * modelDeployment_B.v_a +
+        pp_coefs[modelDeployment_B.high_i + 2];
+    }
+
+    v[1] = modelDeployment_B.v_a;
+    v[0] = modelDeployment_B.v;
+  }
+
+  // End of Start for MATLABSystem: '<S94>/Polynomial Trajectory3'
 }
 
 static void modelDepl_PolyTrajSys_setupImpl(robotics_slcore_internal_bloc_T *obj)
@@ -1109,8 +1300,8 @@ static void modelDepl_PolyTrajSys_setupImpl(robotics_slcore_internal_bloc_T *obj
   memset(&modelDeployment_B.coefMat_m[0], 0, 216U * sizeof(real_T));
 
   // Start for MATLABSystem: '<S93>/Polynomial Trajectory2'
-  modelDeployment_B.dv14[0] = 1.0;
-  modelDeployment_B.dv14[1] = 1.0;
+  modelDeployment_B.dv17[0] = 1.0;
+  modelDeployment_B.dv17[1] = 1.0;
   for (i = 0; i < 9; i++) {
     for (b_j = 0; b_j < 6; b_j++) {
       // Start for MATLABSystem: '<S93>/Polynomial Trajectory2'
@@ -1118,12 +1309,12 @@ static void modelDepl_PolyTrajSys_setupImpl(robotics_slcore_internal_bloc_T *obj
       modelDeployment_B.obj[0] = obj->VelocityBoundaryCondition[obj_tmp];
       modelDeployment_B.obj[1] = obj->VelocityBoundaryCondition[(i + 1) * 6 +
         b_j];
-      modelDeploy_generateCubicCoeffs(modelDeployment_B.dv14,
-        modelDeployment_B.obj, 1.0, modelDeployment_B.dv8);
-      modelDeployment_B.coefMat_m[obj_tmp] = modelDeployment_B.dv8[0];
-      modelDeployment_B.coefMat_m[obj_tmp + 54] = modelDeployment_B.dv8[1];
-      modelDeployment_B.coefMat_m[obj_tmp + 108] = modelDeployment_B.dv8[2];
-      modelDeployment_B.coefMat_m[obj_tmp + 162] = modelDeployment_B.dv8[3];
+      modelDeploy_generateCubicCoeffs(modelDeployment_B.dv17,
+        modelDeployment_B.obj, 1.0, modelDeployment_B.dv10);
+      modelDeployment_B.coefMat_m[obj_tmp] = modelDeployment_B.dv10[0];
+      modelDeployment_B.coefMat_m[obj_tmp + 54] = modelDeployment_B.dv10[1];
+      modelDeployment_B.coefMat_m[obj_tmp + 108] = modelDeployment_B.dv10[2];
+      modelDeployment_B.coefMat_m[obj_tmp + 162] = modelDeployment_B.dv10[3];
     }
   }
 
@@ -1132,11 +1323,11 @@ static void modelDepl_PolyTrajSys_setupImpl(robotics_slcore_internal_bloc_T *obj
   }
 
   mo_addFlatSegmentsToPPFormParts(modelDeployment_B.dv2,
-    modelDeployment_B.coefMat_m, modelDeployment_B.modBreaks_b,
+    modelDeployment_B.coefMat_m, modelDeployment_B.modBreaks_e,
     modelDeployment_B.modCoeffs_cv);
 
   // Start for MATLABSystem: '<S93>/Polynomial Trajectory2'
-  PolyTrajSys_updateStoredPPForms(obj, modelDeployment_B.modBreaks_b,
+  PolyTrajSys_updateStoredPPForms(obj, modelDeployment_B.modBreaks_e,
     modelDeployment_B.modCoeffs_cv);
   obj->PPFormUpdatedNeeded = false;
 }
@@ -1161,22 +1352,22 @@ static void modelDe_PolyTrajSys_setupImpl_f(robotics_slcore_internal_bl_f_T *obj
   memset(&modelDeployment_B.coefMat_c[0], 0, 720U * sizeof(real_T));
 
   // Start for MATLABSystem: '<S91>/Polynomial Trajectory3'
-  modelDeployment_B.dv17[0] = 1.0;
-  modelDeployment_B.dv17[1] = 1.0;
+  modelDeployment_B.dv21[0] = 1.0;
+  modelDeployment_B.dv21[1] = 1.0;
   for (i = 0; i < 20; i++) {
     for (b_j = 0; b_j < 6; b_j++) {
       // Start for MATLABSystem: '<S91>/Polynomial Trajectory3'
       obj_tmp = i * 6 + b_j;
-      modelDeployment_B.obj_a[0] = obj->VelocityBoundaryCondition[obj_tmp];
+      modelDeployment_B.obj_m[0] = obj->VelocityBoundaryCondition[obj_tmp];
       obj_0[0] = obj->AccelerationBoundaryCondition[obj_tmp];
       obj_tmp_0 = (i + 1) * 6 + b_j;
-      modelDeployment_B.obj_a[1] = obj->VelocityBoundaryCondition[obj_tmp_0];
+      modelDeployment_B.obj_m[1] = obj->VelocityBoundaryCondition[obj_tmp_0];
       obj_0[1] = obj->AccelerationBoundaryCondition[obj_tmp_0];
-      modelDepl_generateQuinticCoeffs(modelDeployment_B.dv17,
-        modelDeployment_B.obj_a, obj_0, 1.0, modelDeployment_B.dv6);
+      modelDepl_generateQuinticCoeffs(modelDeployment_B.dv21,
+        modelDeployment_B.obj_m, obj_0, 1.0, modelDeployment_B.dv8);
       for (obj_tmp_0 = 0; obj_tmp_0 < 6; obj_tmp_0++) {
         modelDeployment_B.coefMat_c[obj_tmp + 120 * obj_tmp_0] =
-          modelDeployment_B.dv6[obj_tmp_0];
+          modelDeployment_B.dv8[obj_tmp_0];
       }
     }
   }
@@ -1186,11 +1377,11 @@ static void modelDe_PolyTrajSys_setupImpl_f(robotics_slcore_internal_bl_f_T *obj
   }
 
   addFlatSegmentsToPPFormParts_f(modelDeployment_B.dv,
-    modelDeployment_B.coefMat_c, modelDeployment_B.modBreaks_d,
+    modelDeployment_B.coefMat_c, modelDeployment_B.modBreaks_b,
     modelDeployment_B.modCoeffs_m);
 
   // Start for MATLABSystem: '<S91>/Polynomial Trajectory3'
-  PolyTrajSys_updateStoredPPFor_f(obj, modelDeployment_B.modBreaks_d,
+  PolyTrajSys_updateStoredPPFor_f(obj, modelDeployment_B.modBreaks_b,
     modelDeployment_B.modCoeffs_m);
   obj->PPFormUpdatedNeeded = false;
 }
@@ -1213,34 +1404,34 @@ static void modelD_PolyTrajSys_setupImpl_fj(robotics_slcore_internal_b_fj_T *obj
   memset(&modelDeployment_B.coefMat_d[0], 0, 120U * sizeof(real_T));
 
   // Start for MATLABSystem: '<S90>/Polynomial Trajectory'
-  modelDeployment_B.dv16[0] = 1.0;
-  modelDeployment_B.dv16[1] = 1.0;
+  modelDeployment_B.dv19[0] = 1.0;
+  modelDeployment_B.dv19[1] = 1.0;
   for (i = 0; i < 5; i++) {
     for (b_j = 0; b_j < 6; b_j++) {
       // Start for MATLABSystem: '<S90>/Polynomial Trajectory'
       obj_tmp = i * 6 + b_j;
-      modelDeployment_B.obj_f[0] = obj->VelocityBoundaryCondition[obj_tmp];
-      modelDeployment_B.obj_f[1] = obj->VelocityBoundaryCondition[(i + 1) * 6 +
+      modelDeployment_B.obj_o[0] = obj->VelocityBoundaryCondition[obj_tmp];
+      modelDeployment_B.obj_o[1] = obj->VelocityBoundaryCondition[(i + 1) * 6 +
         b_j];
-      modelDeploy_generateCubicCoeffs(modelDeployment_B.dv16,
-        modelDeployment_B.obj_f, 1.0, modelDeployment_B.dv10);
-      modelDeployment_B.coefMat_d[obj_tmp] = modelDeployment_B.dv10[0];
-      modelDeployment_B.coefMat_d[obj_tmp + 30] = modelDeployment_B.dv10[1];
-      modelDeployment_B.coefMat_d[obj_tmp + 60] = modelDeployment_B.dv10[2];
-      modelDeployment_B.coefMat_d[obj_tmp + 90] = modelDeployment_B.dv10[3];
+      modelDeploy_generateCubicCoeffs(modelDeployment_B.dv19,
+        modelDeployment_B.obj_o, 1.0, modelDeployment_B.dv12);
+      modelDeployment_B.coefMat_d[obj_tmp] = modelDeployment_B.dv12[0];
+      modelDeployment_B.coefMat_d[obj_tmp + 30] = modelDeployment_B.dv12[1];
+      modelDeployment_B.coefMat_d[obj_tmp + 60] = modelDeployment_B.dv12[2];
+      modelDeployment_B.coefMat_d[obj_tmp + 90] = modelDeployment_B.dv12[3];
     }
   }
 
   for (i = 0; i < 6; i++) {
-    modelDeployment_B.dv5[i] = static_cast<real_T>(i) + 1.0;
+    modelDeployment_B.dv7[i] = static_cast<real_T>(i) + 1.0;
   }
 
-  addFlatSegmentsToPPFormParts_fj(modelDeployment_B.dv5,
-    modelDeployment_B.coefMat_d, modelDeployment_B.modBreaks_bn,
+  addFlatSegmentsToPPFormParts_fj(modelDeployment_B.dv7,
+    modelDeployment_B.coefMat_d, modelDeployment_B.modBreaks_f,
     modelDeployment_B.modCoeffs_p);
 
   // Start for MATLABSystem: '<S90>/Polynomial Trajectory'
-  PolyTrajSys_updateStoredPPFo_fj(obj, modelDeployment_B.modBreaks_bn,
+  PolyTrajSys_updateStoredPPFo_fj(obj, modelDeployment_B.modBreaks_f,
     modelDeployment_B.modCoeffs_p);
   obj->PPFormUpdatedNeeded = false;
 }
@@ -1264,20 +1455,20 @@ static void model_PolyTrajSys_setupImpl_fjc(robotics_slcore_internal__fjc_T *obj
   memset(&modelDeployment_B.coefMat_f[0], 0, 264U * sizeof(real_T));
 
   // Start for MATLABSystem: '<S89>/Polynomial Trajectory3'
-  modelDeployment_B.dv15[0] = 1.0;
-  modelDeployment_B.dv15[1] = 1.0;
+  modelDeployment_B.dv18[0] = 1.0;
+  modelDeployment_B.dv18[1] = 1.0;
   for (i = 0; i < 11; i++) {
     for (b_j = 0; b_j < 6; b_j++) {
       // Start for MATLABSystem: '<S89>/Polynomial Trajectory3'
       obj_tmp = i * 6 + b_j;
       obj_0[0] = obj->VelocityBoundaryCondition[obj_tmp];
       obj_0[1] = obj->VelocityBoundaryCondition[(i + 1) * 6 + b_j];
-      modelDeploy_generateCubicCoeffs(modelDeployment_B.dv15, obj_0, 1.0,
-        modelDeployment_B.dv9);
-      modelDeployment_B.coefMat_f[obj_tmp] = modelDeployment_B.dv9[0];
-      modelDeployment_B.coefMat_f[obj_tmp + 66] = modelDeployment_B.dv9[1];
-      modelDeployment_B.coefMat_f[obj_tmp + 132] = modelDeployment_B.dv9[2];
-      modelDeployment_B.coefMat_f[obj_tmp + 198] = modelDeployment_B.dv9[3];
+      modelDeploy_generateCubicCoeffs(modelDeployment_B.dv18, obj_0, 1.0,
+        modelDeployment_B.dv11);
+      modelDeployment_B.coefMat_f[obj_tmp] = modelDeployment_B.dv11[0];
+      modelDeployment_B.coefMat_f[obj_tmp + 66] = modelDeployment_B.dv11[1];
+      modelDeployment_B.coefMat_f[obj_tmp + 132] = modelDeployment_B.dv11[2];
+      modelDeployment_B.coefMat_f[obj_tmp + 198] = modelDeployment_B.dv11[3];
     }
   }
 
@@ -1286,12 +1477,62 @@ static void model_PolyTrajSys_setupImpl_fjc(robotics_slcore_internal__fjc_T *obj
   }
 
   addFlatSegmentsToPPFormPart_fjc(modelDeployment_B.dv1,
-    modelDeployment_B.coefMat_f, modelDeployment_B.modBreaks_o,
+    modelDeployment_B.coefMat_f, modelDeployment_B.modBreaks_h,
     modelDeployment_B.modCoeffs_c);
 
   // Start for MATLABSystem: '<S89>/Polynomial Trajectory3'
-  PolyTrajSys_updateStoredPPF_fjc(obj, modelDeployment_B.modBreaks_o,
+  PolyTrajSys_updateStoredPPF_fjc(obj, modelDeployment_B.modBreaks_h,
     modelDeployment_B.modCoeffs_c);
+  obj->PPFormUpdatedNeeded = false;
+}
+
+static void mode_PolyTrajSys_setupImpl_fjc1(robotics_slcore_internal_fjc1_T *obj)
+{
+  int32_T b_i;
+  int32_T b_j;
+  int32_T i;
+  for (i = 0; i < 14; i++) {
+    // Start for MATLABSystem: '<S94>/Polynomial Trajectory3'
+    obj->PrevOptInputs.f1[i] = 1.0;
+  }
+
+  for (i = 0; i < 7; i++) {
+    // Start for MATLABSystem: '<S94>/Polynomial Trajectory3'
+    obj->PrevOptInputs.f2[i] = 1.0;
+  }
+
+  memset(&modelDeployment_B.coefMat_l[0], 0, 48U * sizeof(real_T));
+
+  // Start for MATLABSystem: '<S94>/Polynomial Trajectory3'
+  modelDeployment_B.dv20[0] = 1.0;
+  modelDeployment_B.dv20[1] = 1.0;
+  for (i = 0; i < 6; i++) {
+    for (b_j = 0; b_j < 2; b_j++) {
+      // Start for MATLABSystem: '<S94>/Polynomial Trajectory3'
+      modelDeployment_B.obj_n[0] = obj->VelocityBoundaryCondition[(i << 1) + b_j];
+      modelDeployment_B.obj_n[1] = obj->VelocityBoundaryCondition[((i + 1) << 1)
+        + b_j];
+      modelDeploy_generateCubicCoeffs(modelDeployment_B.dv20,
+        modelDeployment_B.obj_n, 1.0, modelDeployment_B.dv13);
+      b_i = ((i << 1) + b_j) + 1;
+      modelDeployment_B.coefMat_l[b_i - 1] = modelDeployment_B.dv13[0];
+      modelDeployment_B.coefMat_l[b_i + 11] = modelDeployment_B.dv13[1];
+      modelDeployment_B.coefMat_l[b_i + 23] = modelDeployment_B.dv13[2];
+      modelDeployment_B.coefMat_l[b_i + 35] = modelDeployment_B.dv13[3];
+    }
+  }
+
+  for (i = 0; i < 7; i++) {
+    modelDeployment_B.dv5[i] = static_cast<real_T>(i) + 1.0;
+  }
+
+  addFlatSegmentsToPPFormPar_fjc1(modelDeployment_B.dv5,
+    modelDeployment_B.coefMat_l, modelDeployment_B.modBreaks_j,
+    modelDeployment_B.modCoeffs_l);
+
+  // Start for MATLABSystem: '<S94>/Polynomial Trajectory3'
+  PolyTrajSys_updateStoredPP_fjc1(obj, modelDeployment_B.modBreaks_j,
+    modelDeployment_B.modCoeffs_l);
   obj->PPFormUpdatedNeeded = false;
 }
 
@@ -1345,58 +1586,58 @@ void modelDeployment_step(void)
 
   // MATLABSystem: '<S86>/Read Parameter1'
   modelDeployment_B.NOT = MW_Param_Step(modelDeployment_DW.obj_op.MW_PARAMHANDLE,
-    MW_SINGLE, &modelDeployment_B.ParamStep_i);
+    MW_SINGLE, &modelDeployment_B.ParamStep_c);
   if (modelDeployment_B.NOT) {
-    modelDeployment_B.ParamStep_i = 0.0F;
+    modelDeployment_B.ParamStep_c = 0.0F;
   }
 
   // MATLABSystem: '<S86>/Read Parameter3'
   modelDeployment_B.NOT = MW_Param_Step(modelDeployment_DW.obj_g.MW_PARAMHANDLE,
-    MW_SINGLE, &modelDeployment_B.ParamStep_l);
-  if (modelDeployment_B.NOT) {
-    modelDeployment_B.ParamStep_l = 0.0F;
-  }
-
-  // MATLABSystem: '<S86>/Read Parameter4'
-  modelDeployment_B.NOT = MW_Param_Step(modelDeployment_DW.obj_es.MW_PARAMHANDLE,
-    MW_SINGLE, &modelDeployment_B.ParamStep_o);
-  if (modelDeployment_B.NOT) {
-    modelDeployment_B.ParamStep_o = 0.0F;
-  }
-
-  // MATLABSystem: '<S86>/Read Parameter8'
-  modelDeployment_B.NOT = MW_Param_Step(modelDeployment_DW.obj_j3.MW_PARAMHANDLE,
-    MW_SINGLE, &modelDeployment_B.ParamStep_o2);
-  if (modelDeployment_B.NOT) {
-    modelDeployment_B.ParamStep_o2 = 0.0F;
-  }
-
-  // MATLABSystem: '<S86>/Read Parameter5'
-  modelDeployment_B.NOT = MW_Param_Step(modelDeployment_DW.obj_di.MW_PARAMHANDLE,
-    MW_SINGLE, &modelDeployment_B.ParamStep_ip);
-  if (modelDeployment_B.NOT) {
-    modelDeployment_B.ParamStep_ip = 0.0F;
-  }
-
-  // MATLABSystem: '<S86>/Read Parameter6'
-  modelDeployment_B.NOT = MW_Param_Step(modelDeployment_DW.obj_mt.MW_PARAMHANDLE,
     MW_SINGLE, &modelDeployment_B.ParamStep_f);
   if (modelDeployment_B.NOT) {
     modelDeployment_B.ParamStep_f = 0.0F;
   }
 
-  // MATLABSystem: '<S86>/Read Parameter9'
-  modelDeployment_B.NOT = MW_Param_Step(modelDeployment_DW.obj_d.MW_PARAMHANDLE,
-    MW_SINGLE, &modelDeployment_B.ParamStep_iz);
+  // MATLABSystem: '<S86>/Read Parameter4'
+  modelDeployment_B.NOT = MW_Param_Step(modelDeployment_DW.obj_es.MW_PARAMHANDLE,
+    MW_SINGLE, &modelDeployment_B.ParamStep_p);
   if (modelDeployment_B.NOT) {
-    modelDeployment_B.ParamStep_iz = 0.0F;
+    modelDeployment_B.ParamStep_p = 0.0F;
+  }
+
+  // MATLABSystem: '<S86>/Read Parameter8'
+  modelDeployment_B.NOT = MW_Param_Step(modelDeployment_DW.obj_j3.MW_PARAMHANDLE,
+    MW_SINGLE, &modelDeployment_B.ParamStep_e);
+  if (modelDeployment_B.NOT) {
+    modelDeployment_B.ParamStep_e = 0.0F;
+  }
+
+  // MATLABSystem: '<S86>/Read Parameter5'
+  modelDeployment_B.NOT = MW_Param_Step(modelDeployment_DW.obj_di.MW_PARAMHANDLE,
+    MW_SINGLE, &modelDeployment_B.ParamStep_o);
+  if (modelDeployment_B.NOT) {
+    modelDeployment_B.ParamStep_o = 0.0F;
+  }
+
+  // MATLABSystem: '<S86>/Read Parameter6'
+  modelDeployment_B.NOT = MW_Param_Step(modelDeployment_DW.obj_mt.MW_PARAMHANDLE,
+    MW_SINGLE, &modelDeployment_B.ParamStep_h);
+  if (modelDeployment_B.NOT) {
+    modelDeployment_B.ParamStep_h = 0.0F;
+  }
+
+  // MATLABSystem: '<S86>/Read Parameter9'
+  modelDeployment_B.NOT = MW_Param_Step(modelDeployment_DW.obj_dx.MW_PARAMHANDLE,
+    MW_SINGLE, &modelDeployment_B.ParamStep_l);
+  if (modelDeployment_B.NOT) {
+    modelDeployment_B.ParamStep_l = 0.0F;
   }
 
   // MATLABSystem: '<S86>/Read Parameter7'
   modelDeployment_B.NOT = MW_Param_Step(modelDeployment_DW.obj_h.MW_PARAMHANDLE,
-    MW_SINGLE, &modelDeployment_B.ParamStep_ff);
+    MW_SINGLE, &modelDeployment_B.ParamStep_h2);
   if (modelDeployment_B.NOT) {
-    modelDeployment_B.ParamStep_ff = 0.0F;
+    modelDeployment_B.ParamStep_h2 = 0.0F;
   }
 
   // DataTypeConversion: '<S86>/Data Type Conversion' incorporates:
@@ -1411,14 +1652,14 @@ void modelDeployment_step(void)
   //   MATLABSystem: '<S86>/Read Parameter9'
   //
   modelDeployment_B.posGains[0] = modelDeployment_B.ParamStep;
-  modelDeployment_B.posGains[1] = modelDeployment_B.ParamStep_i;
-  modelDeployment_B.posGains[2] = modelDeployment_B.ParamStep_l;
-  modelDeployment_B.posGains[3] = modelDeployment_B.ParamStep_o;
-  modelDeployment_B.posGains[4] = modelDeployment_B.ParamStep_o2;
-  modelDeployment_B.posGains[5] = modelDeployment_B.ParamStep_ip;
-  modelDeployment_B.posGains[6] = modelDeployment_B.ParamStep_f;
-  modelDeployment_B.posGains[7] = modelDeployment_B.ParamStep_iz;
-  modelDeployment_B.posGains[8] = modelDeployment_B.ParamStep_ff;
+  modelDeployment_B.posGains[1] = modelDeployment_B.ParamStep_c;
+  modelDeployment_B.posGains[2] = modelDeployment_B.ParamStep_f;
+  modelDeployment_B.posGains[3] = modelDeployment_B.ParamStep_p;
+  modelDeployment_B.posGains[4] = modelDeployment_B.ParamStep_e;
+  modelDeployment_B.posGains[5] = modelDeployment_B.ParamStep_o;
+  modelDeployment_B.posGains[6] = modelDeployment_B.ParamStep_h;
+  modelDeployment_B.posGains[7] = modelDeployment_B.ParamStep_l;
+  modelDeployment_B.posGains[8] = modelDeployment_B.ParamStep_h2;
 
   // MATLABSystem: '<S81>/Read Parameter8'
   modelDeployment_B.NOT = MW_Param_Step(modelDeployment_DW.obj_dm.MW_PARAMHANDLE,
@@ -1429,60 +1670,60 @@ void modelDeployment_step(void)
 
   // MATLABSystem: '<S81>/Read Parameter2'
   modelDeployment_B.NOT = MW_Param_Step(modelDeployment_DW.obj_ef.MW_PARAMHANDLE,
-    MW_SINGLE, &modelDeployment_B.ParamStep_i);
+    MW_SINGLE, &modelDeployment_B.ParamStep_c);
   if (modelDeployment_B.NOT) {
-    modelDeployment_B.ParamStep_i = 0.0F;
+    modelDeployment_B.ParamStep_c = 0.0F;
   }
 
   // MATLABSystem: '<S81>/Read Parameter9'
   modelDeployment_B.NOT = MW_Param_Step(modelDeployment_DW.obj_mh.MW_PARAMHANDLE,
-    MW_SINGLE, &modelDeployment_B.ParamStep_l);
+    MW_SINGLE, &modelDeployment_B.ParamStep_f);
   if (modelDeployment_B.NOT) {
-    modelDeployment_B.ParamStep_l = 0.0F;
+    modelDeployment_B.ParamStep_f = 0.0F;
   }
 
   // MATLABSystem: '<S81>/Read Parameter10'
   modelDeployment_B.NOT = MW_Param_Step
     (modelDeployment_DW.obj_or1.MW_PARAMHANDLE, MW_SINGLE,
-     &modelDeployment_B.ParamStep_o);
+     &modelDeployment_B.ParamStep_p);
   if (modelDeployment_B.NOT) {
-    modelDeployment_B.ParamStep_o = 0.0F;
+    modelDeployment_B.ParamStep_p = 0.0F;
   }
 
   // MATLABSystem: '<S81>/Read Parameter1'
   modelDeployment_B.NOT = MW_Param_Step(modelDeployment_DW.obj_ff.MW_PARAMHANDLE,
-    MW_SINGLE, &modelDeployment_B.ParamStep_o2);
+    MW_SINGLE, &modelDeployment_B.ParamStep_e);
   if (modelDeployment_B.NOT) {
-    modelDeployment_B.ParamStep_o2 = 0.0F;
+    modelDeployment_B.ParamStep_e = 0.0F;
   }
 
   // MATLABSystem: '<S81>/Read Parameter11'
   modelDeployment_B.NOT = MW_Param_Step(modelDeployment_DW.obj_dz.MW_PARAMHANDLE,
-    MW_SINGLE, &modelDeployment_B.ParamStep_ip);
+    MW_SINGLE, &modelDeployment_B.ParamStep_o);
   if (modelDeployment_B.NOT) {
-    modelDeployment_B.ParamStep_ip = 0.0F;
+    modelDeployment_B.ParamStep_o = 0.0F;
   }
 
   // MATLABSystem: '<S81>/Read Parameter12'
   modelDeployment_B.NOT = MW_Param_Step
     (modelDeployment_DW.obj_dio.MW_PARAMHANDLE, MW_SINGLE,
-     &modelDeployment_B.ParamStep_f);
+     &modelDeployment_B.ParamStep_h);
   if (modelDeployment_B.NOT) {
-    modelDeployment_B.ParamStep_f = 0.0F;
+    modelDeployment_B.ParamStep_h = 0.0F;
   }
 
   // MATLABSystem: '<S81>/Read Parameter3'
   modelDeployment_B.NOT = MW_Param_Step(modelDeployment_DW.obj_lt.MW_PARAMHANDLE,
-    MW_SINGLE, &modelDeployment_B.ParamStep_iz);
+    MW_SINGLE, &modelDeployment_B.ParamStep_l);
   if (modelDeployment_B.NOT) {
-    modelDeployment_B.ParamStep_iz = 0.0F;
+    modelDeployment_B.ParamStep_l = 0.0F;
   }
 
   // MATLABSystem: '<S81>/Read Parameter13'
   modelDeployment_B.NOT = MW_Param_Step(modelDeployment_DW.obj_cj.MW_PARAMHANDLE,
-    MW_SINGLE, &modelDeployment_B.ParamStep_ff);
+    MW_SINGLE, &modelDeployment_B.ParamStep_h2);
   if (modelDeployment_B.NOT) {
-    modelDeployment_B.ParamStep_ff = 0.0F;
+    modelDeployment_B.ParamStep_h2 = 0.0F;
   }
 
   // DataTypeConversion: '<S81>/Data Type Conversion' incorporates:
@@ -1497,14 +1738,14 @@ void modelDeployment_step(void)
   //   MATLABSystem: '<S81>/Read Parameter9'
   //
   modelDeployment_B.attGains[0] = modelDeployment_B.ParamStep;
-  modelDeployment_B.attGains[1] = modelDeployment_B.ParamStep_i;
-  modelDeployment_B.attGains[2] = modelDeployment_B.ParamStep_l;
-  modelDeployment_B.attGains[3] = modelDeployment_B.ParamStep_o;
-  modelDeployment_B.attGains[4] = modelDeployment_B.ParamStep_o2;
-  modelDeployment_B.attGains[5] = modelDeployment_B.ParamStep_ip;
-  modelDeployment_B.attGains[6] = modelDeployment_B.ParamStep_f;
-  modelDeployment_B.attGains[7] = modelDeployment_B.ParamStep_iz;
-  modelDeployment_B.attGains[8] = modelDeployment_B.ParamStep_ff;
+  modelDeployment_B.attGains[1] = modelDeployment_B.ParamStep_c;
+  modelDeployment_B.attGains[2] = modelDeployment_B.ParamStep_f;
+  modelDeployment_B.attGains[3] = modelDeployment_B.ParamStep_p;
+  modelDeployment_B.attGains[4] = modelDeployment_B.ParamStep_e;
+  modelDeployment_B.attGains[5] = modelDeployment_B.ParamStep_o;
+  modelDeployment_B.attGains[6] = modelDeployment_B.ParamStep_h;
+  modelDeployment_B.attGains[7] = modelDeployment_B.ParamStep_l;
+  modelDeployment_B.attGains[8] = modelDeployment_B.ParamStep_h2;
 
   // MATLABSystem: '<S80>/Read Parameter5'
   modelDeployment_B.NOT = MW_Param_Step(modelDeployment_DW.obj_m1.MW_PARAMHANDLE,
@@ -1515,37 +1756,37 @@ void modelDeployment_step(void)
 
   // MATLABSystem: '<S80>/Read Parameter12'
   modelDeployment_B.NOT = MW_Param_Step(modelDeployment_DW.obj_df.MW_PARAMHANDLE,
-    MW_SINGLE, &modelDeployment_B.ParamStep_i);
+    MW_SINGLE, &modelDeployment_B.ParamStep_c);
   if (modelDeployment_B.NOT) {
-    modelDeployment_B.ParamStep_i = 0.0F;
+    modelDeployment_B.ParamStep_c = 0.0F;
   }
 
   // MATLABSystem: '<S80>/Read Parameter18'
   modelDeployment_B.NOT = MW_Param_Step(modelDeployment_DW.obj_cz.MW_PARAMHANDLE,
-    MW_SINGLE, &modelDeployment_B.ParamStep_l);
+    MW_SINGLE, &modelDeployment_B.ParamStep_f);
   if (modelDeployment_B.NOT) {
-    modelDeployment_B.ParamStep_l = 0.0F;
+    modelDeployment_B.ParamStep_f = 0.0F;
   }
 
   // MATLABSystem: '<S80>/Read Parameter23'
   modelDeployment_B.NOT = MW_Param_Step(modelDeployment_DW.obj_jg.MW_PARAMHANDLE,
-    MW_SINGLE, &modelDeployment_B.ParamStep_o);
+    MW_SINGLE, &modelDeployment_B.ParamStep_p);
   if (modelDeployment_B.NOT) {
-    modelDeployment_B.ParamStep_o = 0.0F;
+    modelDeployment_B.ParamStep_p = 0.0F;
   }
 
   // MATLABSystem: '<S80>/Read Parameter32'
   modelDeployment_B.NOT = MW_Param_Step(modelDeployment_DW.obj_kf.MW_PARAMHANDLE,
-    MW_SINGLE, &modelDeployment_B.ParamStep_o2);
+    MW_SINGLE, &modelDeployment_B.ParamStep_e);
   if (modelDeployment_B.NOT) {
-    modelDeployment_B.ParamStep_o2 = 0.0F;
+    modelDeployment_B.ParamStep_e = 0.0F;
   }
 
   // MATLABSystem: '<S80>/Read Parameter37'
   modelDeployment_B.NOT = MW_Param_Step(modelDeployment_DW.obj_ms.MW_PARAMHANDLE,
-    MW_SINGLE, &modelDeployment_B.ParamStep_ip);
+    MW_SINGLE, &modelDeployment_B.ParamStep_o);
   if (modelDeployment_B.NOT) {
-    modelDeployment_B.ParamStep_ip = 0.0F;
+    modelDeployment_B.ParamStep_o = 0.0F;
   }
 
   // DataTypeConversion: '<S80>/Data Type Conversion3' incorporates:
@@ -1557,11 +1798,11 @@ void modelDeployment_step(void)
   //   MATLABSystem: '<S80>/Read Parameter5'
   //
   modelDeployment_B.DataTypeConversion3[0] = modelDeployment_B.ParamStep;
-  modelDeployment_B.DataTypeConversion3[1] = modelDeployment_B.ParamStep_i;
-  modelDeployment_B.DataTypeConversion3[2] = modelDeployment_B.ParamStep_l;
-  modelDeployment_B.DataTypeConversion3[3] = modelDeployment_B.ParamStep_o;
-  modelDeployment_B.DataTypeConversion3[4] = modelDeployment_B.ParamStep_o2;
-  modelDeployment_B.DataTypeConversion3[5] = modelDeployment_B.ParamStep_ip;
+  modelDeployment_B.DataTypeConversion3[1] = modelDeployment_B.ParamStep_c;
+  modelDeployment_B.DataTypeConversion3[2] = modelDeployment_B.ParamStep_f;
+  modelDeployment_B.DataTypeConversion3[3] = modelDeployment_B.ParamStep_p;
+  modelDeployment_B.DataTypeConversion3[4] = modelDeployment_B.ParamStep_e;
+  modelDeployment_B.DataTypeConversion3[5] = modelDeployment_B.ParamStep_o;
 
   // MATLABSystem: '<S80>/Read Parameter6'
   modelDeployment_B.NOT = MW_Param_Step(modelDeployment_DW.obj_mx.MW_PARAMHANDLE,
@@ -1572,37 +1813,37 @@ void modelDeployment_step(void)
 
   // MATLABSystem: '<S80>/Read Parameter13'
   modelDeployment_B.NOT = MW_Param_Step(modelDeployment_DW.obj_gc.MW_PARAMHANDLE,
-    MW_SINGLE, &modelDeployment_B.ParamStep_i);
+    MW_SINGLE, &modelDeployment_B.ParamStep_c);
   if (modelDeployment_B.NOT) {
-    modelDeployment_B.ParamStep_i = 0.0F;
+    modelDeployment_B.ParamStep_c = 0.0F;
   }
 
   // MATLABSystem: '<S80>/Read Parameter19'
   modelDeployment_B.NOT = MW_Param_Step(modelDeployment_DW.obj_aw.MW_PARAMHANDLE,
-    MW_SINGLE, &modelDeployment_B.ParamStep_l);
+    MW_SINGLE, &modelDeployment_B.ParamStep_f);
   if (modelDeployment_B.NOT) {
-    modelDeployment_B.ParamStep_l = 0.0F;
+    modelDeployment_B.ParamStep_f = 0.0F;
   }
 
   // MATLABSystem: '<S80>/Read Parameter24'
   modelDeployment_B.NOT = MW_Param_Step(modelDeployment_DW.obj_ic.MW_PARAMHANDLE,
-    MW_SINGLE, &modelDeployment_B.ParamStep_o);
+    MW_SINGLE, &modelDeployment_B.ParamStep_p);
   if (modelDeployment_B.NOT) {
-    modelDeployment_B.ParamStep_o = 0.0F;
+    modelDeployment_B.ParamStep_p = 0.0F;
   }
 
   // MATLABSystem: '<S80>/Read Parameter33'
   modelDeployment_B.NOT = MW_Param_Step(modelDeployment_DW.obj_lq.MW_PARAMHANDLE,
-    MW_SINGLE, &modelDeployment_B.ParamStep_o2);
+    MW_SINGLE, &modelDeployment_B.ParamStep_e);
   if (modelDeployment_B.NOT) {
-    modelDeployment_B.ParamStep_o2 = 0.0F;
+    modelDeployment_B.ParamStep_e = 0.0F;
   }
 
   // MATLABSystem: '<S80>/Read Parameter38'
   modelDeployment_B.NOT = MW_Param_Step(modelDeployment_DW.obj_gj.MW_PARAMHANDLE,
-    MW_SINGLE, &modelDeployment_B.ParamStep_ip);
+    MW_SINGLE, &modelDeployment_B.ParamStep_o);
   if (modelDeployment_B.NOT) {
-    modelDeployment_B.ParamStep_ip = 0.0F;
+    modelDeployment_B.ParamStep_o = 0.0F;
   }
 
   // DataTypeConversion: '<S80>/Data Type Conversion6' incorporates:
@@ -1614,11 +1855,11 @@ void modelDeployment_step(void)
   //   MATLABSystem: '<S80>/Read Parameter6'
   //
   modelDeployment_B.DataTypeConversion6[0] = modelDeployment_B.ParamStep;
-  modelDeployment_B.DataTypeConversion6[1] = modelDeployment_B.ParamStep_i;
-  modelDeployment_B.DataTypeConversion6[2] = modelDeployment_B.ParamStep_l;
-  modelDeployment_B.DataTypeConversion6[3] = modelDeployment_B.ParamStep_o;
-  modelDeployment_B.DataTypeConversion6[4] = modelDeployment_B.ParamStep_o2;
-  modelDeployment_B.DataTypeConversion6[5] = modelDeployment_B.ParamStep_ip;
+  modelDeployment_B.DataTypeConversion6[1] = modelDeployment_B.ParamStep_c;
+  modelDeployment_B.DataTypeConversion6[2] = modelDeployment_B.ParamStep_f;
+  modelDeployment_B.DataTypeConversion6[3] = modelDeployment_B.ParamStep_p;
+  modelDeployment_B.DataTypeConversion6[4] = modelDeployment_B.ParamStep_e;
+  modelDeployment_B.DataTypeConversion6[5] = modelDeployment_B.ParamStep_o;
 
   // MATLABSystem: '<S80>/Read Parameter3'
   modelDeployment_B.NOT = MW_Param_Step
@@ -1630,40 +1871,40 @@ void modelDeployment_step(void)
 
   // MATLABSystem: '<S80>/Read Parameter10'
   modelDeployment_B.NOT = MW_Param_Step(modelDeployment_DW.obj_ma.MW_PARAMHANDLE,
-    MW_SINGLE, &modelDeployment_B.ParamStep_i);
+    MW_SINGLE, &modelDeployment_B.ParamStep_c);
   if (modelDeployment_B.NOT) {
-    modelDeployment_B.ParamStep_i = 0.0F;
+    modelDeployment_B.ParamStep_c = 0.0F;
   }
 
   // MATLABSystem: '<S80>/Read Parameter16'
   modelDeployment_B.NOT = MW_Param_Step
     (modelDeployment_DW.obj_gsw.MW_PARAMHANDLE, MW_SINGLE,
-     &modelDeployment_B.ParamStep_l);
+     &modelDeployment_B.ParamStep_f);
   if (modelDeployment_B.NOT) {
-    modelDeployment_B.ParamStep_l = 0.0F;
+    modelDeployment_B.ParamStep_f = 0.0F;
   }
 
   // MATLABSystem: '<S80>/Read Parameter21'
   modelDeployment_B.NOT = MW_Param_Step
     (modelDeployment_DW.obj_psz.MW_PARAMHANDLE, MW_SINGLE,
-     &modelDeployment_B.ParamStep_o);
+     &modelDeployment_B.ParamStep_p);
   if (modelDeployment_B.NOT) {
-    modelDeployment_B.ParamStep_o = 0.0F;
+    modelDeployment_B.ParamStep_p = 0.0F;
   }
 
   // MATLABSystem: '<S80>/Read Parameter30'
   modelDeployment_B.NOT = MW_Param_Step(modelDeployment_DW.obj_ce.MW_PARAMHANDLE,
-    MW_SINGLE, &modelDeployment_B.ParamStep_o2);
+    MW_SINGLE, &modelDeployment_B.ParamStep_e);
   if (modelDeployment_B.NOT) {
-    modelDeployment_B.ParamStep_o2 = 0.0F;
+    modelDeployment_B.ParamStep_e = 0.0F;
   }
 
   // MATLABSystem: '<S80>/Read Parameter35'
   modelDeployment_B.NOT = MW_Param_Step
     (modelDeployment_DW.obj_mhh.MW_PARAMHANDLE, MW_SINGLE,
-     &modelDeployment_B.ParamStep_ip);
+     &modelDeployment_B.ParamStep_o);
   if (modelDeployment_B.NOT) {
-    modelDeployment_B.ParamStep_ip = 0.0F;
+    modelDeployment_B.ParamStep_o = 0.0F;
   }
 
   // DataTypeConversion: '<S80>/Data Type Conversion4' incorporates:
@@ -1675,11 +1916,11 @@ void modelDeployment_step(void)
   //   MATLABSystem: '<S80>/Read Parameter35'
   //
   modelDeployment_B.DataTypeConversion4[0] = modelDeployment_B.ParamStep;
-  modelDeployment_B.DataTypeConversion4[1] = modelDeployment_B.ParamStep_i;
-  modelDeployment_B.DataTypeConversion4[2] = modelDeployment_B.ParamStep_l;
-  modelDeployment_B.DataTypeConversion4[3] = modelDeployment_B.ParamStep_o;
-  modelDeployment_B.DataTypeConversion4[4] = modelDeployment_B.ParamStep_o2;
-  modelDeployment_B.DataTypeConversion4[5] = modelDeployment_B.ParamStep_ip;
+  modelDeployment_B.DataTypeConversion4[1] = modelDeployment_B.ParamStep_c;
+  modelDeployment_B.DataTypeConversion4[2] = modelDeployment_B.ParamStep_f;
+  modelDeployment_B.DataTypeConversion4[3] = modelDeployment_B.ParamStep_p;
+  modelDeployment_B.DataTypeConversion4[4] = modelDeployment_B.ParamStep_e;
+  modelDeployment_B.DataTypeConversion4[5] = modelDeployment_B.ParamStep_o;
 
   // MATLABSystem: '<S80>/Read Parameter4'
   modelDeployment_B.NOT = MW_Param_Step(modelDeployment_DW.obj_a0.MW_PARAMHANDLE,
@@ -1690,38 +1931,38 @@ void modelDeployment_step(void)
 
   // MATLABSystem: '<S80>/Read Parameter11'
   modelDeployment_B.NOT = MW_Param_Step(modelDeployment_DW.obj_fc.MW_PARAMHANDLE,
-    MW_SINGLE, &modelDeployment_B.ParamStep_i);
+    MW_SINGLE, &modelDeployment_B.ParamStep_c);
   if (modelDeployment_B.NOT) {
-    modelDeployment_B.ParamStep_i = 0.0F;
+    modelDeployment_B.ParamStep_c = 0.0F;
   }
 
   // MATLABSystem: '<S80>/Read Parameter17'
   modelDeployment_B.NOT = MW_Param_Step(modelDeployment_DW.obj_f0.MW_PARAMHANDLE,
-    MW_SINGLE, &modelDeployment_B.ParamStep_l);
+    MW_SINGLE, &modelDeployment_B.ParamStep_f);
   if (modelDeployment_B.NOT) {
-    modelDeployment_B.ParamStep_l = 0.0F;
+    modelDeployment_B.ParamStep_f = 0.0F;
   }
 
   // MATLABSystem: '<S80>/Read Parameter22'
   modelDeployment_B.NOT = MW_Param_Step(modelDeployment_DW.obj_hi.MW_PARAMHANDLE,
-    MW_SINGLE, &modelDeployment_B.ParamStep_o);
+    MW_SINGLE, &modelDeployment_B.ParamStep_p);
   if (modelDeployment_B.NOT) {
-    modelDeployment_B.ParamStep_o = 0.0F;
+    modelDeployment_B.ParamStep_p = 0.0F;
   }
 
   // MATLABSystem: '<S80>/Read Parameter31'
   modelDeployment_B.NOT = MW_Param_Step
     (modelDeployment_DW.obj_nqd.MW_PARAMHANDLE, MW_SINGLE,
-     &modelDeployment_B.ParamStep_o2);
+     &modelDeployment_B.ParamStep_e);
   if (modelDeployment_B.NOT) {
-    modelDeployment_B.ParamStep_o2 = 0.0F;
+    modelDeployment_B.ParamStep_e = 0.0F;
   }
 
   // MATLABSystem: '<S80>/Read Parameter36'
   modelDeployment_B.NOT = MW_Param_Step(modelDeployment_DW.obj_ab.MW_PARAMHANDLE,
-    MW_SINGLE, &modelDeployment_B.ParamStep_ip);
+    MW_SINGLE, &modelDeployment_B.ParamStep_o);
   if (modelDeployment_B.NOT) {
-    modelDeployment_B.ParamStep_ip = 0.0F;
+    modelDeployment_B.ParamStep_o = 0.0F;
   }
 
   // DataTypeConversion: '<S80>/Data Type Conversion2' incorporates:
@@ -1733,11 +1974,11 @@ void modelDeployment_step(void)
   //   MATLABSystem: '<S80>/Read Parameter4'
   //
   modelDeployment_B.DataTypeConversion2[0] = modelDeployment_B.ParamStep;
-  modelDeployment_B.DataTypeConversion2[1] = modelDeployment_B.ParamStep_i;
-  modelDeployment_B.DataTypeConversion2[2] = modelDeployment_B.ParamStep_l;
-  modelDeployment_B.DataTypeConversion2[3] = modelDeployment_B.ParamStep_o;
-  modelDeployment_B.DataTypeConversion2[4] = modelDeployment_B.ParamStep_o2;
-  modelDeployment_B.DataTypeConversion2[5] = modelDeployment_B.ParamStep_ip;
+  modelDeployment_B.DataTypeConversion2[1] = modelDeployment_B.ParamStep_c;
+  modelDeployment_B.DataTypeConversion2[2] = modelDeployment_B.ParamStep_f;
+  modelDeployment_B.DataTypeConversion2[3] = modelDeployment_B.ParamStep_p;
+  modelDeployment_B.DataTypeConversion2[4] = modelDeployment_B.ParamStep_e;
+  modelDeployment_B.DataTypeConversion2[5] = modelDeployment_B.ParamStep_o;
 
   // MATLABSystem: '<S80>/Read Parameter'
   modelDeployment_B.NOT = MW_Param_Step(modelDeployment_DW.obj_km.MW_PARAMHANDLE,
@@ -1748,39 +1989,39 @@ void modelDeployment_step(void)
 
   // MATLABSystem: '<S80>/Read Parameter7'
   modelDeployment_B.NOT = MW_Param_Step(modelDeployment_DW.obj_nq.MW_PARAMHANDLE,
-    MW_SINGLE, &modelDeployment_B.ParamStep_i);
+    MW_SINGLE, &modelDeployment_B.ParamStep_c);
   if (modelDeployment_B.NOT) {
-    modelDeployment_B.ParamStep_i = 0.0F;
+    modelDeployment_B.ParamStep_c = 0.0F;
   }
 
   // MATLABSystem: '<S80>/Read Parameter25'
   modelDeployment_B.NOT = MW_Param_Step
     (modelDeployment_DW.obj_bqm.MW_PARAMHANDLE, MW_SINGLE,
-     &modelDeployment_B.ParamStep_l);
+     &modelDeployment_B.ParamStep_f);
   if (modelDeployment_B.NOT) {
-    modelDeployment_B.ParamStep_l = 0.0F;
+    modelDeployment_B.ParamStep_f = 0.0F;
   }
 
   // MATLABSystem: '<S80>/Read Parameter14'
   modelDeployment_B.NOT = MW_Param_Step(modelDeployment_DW.obj_pw.MW_PARAMHANDLE,
-    MW_SINGLE, &modelDeployment_B.ParamStep_o);
+    MW_SINGLE, &modelDeployment_B.ParamStep_p);
   if (modelDeployment_B.NOT) {
-    modelDeployment_B.ParamStep_o = 0.0F;
+    modelDeployment_B.ParamStep_p = 0.0F;
   }
 
   // MATLABSystem: '<S80>/Read Parameter39'
   modelDeployment_B.NOT = MW_Param_Step
     (modelDeployment_DW.obj_a5d.MW_PARAMHANDLE, MW_SINGLE,
-     &modelDeployment_B.ParamStep_o2);
+     &modelDeployment_B.ParamStep_e);
   if (modelDeployment_B.NOT) {
-    modelDeployment_B.ParamStep_o2 = 0.0F;
+    modelDeployment_B.ParamStep_e = 0.0F;
   }
 
   // MATLABSystem: '<S80>/Read Parameter28'
   modelDeployment_B.NOT = MW_Param_Step(modelDeployment_DW.obj_ir.MW_PARAMHANDLE,
-    MW_SINGLE, &modelDeployment_B.ParamStep_ip);
+    MW_SINGLE, &modelDeployment_B.ParamStep_o);
   if (modelDeployment_B.NOT) {
-    modelDeployment_B.ParamStep_ip = 0.0F;
+    modelDeployment_B.ParamStep_o = 0.0F;
   }
 
   // DataTypeConversion: '<S80>/Data Type Conversion' incorporates:
@@ -1792,11 +2033,11 @@ void modelDeployment_step(void)
   //   MATLABSystem: '<S80>/Read Parameter7'
   //
   modelDeployment_B.DataTypeConversion[0] = modelDeployment_B.ParamStep;
-  modelDeployment_B.DataTypeConversion[1] = modelDeployment_B.ParamStep_i;
-  modelDeployment_B.DataTypeConversion[2] = modelDeployment_B.ParamStep_l;
-  modelDeployment_B.DataTypeConversion[3] = modelDeployment_B.ParamStep_o;
-  modelDeployment_B.DataTypeConversion[4] = modelDeployment_B.ParamStep_o2;
-  modelDeployment_B.DataTypeConversion[5] = modelDeployment_B.ParamStep_ip;
+  modelDeployment_B.DataTypeConversion[1] = modelDeployment_B.ParamStep_c;
+  modelDeployment_B.DataTypeConversion[2] = modelDeployment_B.ParamStep_f;
+  modelDeployment_B.DataTypeConversion[3] = modelDeployment_B.ParamStep_p;
+  modelDeployment_B.DataTypeConversion[4] = modelDeployment_B.ParamStep_e;
+  modelDeployment_B.DataTypeConversion[5] = modelDeployment_B.ParamStep_o;
 
   // MATLABSystem: '<S80>/Read Parameter1'
   modelDeployment_B.NOT = MW_Param_Step(modelDeployment_DW.obj_f3.MW_PARAMHANDLE,
@@ -1807,38 +2048,38 @@ void modelDeployment_step(void)
 
   // MATLABSystem: '<S80>/Read Parameter8'
   modelDeployment_B.NOT = MW_Param_Step(modelDeployment_DW.obj_px.MW_PARAMHANDLE,
-    MW_SINGLE, &modelDeployment_B.ParamStep_i);
+    MW_SINGLE, &modelDeployment_B.ParamStep_c);
   if (modelDeployment_B.NOT) {
-    modelDeployment_B.ParamStep_i = 0.0F;
+    modelDeployment_B.ParamStep_c = 0.0F;
   }
 
   // MATLABSystem: '<S80>/Read Parameter26'
   modelDeployment_B.NOT = MW_Param_Step(modelDeployment_DW.obj_am.MW_PARAMHANDLE,
-    MW_SINGLE, &modelDeployment_B.ParamStep_l);
+    MW_SINGLE, &modelDeployment_B.ParamStep_f);
   if (modelDeployment_B.NOT) {
-    modelDeployment_B.ParamStep_l = 0.0F;
+    modelDeployment_B.ParamStep_f = 0.0F;
   }
 
   // MATLABSystem: '<S80>/Read Parameter15'
   modelDeployment_B.NOT = MW_Param_Step(modelDeployment_DW.obj_an.MW_PARAMHANDLE,
-    MW_SINGLE, &modelDeployment_B.ParamStep_o);
+    MW_SINGLE, &modelDeployment_B.ParamStep_p);
   if (modelDeployment_B.NOT) {
-    modelDeployment_B.ParamStep_o = 0.0F;
+    modelDeployment_B.ParamStep_p = 0.0F;
   }
 
   // MATLABSystem: '<S80>/Read Parameter40'
   modelDeployment_B.NOT = MW_Param_Step(modelDeployment_DW.obj_ez.MW_PARAMHANDLE,
-    MW_SINGLE, &modelDeployment_B.ParamStep_o2);
+    MW_SINGLE, &modelDeployment_B.ParamStep_e);
   if (modelDeployment_B.NOT) {
-    modelDeployment_B.ParamStep_o2 = 0.0F;
+    modelDeployment_B.ParamStep_e = 0.0F;
   }
 
   // MATLABSystem: '<S80>/Read Parameter29'
   modelDeployment_B.NOT = MW_Param_Step
     (modelDeployment_DW.obj_pdi.MW_PARAMHANDLE, MW_SINGLE,
-     &modelDeployment_B.ParamStep_ip);
+     &modelDeployment_B.ParamStep_o);
   if (modelDeployment_B.NOT) {
-    modelDeployment_B.ParamStep_ip = 0.0F;
+    modelDeployment_B.ParamStep_o = 0.0F;
   }
 
   // DataTypeConversion: '<S80>/Data Type Conversion1' incorporates:
@@ -1850,11 +2091,11 @@ void modelDeployment_step(void)
   //   MATLABSystem: '<S80>/Read Parameter8'
   //
   modelDeployment_B.DataTypeConversion1[0] = modelDeployment_B.ParamStep;
-  modelDeployment_B.DataTypeConversion1[1] = modelDeployment_B.ParamStep_i;
-  modelDeployment_B.DataTypeConversion1[2] = modelDeployment_B.ParamStep_l;
-  modelDeployment_B.DataTypeConversion1[3] = modelDeployment_B.ParamStep_o;
-  modelDeployment_B.DataTypeConversion1[4] = modelDeployment_B.ParamStep_o2;
-  modelDeployment_B.DataTypeConversion1[5] = modelDeployment_B.ParamStep_ip;
+  modelDeployment_B.DataTypeConversion1[1] = modelDeployment_B.ParamStep_c;
+  modelDeployment_B.DataTypeConversion1[2] = modelDeployment_B.ParamStep_f;
+  modelDeployment_B.DataTypeConversion1[3] = modelDeployment_B.ParamStep_p;
+  modelDeployment_B.DataTypeConversion1[4] = modelDeployment_B.ParamStep_e;
+  modelDeployment_B.DataTypeConversion1[5] = modelDeployment_B.ParamStep_o;
 
   // MATLABSystem: '<S80>/Read Parameter2'
   modelDeployment_B.NOT = MW_Param_Step(modelDeployment_DW.obj_hg.MW_PARAMHANDLE,
@@ -1865,38 +2106,38 @@ void modelDeployment_step(void)
 
   // MATLABSystem: '<S80>/Read Parameter9'
   modelDeployment_B.NOT = MW_Param_Step(modelDeployment_DW.obj_lj.MW_PARAMHANDLE,
-    MW_SINGLE, &modelDeployment_B.ParamStep_i);
+    MW_SINGLE, &modelDeployment_B.ParamStep_c);
   if (modelDeployment_B.NOT) {
-    modelDeployment_B.ParamStep_i = 0.0F;
+    modelDeployment_B.ParamStep_c = 0.0F;
   }
 
   // MATLABSystem: '<S80>/Read Parameter27'
   modelDeployment_B.NOT = MW_Param_Step
     (modelDeployment_DW.obj_lqw.MW_PARAMHANDLE, MW_SINGLE,
-     &modelDeployment_B.ParamStep_l);
+     &modelDeployment_B.ParamStep_f);
   if (modelDeployment_B.NOT) {
-    modelDeployment_B.ParamStep_l = 0.0F;
+    modelDeployment_B.ParamStep_f = 0.0F;
   }
 
   // MATLABSystem: '<S80>/Read Parameter20'
   modelDeployment_B.NOT = MW_Param_Step(modelDeployment_DW.obj_oe.MW_PARAMHANDLE,
-    MW_SINGLE, &modelDeployment_B.ParamStep_o);
+    MW_SINGLE, &modelDeployment_B.ParamStep_p);
   if (modelDeployment_B.NOT) {
-    modelDeployment_B.ParamStep_o = 0.0F;
+    modelDeployment_B.ParamStep_p = 0.0F;
   }
 
   // MATLABSystem: '<S80>/Read Parameter41'
   modelDeployment_B.NOT = MW_Param_Step(modelDeployment_DW.obj_k2.MW_PARAMHANDLE,
-    MW_SINGLE, &modelDeployment_B.ParamStep_o2);
+    MW_SINGLE, &modelDeployment_B.ParamStep_e);
   if (modelDeployment_B.NOT) {
-    modelDeployment_B.ParamStep_o2 = 0.0F;
+    modelDeployment_B.ParamStep_e = 0.0F;
   }
 
   // MATLABSystem: '<S80>/Read Parameter34'
   modelDeployment_B.NOT = MW_Param_Step(modelDeployment_DW.obj_in.MW_PARAMHANDLE,
-    MW_SINGLE, &modelDeployment_B.ParamStep_ip);
+    MW_SINGLE, &modelDeployment_B.ParamStep_o);
   if (modelDeployment_B.NOT) {
-    modelDeployment_B.ParamStep_ip = 0.0F;
+    modelDeployment_B.ParamStep_o = 0.0F;
   }
 
   // DataTypeConversion: '<S80>/Data Type Conversion5' incorporates:
@@ -1908,11 +2149,11 @@ void modelDeployment_step(void)
   //   MATLABSystem: '<S80>/Read Parameter9'
   //
   modelDeployment_B.DataTypeConversion5[0] = modelDeployment_B.ParamStep;
-  modelDeployment_B.DataTypeConversion5[1] = modelDeployment_B.ParamStep_i;
-  modelDeployment_B.DataTypeConversion5[2] = modelDeployment_B.ParamStep_l;
-  modelDeployment_B.DataTypeConversion5[3] = modelDeployment_B.ParamStep_o;
-  modelDeployment_B.DataTypeConversion5[4] = modelDeployment_B.ParamStep_o2;
-  modelDeployment_B.DataTypeConversion5[5] = modelDeployment_B.ParamStep_ip;
+  modelDeployment_B.DataTypeConversion5[1] = modelDeployment_B.ParamStep_c;
+  modelDeployment_B.DataTypeConversion5[2] = modelDeployment_B.ParamStep_f;
+  modelDeployment_B.DataTypeConversion5[3] = modelDeployment_B.ParamStep_p;
+  modelDeployment_B.DataTypeConversion5[4] = modelDeployment_B.ParamStep_e;
+  modelDeployment_B.DataTypeConversion5[5] = modelDeployment_B.ParamStep_o;
 
   // MATLABSystem: '<S84>/Read Parameter'
   modelDeployment_B.NOT = MW_Param_Step(modelDeployment_DW.obj_lm.MW_PARAMHANDLE,
@@ -1923,16 +2164,16 @@ void modelDeployment_step(void)
 
   // MATLABSystem: '<S84>/Read Parameter1'
   modelDeployment_B.NOT = MW_Param_Step(modelDeployment_DW.obj_kc.MW_PARAMHANDLE,
-    MW_SINGLE, &modelDeployment_B.ParamStep_i);
+    MW_SINGLE, &modelDeployment_B.ParamStep_c);
   if (modelDeployment_B.NOT) {
-    modelDeployment_B.ParamStep_i = 0.0F;
+    modelDeployment_B.ParamStep_c = 0.0F;
   }
 
   // MATLABSystem: '<S84>/Read Parameter2'
   modelDeployment_B.NOT = MW_Param_Step(modelDeployment_DW.obj_p3.MW_PARAMHANDLE,
-    MW_SINGLE, &modelDeployment_B.ParamStep_l);
+    MW_SINGLE, &modelDeployment_B.ParamStep_f);
   if (modelDeployment_B.NOT) {
-    modelDeployment_B.ParamStep_l = 0.0F;
+    modelDeployment_B.ParamStep_f = 0.0F;
   }
 
   modelDeployment_ReadParameter3(&modelDeployment_B.ReadParameter3_pnae,
@@ -1946,8 +2187,8 @@ void modelDeployment_step(void)
   //   MATLABSystem: '<S84>/Read Parameter2'
   //
   modelDeployment_B.MCData[0] = modelDeployment_B.ParamStep;
-  modelDeployment_B.MCData[1] = modelDeployment_B.ParamStep_i;
-  modelDeployment_B.MCData[2] = modelDeployment_B.ParamStep_l;
+  modelDeployment_B.MCData[1] = modelDeployment_B.ParamStep_c;
+  modelDeployment_B.MCData[2] = modelDeployment_B.ParamStep_f;
   modelDeployment_B.MCData[3] =
     modelDeployment_B.ReadParameter3_pnae.ReadParameter3_o1;
   modelDeployment_B.MCData[4] =
@@ -1962,37 +2203,37 @@ void modelDeployment_step(void)
 
   // MATLABSystem: '<S82>/Read Parameter4'
   modelDeployment_B.NOT = MW_Param_Step(modelDeployment_DW.obj_nc.MW_PARAMHANDLE,
-    MW_SINGLE, &modelDeployment_B.ParamStep_i);
+    MW_SINGLE, &modelDeployment_B.ParamStep_c);
   if (modelDeployment_B.NOT) {
-    modelDeployment_B.ParamStep_i = 0.0F;
+    modelDeployment_B.ParamStep_c = 0.0F;
   }
 
   // MATLABSystem: '<S82>/Read Parameter8'
   modelDeployment_B.NOT = MW_Param_Step(modelDeployment_DW.obj_pk.MW_PARAMHANDLE,
-    MW_SINGLE, &modelDeployment_B.ParamStep_l);
+    MW_SINGLE, &modelDeployment_B.ParamStep_f);
   if (modelDeployment_B.NOT) {
-    modelDeployment_B.ParamStep_l = 0.0F;
+    modelDeployment_B.ParamStep_f = 0.0F;
   }
 
   // MATLABSystem: '<S82>/Read Parameter12'
   modelDeployment_B.NOT = MW_Param_Step(modelDeployment_DW.obj_nh.MW_PARAMHANDLE,
-    MW_SINGLE, &modelDeployment_B.ParamStep_o);
+    MW_SINGLE, &modelDeployment_B.ParamStep_p);
   if (modelDeployment_B.NOT) {
-    modelDeployment_B.ParamStep_o = 0.0F;
+    modelDeployment_B.ParamStep_p = 0.0F;
   }
 
   // MATLABSystem: '<S82>/Read Parameter16'
   modelDeployment_B.NOT = MW_Param_Step(modelDeployment_DW.obj_po.MW_PARAMHANDLE,
-    MW_SINGLE, &modelDeployment_B.ParamStep_o2);
+    MW_SINGLE, &modelDeployment_B.ParamStep_e);
   if (modelDeployment_B.NOT) {
-    modelDeployment_B.ParamStep_o2 = 0.0F;
+    modelDeployment_B.ParamStep_e = 0.0F;
   }
 
   // MATLABSystem: '<S82>/Read Parameter20'
   modelDeployment_B.NOT = MW_Param_Step(modelDeployment_DW.obj_bz.MW_PARAMHANDLE,
-    MW_SINGLE, &modelDeployment_B.ParamStep_ip);
+    MW_SINGLE, &modelDeployment_B.ParamStep_o);
   if (modelDeployment_B.NOT) {
-    modelDeployment_B.ParamStep_ip = 0.0F;
+    modelDeployment_B.ParamStep_o = 0.0F;
   }
 
   // DataTypeConversion: '<S82>/Data Type Conversion' incorporates:
@@ -2004,11 +2245,11 @@ void modelDeployment_step(void)
   //   MATLABSystem: '<S82>/Read Parameter8'
   //
   modelDeployment_B.DataTypeConversion_c[0] = modelDeployment_B.ParamStep;
-  modelDeployment_B.DataTypeConversion_c[1] = modelDeployment_B.ParamStep_i;
-  modelDeployment_B.DataTypeConversion_c[2] = modelDeployment_B.ParamStep_l;
-  modelDeployment_B.DataTypeConversion_c[3] = modelDeployment_B.ParamStep_o;
-  modelDeployment_B.DataTypeConversion_c[4] = modelDeployment_B.ParamStep_o2;
-  modelDeployment_B.DataTypeConversion_c[5] = modelDeployment_B.ParamStep_ip;
+  modelDeployment_B.DataTypeConversion_c[1] = modelDeployment_B.ParamStep_c;
+  modelDeployment_B.DataTypeConversion_c[2] = modelDeployment_B.ParamStep_f;
+  modelDeployment_B.DataTypeConversion_c[3] = modelDeployment_B.ParamStep_p;
+  modelDeployment_B.DataTypeConversion_c[4] = modelDeployment_B.ParamStep_e;
+  modelDeployment_B.DataTypeConversion_c[5] = modelDeployment_B.ParamStep_o;
 
   // MATLABSystem: '<S82>/Read Parameter1'
   modelDeployment_B.NOT = MW_Param_Step(modelDeployment_DW.obj_hq.MW_PARAMHANDLE,
@@ -2019,37 +2260,37 @@ void modelDeployment_step(void)
 
   // MATLABSystem: '<S82>/Read Parameter5'
   modelDeployment_B.NOT = MW_Param_Step(modelDeployment_DW.obj_k1.MW_PARAMHANDLE,
-    MW_SINGLE, &modelDeployment_B.ParamStep_i);
+    MW_SINGLE, &modelDeployment_B.ParamStep_c);
   if (modelDeployment_B.NOT) {
-    modelDeployment_B.ParamStep_i = 0.0F;
+    modelDeployment_B.ParamStep_c = 0.0F;
   }
 
   // MATLABSystem: '<S82>/Read Parameter9'
   modelDeployment_B.NOT = MW_Param_Step(modelDeployment_DW.obj_o5.MW_PARAMHANDLE,
-    MW_SINGLE, &modelDeployment_B.ParamStep_l);
+    MW_SINGLE, &modelDeployment_B.ParamStep_f);
   if (modelDeployment_B.NOT) {
-    modelDeployment_B.ParamStep_l = 0.0F;
+    modelDeployment_B.ParamStep_f = 0.0F;
   }
 
   // MATLABSystem: '<S82>/Read Parameter13'
   modelDeployment_B.NOT = MW_Param_Step(modelDeployment_DW.obj_gt.MW_PARAMHANDLE,
-    MW_SINGLE, &modelDeployment_B.ParamStep_o);
+    MW_SINGLE, &modelDeployment_B.ParamStep_p);
   if (modelDeployment_B.NOT) {
-    modelDeployment_B.ParamStep_o = 0.0F;
+    modelDeployment_B.ParamStep_p = 0.0F;
   }
 
   // MATLABSystem: '<S82>/Read Parameter17'
   modelDeployment_B.NOT = MW_Param_Step(modelDeployment_DW.obj_cg.MW_PARAMHANDLE,
-    MW_SINGLE, &modelDeployment_B.ParamStep_o2);
+    MW_SINGLE, &modelDeployment_B.ParamStep_e);
   if (modelDeployment_B.NOT) {
-    modelDeployment_B.ParamStep_o2 = 0.0F;
+    modelDeployment_B.ParamStep_e = 0.0F;
   }
 
   // MATLABSystem: '<S82>/Read Parameter21'
   modelDeployment_B.NOT = MW_Param_Step(modelDeployment_DW.obj_ny.MW_PARAMHANDLE,
-    MW_SINGLE, &modelDeployment_B.ParamStep_ip);
+    MW_SINGLE, &modelDeployment_B.ParamStep_o);
   if (modelDeployment_B.NOT) {
-    modelDeployment_B.ParamStep_ip = 0.0F;
+    modelDeployment_B.ParamStep_o = 0.0F;
   }
 
   // DataTypeConversion: '<S82>/Data Type Conversion3' incorporates:
@@ -2061,11 +2302,11 @@ void modelDeployment_step(void)
   //   MATLABSystem: '<S82>/Read Parameter9'
   //
   modelDeployment_B.DataTypeConversion3_c[0] = modelDeployment_B.ParamStep;
-  modelDeployment_B.DataTypeConversion3_c[1] = modelDeployment_B.ParamStep_i;
-  modelDeployment_B.DataTypeConversion3_c[2] = modelDeployment_B.ParamStep_l;
-  modelDeployment_B.DataTypeConversion3_c[3] = modelDeployment_B.ParamStep_o;
-  modelDeployment_B.DataTypeConversion3_c[4] = modelDeployment_B.ParamStep_o2;
-  modelDeployment_B.DataTypeConversion3_c[5] = modelDeployment_B.ParamStep_ip;
+  modelDeployment_B.DataTypeConversion3_c[1] = modelDeployment_B.ParamStep_c;
+  modelDeployment_B.DataTypeConversion3_c[2] = modelDeployment_B.ParamStep_f;
+  modelDeployment_B.DataTypeConversion3_c[3] = modelDeployment_B.ParamStep_p;
+  modelDeployment_B.DataTypeConversion3_c[4] = modelDeployment_B.ParamStep_e;
+  modelDeployment_B.DataTypeConversion3_c[5] = modelDeployment_B.ParamStep_o;
 
   // MATLABSystem: '<S82>/Read Parameter2'
   modelDeployment_B.NOT = MW_Param_Step(modelDeployment_DW.obj_c1.MW_PARAMHANDLE,
@@ -2076,37 +2317,37 @@ void modelDeployment_step(void)
 
   // MATLABSystem: '<S82>/Read Parameter6'
   modelDeployment_B.NOT = MW_Param_Step(modelDeployment_DW.obj_pi.MW_PARAMHANDLE,
-    MW_SINGLE, &modelDeployment_B.ParamStep_i);
+    MW_SINGLE, &modelDeployment_B.ParamStep_c);
   if (modelDeployment_B.NOT) {
-    modelDeployment_B.ParamStep_i = 0.0F;
+    modelDeployment_B.ParamStep_c = 0.0F;
   }
 
   // MATLABSystem: '<S82>/Read Parameter10'
   modelDeployment_B.NOT = MW_Param_Step(modelDeployment_DW.obj_mb.MW_PARAMHANDLE,
-    MW_SINGLE, &modelDeployment_B.ParamStep_l);
+    MW_SINGLE, &modelDeployment_B.ParamStep_f);
   if (modelDeployment_B.NOT) {
-    modelDeployment_B.ParamStep_l = 0.0F;
+    modelDeployment_B.ParamStep_f = 0.0F;
   }
 
   // MATLABSystem: '<S82>/Read Parameter14'
   modelDeployment_B.NOT = MW_Param_Step(modelDeployment_DW.obj_go.MW_PARAMHANDLE,
-    MW_SINGLE, &modelDeployment_B.ParamStep_o);
+    MW_SINGLE, &modelDeployment_B.ParamStep_p);
   if (modelDeployment_B.NOT) {
-    modelDeployment_B.ParamStep_o = 0.0F;
+    modelDeployment_B.ParamStep_p = 0.0F;
   }
 
   // MATLABSystem: '<S82>/Read Parameter18'
   modelDeployment_B.NOT = MW_Param_Step(modelDeployment_DW.obj_pm.MW_PARAMHANDLE,
-    MW_SINGLE, &modelDeployment_B.ParamStep_o2);
+    MW_SINGLE, &modelDeployment_B.ParamStep_e);
   if (modelDeployment_B.NOT) {
-    modelDeployment_B.ParamStep_o2 = 0.0F;
+    modelDeployment_B.ParamStep_e = 0.0F;
   }
 
   // MATLABSystem: '<S82>/Read Parameter22'
   modelDeployment_B.NOT = MW_Param_Step(modelDeployment_DW.obj_kb.MW_PARAMHANDLE,
-    MW_SINGLE, &modelDeployment_B.ParamStep_ip);
+    MW_SINGLE, &modelDeployment_B.ParamStep_o);
   if (modelDeployment_B.NOT) {
-    modelDeployment_B.ParamStep_ip = 0.0F;
+    modelDeployment_B.ParamStep_o = 0.0F;
   }
 
   // DataTypeConversion: '<S82>/Data Type Conversion2' incorporates:
@@ -2118,11 +2359,11 @@ void modelDeployment_step(void)
   //   MATLABSystem: '<S82>/Read Parameter6'
   //
   modelDeployment_B.DataTypeConversion2_m[0] = modelDeployment_B.ParamStep;
-  modelDeployment_B.DataTypeConversion2_m[1] = modelDeployment_B.ParamStep_i;
-  modelDeployment_B.DataTypeConversion2_m[2] = modelDeployment_B.ParamStep_l;
-  modelDeployment_B.DataTypeConversion2_m[3] = modelDeployment_B.ParamStep_o;
-  modelDeployment_B.DataTypeConversion2_m[4] = modelDeployment_B.ParamStep_o2;
-  modelDeployment_B.DataTypeConversion2_m[5] = modelDeployment_B.ParamStep_ip;
+  modelDeployment_B.DataTypeConversion2_m[1] = modelDeployment_B.ParamStep_c;
+  modelDeployment_B.DataTypeConversion2_m[2] = modelDeployment_B.ParamStep_f;
+  modelDeployment_B.DataTypeConversion2_m[3] = modelDeployment_B.ParamStep_p;
+  modelDeployment_B.DataTypeConversion2_m[4] = modelDeployment_B.ParamStep_e;
+  modelDeployment_B.DataTypeConversion2_m[5] = modelDeployment_B.ParamStep_o;
 
   // MATLABSystem: '<S82>/Read Parameter3'
   modelDeployment_B.NOT = MW_Param_Step(modelDeployment_DW.obj_dp.MW_PARAMHANDLE,
@@ -2133,37 +2374,37 @@ void modelDeployment_step(void)
 
   // MATLABSystem: '<S82>/Read Parameter7'
   modelDeployment_B.NOT = MW_Param_Step(modelDeployment_DW.obj_dj.MW_PARAMHANDLE,
-    MW_SINGLE, &modelDeployment_B.ParamStep_i);
+    MW_SINGLE, &modelDeployment_B.ParamStep_c);
   if (modelDeployment_B.NOT) {
-    modelDeployment_B.ParamStep_i = 0.0F;
+    modelDeployment_B.ParamStep_c = 0.0F;
   }
 
   // MATLABSystem: '<S82>/Read Parameter11'
   modelDeployment_B.NOT = MW_Param_Step(modelDeployment_DW.obj_lw.MW_PARAMHANDLE,
-    MW_SINGLE, &modelDeployment_B.ParamStep_l);
+    MW_SINGLE, &modelDeployment_B.ParamStep_f);
   if (modelDeployment_B.NOT) {
-    modelDeployment_B.ParamStep_l = 0.0F;
+    modelDeployment_B.ParamStep_f = 0.0F;
   }
 
   // MATLABSystem: '<S82>/Read Parameter15'
   modelDeployment_B.NOT = MW_Param_Step(modelDeployment_DW.obj_jn.MW_PARAMHANDLE,
-    MW_SINGLE, &modelDeployment_B.ParamStep_o);
+    MW_SINGLE, &modelDeployment_B.ParamStep_p);
   if (modelDeployment_B.NOT) {
-    modelDeployment_B.ParamStep_o = 0.0F;
+    modelDeployment_B.ParamStep_p = 0.0F;
   }
 
   // MATLABSystem: '<S82>/Read Parameter19'
   modelDeployment_B.NOT = MW_Param_Step(modelDeployment_DW.obj_o4.MW_PARAMHANDLE,
-    MW_SINGLE, &modelDeployment_B.ParamStep_o2);
+    MW_SINGLE, &modelDeployment_B.ParamStep_e);
   if (modelDeployment_B.NOT) {
-    modelDeployment_B.ParamStep_o2 = 0.0F;
+    modelDeployment_B.ParamStep_e = 0.0F;
   }
 
   // MATLABSystem: '<S82>/Read Parameter23'
   modelDeployment_B.NOT = MW_Param_Step(modelDeployment_DW.obj_j5.MW_PARAMHANDLE,
-    MW_SINGLE, &modelDeployment_B.ParamStep_ip);
+    MW_SINGLE, &modelDeployment_B.ParamStep_o);
   if (modelDeployment_B.NOT) {
-    modelDeployment_B.ParamStep_ip = 0.0F;
+    modelDeployment_B.ParamStep_o = 0.0F;
   }
 
   // DataTypeConversion: '<S82>/Data Type Conversion1' incorporates:
@@ -2175,11 +2416,11 @@ void modelDeployment_step(void)
   //   MATLABSystem: '<S82>/Read Parameter7'
   //
   modelDeployment_B.DataTypeConversion1_h[0] = modelDeployment_B.ParamStep;
-  modelDeployment_B.DataTypeConversion1_h[1] = modelDeployment_B.ParamStep_i;
-  modelDeployment_B.DataTypeConversion1_h[2] = modelDeployment_B.ParamStep_l;
-  modelDeployment_B.DataTypeConversion1_h[3] = modelDeployment_B.ParamStep_o;
-  modelDeployment_B.DataTypeConversion1_h[4] = modelDeployment_B.ParamStep_o2;
-  modelDeployment_B.DataTypeConversion1_h[5] = modelDeployment_B.ParamStep_ip;
+  modelDeployment_B.DataTypeConversion1_h[1] = modelDeployment_B.ParamStep_c;
+  modelDeployment_B.DataTypeConversion1_h[2] = modelDeployment_B.ParamStep_f;
+  modelDeployment_B.DataTypeConversion1_h[3] = modelDeployment_B.ParamStep_p;
+  modelDeployment_B.DataTypeConversion1_h[4] = modelDeployment_B.ParamStep_e;
+  modelDeployment_B.DataTypeConversion1_h[5] = modelDeployment_B.ParamStep_o;
 
   // MATLABSystem: '<S83>/Read Parameter24'
   modelDeployment_B.NOT = MW_Param_Step(modelDeployment_DW.obj_gs.MW_PARAMHANDLE,
@@ -2190,37 +2431,37 @@ void modelDeployment_step(void)
 
   // MATLABSystem: '<S83>/Read Parameter32'
   modelDeployment_B.NOT = MW_Param_Step(modelDeployment_DW.obj_jm.MW_PARAMHANDLE,
-    MW_SINGLE, &modelDeployment_B.ParamStep_i);
+    MW_SINGLE, &modelDeployment_B.ParamStep_c);
   if (modelDeployment_B.NOT) {
-    modelDeployment_B.ParamStep_i = 0.0F;
+    modelDeployment_B.ParamStep_c = 0.0F;
   }
 
   // MATLABSystem: '<S83>/Read Parameter'
   modelDeployment_B.NOT = MW_Param_Step(modelDeployment_DW.obj_jz.MW_PARAMHANDLE,
-    MW_SINGLE, &modelDeployment_B.ParamStep_l);
+    MW_SINGLE, &modelDeployment_B.ParamStep_f);
   if (modelDeployment_B.NOT) {
-    modelDeployment_B.ParamStep_l = 0.0F;
+    modelDeployment_B.ParamStep_f = 0.0F;
   }
 
   // MATLABSystem: '<S83>/Read Parameter6'
   modelDeployment_B.NOT = MW_Param_Step(modelDeployment_DW.obj_hr.MW_PARAMHANDLE,
-    MW_SINGLE, &modelDeployment_B.ParamStep_o);
+    MW_SINGLE, &modelDeployment_B.ParamStep_p);
   if (modelDeployment_B.NOT) {
-    modelDeployment_B.ParamStep_o = 0.0F;
+    modelDeployment_B.ParamStep_p = 0.0F;
   }
 
   // MATLABSystem: '<S83>/Read Parameter12'
   modelDeployment_B.NOT = MW_Param_Step(modelDeployment_DW.obj_id.MW_PARAMHANDLE,
-    MW_SINGLE, &modelDeployment_B.ParamStep_o2);
+    MW_SINGLE, &modelDeployment_B.ParamStep_e);
   if (modelDeployment_B.NOT) {
-    modelDeployment_B.ParamStep_o2 = 0.0F;
+    modelDeployment_B.ParamStep_e = 0.0F;
   }
 
   // MATLABSystem: '<S83>/Read Parameter20'
   modelDeployment_B.NOT = MW_Param_Step(modelDeployment_DW.obj_jy.MW_PARAMHANDLE,
-    MW_SINGLE, &modelDeployment_B.ParamStep_ip);
+    MW_SINGLE, &modelDeployment_B.ParamStep_o);
   if (modelDeployment_B.NOT) {
-    modelDeployment_B.ParamStep_ip = 0.0F;
+    modelDeployment_B.ParamStep_o = 0.0F;
   }
 
   // DataTypeConversion: '<S83>/Data Type Conversion' incorporates:
@@ -2232,11 +2473,11 @@ void modelDeployment_step(void)
   //   MATLABSystem: '<S83>/Read Parameter6'
   //
   modelDeployment_B.DataTypeConversion_n[0] = modelDeployment_B.ParamStep;
-  modelDeployment_B.DataTypeConversion_n[1] = modelDeployment_B.ParamStep_i;
-  modelDeployment_B.DataTypeConversion_n[2] = modelDeployment_B.ParamStep_l;
-  modelDeployment_B.DataTypeConversion_n[3] = modelDeployment_B.ParamStep_o;
-  modelDeployment_B.DataTypeConversion_n[4] = modelDeployment_B.ParamStep_o2;
-  modelDeployment_B.DataTypeConversion_n[5] = modelDeployment_B.ParamStep_ip;
+  modelDeployment_B.DataTypeConversion_n[1] = modelDeployment_B.ParamStep_c;
+  modelDeployment_B.DataTypeConversion_n[2] = modelDeployment_B.ParamStep_f;
+  modelDeployment_B.DataTypeConversion_n[3] = modelDeployment_B.ParamStep_p;
+  modelDeployment_B.DataTypeConversion_n[4] = modelDeployment_B.ParamStep_e;
+  modelDeployment_B.DataTypeConversion_n[5] = modelDeployment_B.ParamStep_o;
 
   // MATLABSystem: '<S83>/Read Parameter25'
   modelDeployment_B.NOT = MW_Param_Step(modelDeployment_DW.obj_kx.MW_PARAMHANDLE,
@@ -2247,37 +2488,37 @@ void modelDeployment_step(void)
 
   // MATLABSystem: '<S83>/Read Parameter33'
   modelDeployment_B.NOT = MW_Param_Step(modelDeployment_DW.obj_na.MW_PARAMHANDLE,
-    MW_SINGLE, &modelDeployment_B.ParamStep_i);
+    MW_SINGLE, &modelDeployment_B.ParamStep_c);
   if (modelDeployment_B.NOT) {
-    modelDeployment_B.ParamStep_i = 0.0F;
+    modelDeployment_B.ParamStep_c = 0.0F;
   }
 
   // MATLABSystem: '<S83>/Read Parameter1'
   modelDeployment_B.NOT = MW_Param_Step(modelDeployment_DW.obj_pd.MW_PARAMHANDLE,
-    MW_SINGLE, &modelDeployment_B.ParamStep_l);
+    MW_SINGLE, &modelDeployment_B.ParamStep_f);
   if (modelDeployment_B.NOT) {
-    modelDeployment_B.ParamStep_l = 0.0F;
+    modelDeployment_B.ParamStep_f = 0.0F;
   }
 
   // MATLABSystem: '<S83>/Read Parameter7'
   modelDeployment_B.NOT = MW_Param_Step(modelDeployment_DW.obj_br.MW_PARAMHANDLE,
-    MW_SINGLE, &modelDeployment_B.ParamStep_o);
+    MW_SINGLE, &modelDeployment_B.ParamStep_p);
   if (modelDeployment_B.NOT) {
-    modelDeployment_B.ParamStep_o = 0.0F;
+    modelDeployment_B.ParamStep_p = 0.0F;
   }
 
   // MATLABSystem: '<S83>/Read Parameter13'
   modelDeployment_B.NOT = MW_Param_Step(modelDeployment_DW.obj_hh.MW_PARAMHANDLE,
-    MW_SINGLE, &modelDeployment_B.ParamStep_o2);
+    MW_SINGLE, &modelDeployment_B.ParamStep_e);
   if (modelDeployment_B.NOT) {
-    modelDeployment_B.ParamStep_o2 = 0.0F;
+    modelDeployment_B.ParamStep_e = 0.0F;
   }
 
   // MATLABSystem: '<S83>/Read Parameter21'
   modelDeployment_B.NOT = MW_Param_Step(modelDeployment_DW.obj_pl.MW_PARAMHANDLE,
-    MW_SINGLE, &modelDeployment_B.ParamStep_ip);
+    MW_SINGLE, &modelDeployment_B.ParamStep_o);
   if (modelDeployment_B.NOT) {
-    modelDeployment_B.ParamStep_ip = 0.0F;
+    modelDeployment_B.ParamStep_o = 0.0F;
   }
 
   // DataTypeConversion: '<S83>/Data Type Conversion1' incorporates:
@@ -2289,11 +2530,11 @@ void modelDeployment_step(void)
   //   MATLABSystem: '<S83>/Read Parameter7'
   //
   modelDeployment_B.DataTypeConversion1_d[0] = modelDeployment_B.ParamStep;
-  modelDeployment_B.DataTypeConversion1_d[1] = modelDeployment_B.ParamStep_i;
-  modelDeployment_B.DataTypeConversion1_d[2] = modelDeployment_B.ParamStep_l;
-  modelDeployment_B.DataTypeConversion1_d[3] = modelDeployment_B.ParamStep_o;
-  modelDeployment_B.DataTypeConversion1_d[4] = modelDeployment_B.ParamStep_o2;
-  modelDeployment_B.DataTypeConversion1_d[5] = modelDeployment_B.ParamStep_ip;
+  modelDeployment_B.DataTypeConversion1_d[1] = modelDeployment_B.ParamStep_c;
+  modelDeployment_B.DataTypeConversion1_d[2] = modelDeployment_B.ParamStep_f;
+  modelDeployment_B.DataTypeConversion1_d[3] = modelDeployment_B.ParamStep_p;
+  modelDeployment_B.DataTypeConversion1_d[4] = modelDeployment_B.ParamStep_e;
+  modelDeployment_B.DataTypeConversion1_d[5] = modelDeployment_B.ParamStep_o;
 
   // MATLABSystem: '<S83>/Read Parameter28'
   modelDeployment_B.NOT = MW_Param_Step(modelDeployment_DW.obj_dl.MW_PARAMHANDLE,
@@ -2304,37 +2545,37 @@ void modelDeployment_step(void)
 
   // MATLABSystem: '<S83>/Read Parameter34'
   modelDeployment_B.NOT = MW_Param_Step(modelDeployment_DW.obj_gg.MW_PARAMHANDLE,
-    MW_SINGLE, &modelDeployment_B.ParamStep_i);
+    MW_SINGLE, &modelDeployment_B.ParamStep_c);
   if (modelDeployment_B.NOT) {
-    modelDeployment_B.ParamStep_i = 0.0F;
+    modelDeployment_B.ParamStep_c = 0.0F;
   }
 
   // MATLABSystem: '<S83>/Read Parameter2'
   modelDeployment_B.NOT = MW_Param_Step(modelDeployment_DW.obj_ps.MW_PARAMHANDLE,
-    MW_SINGLE, &modelDeployment_B.ParamStep_l);
+    MW_SINGLE, &modelDeployment_B.ParamStep_f);
   if (modelDeployment_B.NOT) {
-    modelDeployment_B.ParamStep_l = 0.0F;
+    modelDeployment_B.ParamStep_f = 0.0F;
   }
 
   // MATLABSystem: '<S83>/Read Parameter8'
   modelDeployment_B.NOT = MW_Param_Step(modelDeployment_DW.obj_a.MW_PARAMHANDLE,
-    MW_SINGLE, &modelDeployment_B.ParamStep_o);
+    MW_SINGLE, &modelDeployment_B.ParamStep_p);
   if (modelDeployment_B.NOT) {
-    modelDeployment_B.ParamStep_o = 0.0F;
+    modelDeployment_B.ParamStep_p = 0.0F;
   }
 
   // MATLABSystem: '<S83>/Read Parameter16'
   modelDeployment_B.NOT = MW_Param_Step(modelDeployment_DW.obj_pc.MW_PARAMHANDLE,
-    MW_SINGLE, &modelDeployment_B.ParamStep_o2);
+    MW_SINGLE, &modelDeployment_B.ParamStep_e);
   if (modelDeployment_B.NOT) {
-    modelDeployment_B.ParamStep_o2 = 0.0F;
+    modelDeployment_B.ParamStep_e = 0.0F;
   }
 
   // MATLABSystem: '<S83>/Read Parameter22'
   modelDeployment_B.NOT = MW_Param_Step(modelDeployment_DW.obj_cy.MW_PARAMHANDLE,
-    MW_SINGLE, &modelDeployment_B.ParamStep_ip);
+    MW_SINGLE, &modelDeployment_B.ParamStep_o);
   if (modelDeployment_B.NOT) {
-    modelDeployment_B.ParamStep_ip = 0.0F;
+    modelDeployment_B.ParamStep_o = 0.0F;
   }
 
   // DataTypeConversion: '<S83>/Data Type Conversion2' incorporates:
@@ -2346,11 +2587,11 @@ void modelDeployment_step(void)
   //   MATLABSystem: '<S83>/Read Parameter8'
   //
   modelDeployment_B.DataTypeConversion2_m1[0] = modelDeployment_B.ParamStep;
-  modelDeployment_B.DataTypeConversion2_m1[1] = modelDeployment_B.ParamStep_i;
-  modelDeployment_B.DataTypeConversion2_m1[2] = modelDeployment_B.ParamStep_l;
-  modelDeployment_B.DataTypeConversion2_m1[3] = modelDeployment_B.ParamStep_o;
-  modelDeployment_B.DataTypeConversion2_m1[4] = modelDeployment_B.ParamStep_o2;
-  modelDeployment_B.DataTypeConversion2_m1[5] = modelDeployment_B.ParamStep_ip;
+  modelDeployment_B.DataTypeConversion2_m1[1] = modelDeployment_B.ParamStep_c;
+  modelDeployment_B.DataTypeConversion2_m1[2] = modelDeployment_B.ParamStep_f;
+  modelDeployment_B.DataTypeConversion2_m1[3] = modelDeployment_B.ParamStep_p;
+  modelDeployment_B.DataTypeConversion2_m1[4] = modelDeployment_B.ParamStep_e;
+  modelDeployment_B.DataTypeConversion2_m1[5] = modelDeployment_B.ParamStep_o;
 
   // MATLABSystem: '<S83>/Read Parameter29'
   modelDeployment_B.NOT = MW_Param_Step(modelDeployment_DW.obj_a5.MW_PARAMHANDLE,
@@ -2361,37 +2602,37 @@ void modelDeployment_step(void)
 
   // MATLABSystem: '<S83>/Read Parameter35'
   modelDeployment_B.NOT = MW_Param_Step(modelDeployment_DW.obj_i.MW_PARAMHANDLE,
-    MW_SINGLE, &modelDeployment_B.ParamStep_i);
+    MW_SINGLE, &modelDeployment_B.ParamStep_c);
   if (modelDeployment_B.NOT) {
-    modelDeployment_B.ParamStep_i = 0.0F;
+    modelDeployment_B.ParamStep_c = 0.0F;
   }
 
   // MATLABSystem: '<S83>/Read Parameter3'
   modelDeployment_B.NOT = MW_Param_Step(modelDeployment_DW.obj_ci.MW_PARAMHANDLE,
-    MW_SINGLE, &modelDeployment_B.ParamStep_l);
+    MW_SINGLE, &modelDeployment_B.ParamStep_f);
   if (modelDeployment_B.NOT) {
-    modelDeployment_B.ParamStep_l = 0.0F;
+    modelDeployment_B.ParamStep_f = 0.0F;
   }
 
   // MATLABSystem: '<S83>/Read Parameter9'
   modelDeployment_B.NOT = MW_Param_Step(modelDeployment_DW.obj_lu.MW_PARAMHANDLE,
-    MW_SINGLE, &modelDeployment_B.ParamStep_o);
+    MW_SINGLE, &modelDeployment_B.ParamStep_p);
   if (modelDeployment_B.NOT) {
-    modelDeployment_B.ParamStep_o = 0.0F;
+    modelDeployment_B.ParamStep_p = 0.0F;
   }
 
   // MATLABSystem: '<S83>/Read Parameter17'
   modelDeployment_B.NOT = MW_Param_Step(modelDeployment_DW.obj_fq.MW_PARAMHANDLE,
-    MW_SINGLE, &modelDeployment_B.ParamStep_o2);
+    MW_SINGLE, &modelDeployment_B.ParamStep_e);
   if (modelDeployment_B.NOT) {
-    modelDeployment_B.ParamStep_o2 = 0.0F;
+    modelDeployment_B.ParamStep_e = 0.0F;
   }
 
   // MATLABSystem: '<S83>/Read Parameter23'
   modelDeployment_B.NOT = MW_Param_Step(modelDeployment_DW.obj_h3.MW_PARAMHANDLE,
-    MW_SINGLE, &modelDeployment_B.ParamStep_ip);
+    MW_SINGLE, &modelDeployment_B.ParamStep_o);
   if (modelDeployment_B.NOT) {
-    modelDeployment_B.ParamStep_ip = 0.0F;
+    modelDeployment_B.ParamStep_o = 0.0F;
   }
 
   // DataTypeConversion: '<S83>/Data Type Conversion3' incorporates:
@@ -2403,52 +2644,53 @@ void modelDeployment_step(void)
   //   MATLABSystem: '<S83>/Read Parameter9'
   //
   modelDeployment_B.DataTypeConversion3_k[0] = modelDeployment_B.ParamStep;
-  modelDeployment_B.DataTypeConversion3_k[1] = modelDeployment_B.ParamStep_i;
-  modelDeployment_B.DataTypeConversion3_k[2] = modelDeployment_B.ParamStep_l;
-  modelDeployment_B.DataTypeConversion3_k[3] = modelDeployment_B.ParamStep_o;
-  modelDeployment_B.DataTypeConversion3_k[4] = modelDeployment_B.ParamStep_o2;
-  modelDeployment_B.DataTypeConversion3_k[5] = modelDeployment_B.ParamStep_ip;
+  modelDeployment_B.DataTypeConversion3_k[1] = modelDeployment_B.ParamStep_c;
+  modelDeployment_B.DataTypeConversion3_k[2] = modelDeployment_B.ParamStep_f;
+  modelDeployment_B.DataTypeConversion3_k[3] = modelDeployment_B.ParamStep_p;
+  modelDeployment_B.DataTypeConversion3_k[4] = modelDeployment_B.ParamStep_e;
+  modelDeployment_B.DataTypeConversion3_k[5] = modelDeployment_B.ParamStep_o;
 
   // MATLABSystem: '<S83>/Read Parameter30'
-  modelDeployment_B.NOT = MW_Param_Step(modelDeployment_DW.obj_dx.MW_PARAMHANDLE,
-    MW_SINGLE, &modelDeployment_B.ParamStep);
+  modelDeployment_B.NOT = MW_Param_Step
+    (modelDeployment_DW.obj_dxt.MW_PARAMHANDLE, MW_SINGLE,
+     &modelDeployment_B.ParamStep);
   if (modelDeployment_B.NOT) {
     modelDeployment_B.ParamStep = 0.0F;
   }
 
   // MATLABSystem: '<S83>/Read Parameter26'
   modelDeployment_B.NOT = MW_Param_Step(modelDeployment_DW.obj_hx.MW_PARAMHANDLE,
-    MW_SINGLE, &modelDeployment_B.ParamStep_i);
+    MW_SINGLE, &modelDeployment_B.ParamStep_c);
   if (modelDeployment_B.NOT) {
-    modelDeployment_B.ParamStep_i = 0.0F;
+    modelDeployment_B.ParamStep_c = 0.0F;
   }
 
   // MATLABSystem: '<S83>/Read Parameter4'
   modelDeployment_B.NOT = MW_Param_Step(modelDeployment_DW.obj_b3.MW_PARAMHANDLE,
-    MW_SINGLE, &modelDeployment_B.ParamStep_l);
+    MW_SINGLE, &modelDeployment_B.ParamStep_f);
   if (modelDeployment_B.NOT) {
-    modelDeployment_B.ParamStep_l = 0.0F;
+    modelDeployment_B.ParamStep_f = 0.0F;
   }
 
   // MATLABSystem: '<S83>/Read Parameter10'
   modelDeployment_B.NOT = MW_Param_Step(modelDeployment_DW.obj_fx.MW_PARAMHANDLE,
-    MW_SINGLE, &modelDeployment_B.ParamStep_o);
+    MW_SINGLE, &modelDeployment_B.ParamStep_p);
   if (modelDeployment_B.NOT) {
-    modelDeployment_B.ParamStep_o = 0.0F;
+    modelDeployment_B.ParamStep_p = 0.0F;
   }
 
   // MATLABSystem: '<S83>/Read Parameter18'
   modelDeployment_B.NOT = MW_Param_Step(modelDeployment_DW.obj_bm.MW_PARAMHANDLE,
-    MW_SINGLE, &modelDeployment_B.ParamStep_o2);
+    MW_SINGLE, &modelDeployment_B.ParamStep_e);
   if (modelDeployment_B.NOT) {
-    modelDeployment_B.ParamStep_o2 = 0.0F;
+    modelDeployment_B.ParamStep_e = 0.0F;
   }
 
   // MATLABSystem: '<S83>/Read Parameter14'
   modelDeployment_B.NOT = MW_Param_Step(modelDeployment_DW.obj_dc.MW_PARAMHANDLE,
-    MW_SINGLE, &modelDeployment_B.ParamStep_ip);
+    MW_SINGLE, &modelDeployment_B.ParamStep_o);
   if (modelDeployment_B.NOT) {
-    modelDeployment_B.ParamStep_ip = 0.0F;
+    modelDeployment_B.ParamStep_o = 0.0F;
   }
 
   // DataTypeConversion: '<S83>/Data Type Conversion4' incorporates:
@@ -2460,11 +2702,11 @@ void modelDeployment_step(void)
   //   MATLABSystem: '<S83>/Read Parameter4'
   //
   modelDeployment_B.DataTypeConversion4_k[0] = modelDeployment_B.ParamStep;
-  modelDeployment_B.DataTypeConversion4_k[1] = modelDeployment_B.ParamStep_i;
-  modelDeployment_B.DataTypeConversion4_k[2] = modelDeployment_B.ParamStep_l;
-  modelDeployment_B.DataTypeConversion4_k[3] = modelDeployment_B.ParamStep_o;
-  modelDeployment_B.DataTypeConversion4_k[4] = modelDeployment_B.ParamStep_o2;
-  modelDeployment_B.DataTypeConversion4_k[5] = modelDeployment_B.ParamStep_ip;
+  modelDeployment_B.DataTypeConversion4_k[1] = modelDeployment_B.ParamStep_c;
+  modelDeployment_B.DataTypeConversion4_k[2] = modelDeployment_B.ParamStep_f;
+  modelDeployment_B.DataTypeConversion4_k[3] = modelDeployment_B.ParamStep_p;
+  modelDeployment_B.DataTypeConversion4_k[4] = modelDeployment_B.ParamStep_e;
+  modelDeployment_B.DataTypeConversion4_k[5] = modelDeployment_B.ParamStep_o;
 
   // MATLABSystem: '<S83>/Read Parameter31'
   modelDeployment_B.NOT = MW_Param_Step(modelDeployment_DW.obj_mu.MW_PARAMHANDLE,
@@ -2475,37 +2717,37 @@ void modelDeployment_step(void)
 
   // MATLABSystem: '<S83>/Read Parameter27'
   modelDeployment_B.NOT = MW_Param_Step(modelDeployment_DW.obj_kz.MW_PARAMHANDLE,
-    MW_SINGLE, &modelDeployment_B.ParamStep_i);
+    MW_SINGLE, &modelDeployment_B.ParamStep_c);
   if (modelDeployment_B.NOT) {
-    modelDeployment_B.ParamStep_i = 0.0F;
+    modelDeployment_B.ParamStep_c = 0.0F;
   }
 
   // MATLABSystem: '<S83>/Read Parameter5'
   modelDeployment_B.NOT = MW_Param_Step(modelDeployment_DW.obj_bq.MW_PARAMHANDLE,
-    MW_SINGLE, &modelDeployment_B.ParamStep_l);
+    MW_SINGLE, &modelDeployment_B.ParamStep_f);
   if (modelDeployment_B.NOT) {
-    modelDeployment_B.ParamStep_l = 0.0F;
+    modelDeployment_B.ParamStep_f = 0.0F;
   }
 
   // MATLABSystem: '<S83>/Read Parameter11'
   modelDeployment_B.NOT = MW_Param_Step(modelDeployment_DW.obj_ns.MW_PARAMHANDLE,
-    MW_SINGLE, &modelDeployment_B.ParamStep_o);
+    MW_SINGLE, &modelDeployment_B.ParamStep_p);
   if (modelDeployment_B.NOT) {
-    modelDeployment_B.ParamStep_o = 0.0F;
+    modelDeployment_B.ParamStep_p = 0.0F;
   }
 
   // MATLABSystem: '<S83>/Read Parameter19'
   modelDeployment_B.NOT = MW_Param_Step(modelDeployment_DW.obj_mz.MW_PARAMHANDLE,
-    MW_SINGLE, &modelDeployment_B.ParamStep_o2);
+    MW_SINGLE, &modelDeployment_B.ParamStep_e);
   if (modelDeployment_B.NOT) {
-    modelDeployment_B.ParamStep_o2 = 0.0F;
+    modelDeployment_B.ParamStep_e = 0.0F;
   }
 
   // MATLABSystem: '<S83>/Read Parameter15'
   modelDeployment_B.NOT = MW_Param_Step(modelDeployment_DW.obj_my.MW_PARAMHANDLE,
-    MW_SINGLE, &modelDeployment_B.ParamStep_ip);
+    MW_SINGLE, &modelDeployment_B.ParamStep_o);
   if (modelDeployment_B.NOT) {
-    modelDeployment_B.ParamStep_ip = 0.0F;
+    modelDeployment_B.ParamStep_o = 0.0F;
   }
 
   // DataTypeConversion: '<S83>/Data Type Conversion5' incorporates:
@@ -2517,11 +2759,11 @@ void modelDeployment_step(void)
   //   MATLABSystem: '<S83>/Read Parameter5'
   //
   modelDeployment_B.DataTypeConversion5_d[0] = modelDeployment_B.ParamStep;
-  modelDeployment_B.DataTypeConversion5_d[1] = modelDeployment_B.ParamStep_i;
-  modelDeployment_B.DataTypeConversion5_d[2] = modelDeployment_B.ParamStep_l;
-  modelDeployment_B.DataTypeConversion5_d[3] = modelDeployment_B.ParamStep_o;
-  modelDeployment_B.DataTypeConversion5_d[4] = modelDeployment_B.ParamStep_o2;
-  modelDeployment_B.DataTypeConversion5_d[5] = modelDeployment_B.ParamStep_ip;
+  modelDeployment_B.DataTypeConversion5_d[1] = modelDeployment_B.ParamStep_c;
+  modelDeployment_B.DataTypeConversion5_d[2] = modelDeployment_B.ParamStep_f;
+  modelDeployment_B.DataTypeConversion5_d[3] = modelDeployment_B.ParamStep_p;
+  modelDeployment_B.DataTypeConversion5_d[4] = modelDeployment_B.ParamStep_e;
+  modelDeployment_B.DataTypeConversion5_d[5] = modelDeployment_B.ParamStep_o;
 
   // MATLABSystem: '<S35>/SourceBlock'
   modelDeployment_B.NOT = uORB_read_step(modelDeployment_DW.obj_m.orbMetadataObj,
@@ -2578,9 +2820,9 @@ void modelDeployment_step(void)
 
   // MATLABSystem: '<S6>/Read Parameter1'
   modelDeployment_B.NOT = MW_Param_Step(modelDeployment_DW.obj_n.MW_PARAMHANDLE,
-    MW_INT32, &modelDeployment_B.ParamStep_g);
+    MW_INT32, &modelDeployment_B.ParamStep_m);
   if (modelDeployment_B.NOT) {
-    modelDeployment_B.ParamStep_g = 0;
+    modelDeployment_B.ParamStep_m = 0;
   }
 
   // ManualSwitch: '<S6>/Manual Switch1'
@@ -2655,10 +2897,11 @@ void modelDeployment_step(void)
     //   MATLABSystem: '<S90>/Polynomial Trajectory'
     //   MATLABSystem: '<S91>/Polynomial Trajectory3'
     //   MATLABSystem: '<S93>/Polynomial Trajectory2'
+    //   MATLABSystem: '<S94>/Polynomial Trajectory3'
     //   Product: '<S104>/Product6'
     //
     modelDeployment_B.ParamStep = static_cast<real32_T>(fmod(static_cast<real_T>
-      (static_cast<real32_T>(modelDeployment_B.ParamStep_g)), 4.294967296E+9));
+      (static_cast<real32_T>(modelDeployment_B.ParamStep_m)), 4.294967296E+9));
     switch (modelDeployment_B.ParamStep < 0.0F ? -static_cast<int32_T>(
              static_cast<uint32_T>(-modelDeployment_B.ParamStep)) : static_cast<
             int32_T>(static_cast<uint32_T>(modelDeployment_B.ParamStep))) {
@@ -2672,17 +2915,17 @@ void modelDeployment_step(void)
       //
       modelDeployment_B.NOT = false;
       modelDeployment_B.p = true;
-      modelDeployment_B.ParamStep_g = 0;
+      modelDeployment_B.ParamStep_m = 0;
       exitg1 = false;
-      while ((!exitg1) && (modelDeployment_B.ParamStep_g < 60)) {
-        if (!(modelDeployment_DW.obj_f.VelocityBoundaryCondition[modelDeployment_B.ParamStep_g]
+      while ((!exitg1) && (modelDeployment_B.ParamStep_m < 60)) {
+        if (!(modelDeployment_DW.obj_f.VelocityBoundaryCondition[modelDeployment_B.ParamStep_m]
               ==
-              modelDeployment_P.PolynomialTrajectory2_VelocityB[modelDeployment_B.ParamStep_g]))
+              modelDeployment_P.PolynomialTrajectory2_VelocityB[modelDeployment_B.ParamStep_m]))
         {
           modelDeployment_B.p = false;
           exitg1 = true;
         } else {
-          modelDeployment_B.ParamStep_g++;
+          modelDeployment_B.ParamStep_m++;
         }
       }
 
@@ -2711,9 +2954,9 @@ void modelDeployment_step(void)
         }
 
         modelDeployment_DW.obj_f.PPFormUpdatedNeeded = modelDeployment_B.NOT;
-        for (modelDeployment_B.ParamStep_g = 0; modelDeployment_B.ParamStep_g <
-             5; modelDeployment_B.ParamStep_g++) {
-          modelDeployment_DW.obj_f.tunablePropertyChanged[modelDeployment_B.ParamStep_g]
+        for (modelDeployment_B.ParamStep_m = 0; modelDeployment_B.ParamStep_m <
+             5; modelDeployment_B.ParamStep_m++) {
+          modelDeployment_DW.obj_f.tunablePropertyChanged[modelDeployment_B.ParamStep_m]
             = false;
         }
       }
@@ -2724,17 +2967,17 @@ void modelDeployment_step(void)
       } else {
         modelDeployment_B.NOT = false;
         modelDeployment_B.p = true;
-        modelDeployment_B.ParamStep_g = 0;
+        modelDeployment_B.ParamStep_m = 0;
         exitg1 = false;
-        while ((!exitg1) && (modelDeployment_B.ParamStep_g < 60)) {
-          if (!(modelDeployment_P.Constant7_Value[modelDeployment_B.ParamStep_g]
+        while ((!exitg1) && (modelDeployment_B.ParamStep_m < 60)) {
+          if (!(modelDeployment_P.Constant7_Value[modelDeployment_B.ParamStep_m]
                 ==
-                modelDeployment_DW.obj_f.PrevOptInputs.f1[modelDeployment_B.ParamStep_g]))
+                modelDeployment_DW.obj_f.PrevOptInputs.f1[modelDeployment_B.ParamStep_m]))
           {
             modelDeployment_B.p = false;
             exitg1 = true;
           } else {
-            modelDeployment_B.ParamStep_g++;
+            modelDeployment_B.ParamStep_m++;
           }
         }
 
@@ -2742,17 +2985,17 @@ void modelDeployment_step(void)
           modelDeployment_B.p = false;
         } else {
           modelDeployment_B.p = true;
-          modelDeployment_B.ParamStep_g = 0;
+          modelDeployment_B.ParamStep_m = 0;
           exitg1 = false;
-          while ((!exitg1) && (modelDeployment_B.ParamStep_g < 10)) {
-            if (!(modelDeployment_P.Constant8_Value[modelDeployment_B.ParamStep_g]
+          while ((!exitg1) && (modelDeployment_B.ParamStep_m < 10)) {
+            if (!(modelDeployment_P.Constant8_Value[modelDeployment_B.ParamStep_m]
                   ==
-                  modelDeployment_DW.obj_f.PrevOptInputs.f2[modelDeployment_B.ParamStep_g]))
+                  modelDeployment_DW.obj_f.PrevOptInputs.f2[modelDeployment_B.ParamStep_m]))
             {
               modelDeployment_B.p = false;
               exitg1 = true;
             } else {
-              modelDeployment_B.ParamStep_g++;
+              modelDeployment_B.ParamStep_m++;
             }
           }
         }
@@ -2772,44 +3015,44 @@ void modelDeployment_step(void)
 
       if (guard1) {
         memset(&modelDeployment_B.coefMat_g[0], 0, 216U * sizeof(real_T));
-        for (modelDeployment_B.b_i = 0; modelDeployment_B.b_i < 9;
-             modelDeployment_B.b_i++) {
+        for (modelDeployment_B.i = 0; modelDeployment_B.i < 9;
+             modelDeployment_B.i++) {
           modelDeployment_B.Product3_g =
-            modelDeployment_P.Constant8_Value[modelDeployment_B.b_i + 1] -
-            modelDeployment_P.Constant8_Value[modelDeployment_B.b_i];
+            modelDeployment_P.Constant8_Value[modelDeployment_B.i + 1] -
+            modelDeployment_P.Constant8_Value[modelDeployment_B.i];
           for (modelDeployment_B.b_j = 0; modelDeployment_B.b_j < 6;
                modelDeployment_B.b_j++) {
-            modelDeployment_B.ParamStep_g = modelDeployment_B.b_i * 6 +
+            modelDeployment_B.ParamStep_m = modelDeployment_B.i * 6 +
               modelDeployment_B.b_j;
-            modelDeployment_B.dv11[0] =
-              modelDeployment_P.Constant7_Value[modelDeployment_B.ParamStep_g];
-            modelDeployment_B.dv12[0] =
-              modelDeployment_DW.obj_f.VelocityBoundaryCondition[modelDeployment_B.ParamStep_g];
-            modelDeployment_B.i = (modelDeployment_B.b_i + 1) * 6 +
+            modelDeployment_B.dv14[0] =
+              modelDeployment_P.Constant7_Value[modelDeployment_B.ParamStep_m];
+            modelDeployment_B.dv15[0] =
+              modelDeployment_DW.obj_f.VelocityBoundaryCondition[modelDeployment_B.ParamStep_m];
+            modelDeployment_B.i_m = (modelDeployment_B.i + 1) * 6 +
               modelDeployment_B.b_j;
-            modelDeployment_B.dv11[1] =
-              modelDeployment_P.Constant7_Value[modelDeployment_B.i];
-            modelDeployment_B.dv12[1] =
-              modelDeployment_DW.obj_f.VelocityBoundaryCondition[modelDeployment_B.i];
-            modelDeploy_generateCubicCoeffs(modelDeployment_B.dv11,
-              modelDeployment_B.dv12, modelDeployment_B.Product3_g,
-              modelDeployment_B.dv7);
-            modelDeployment_B.coefMat_g[modelDeployment_B.ParamStep_g] =
-              modelDeployment_B.dv7[0];
-            modelDeployment_B.coefMat_g[modelDeployment_B.ParamStep_g + 54] =
-              modelDeployment_B.dv7[1];
-            modelDeployment_B.coefMat_g[modelDeployment_B.ParamStep_g + 108] =
-              modelDeployment_B.dv7[2];
-            modelDeployment_B.coefMat_g[modelDeployment_B.ParamStep_g + 162] =
-              modelDeployment_B.dv7[3];
+            modelDeployment_B.dv14[1] =
+              modelDeployment_P.Constant7_Value[modelDeployment_B.i_m];
+            modelDeployment_B.dv15[1] =
+              modelDeployment_DW.obj_f.VelocityBoundaryCondition[modelDeployment_B.i_m];
+            modelDeploy_generateCubicCoeffs(modelDeployment_B.dv14,
+              modelDeployment_B.dv15, modelDeployment_B.Product3_g,
+              modelDeployment_B.dv9);
+            modelDeployment_B.coefMat_g[modelDeployment_B.ParamStep_m] =
+              modelDeployment_B.dv9[0];
+            modelDeployment_B.coefMat_g[modelDeployment_B.ParamStep_m + 54] =
+              modelDeployment_B.dv9[1];
+            modelDeployment_B.coefMat_g[modelDeployment_B.ParamStep_m + 108] =
+              modelDeployment_B.dv9[2];
+            modelDeployment_B.coefMat_g[modelDeployment_B.ParamStep_m + 162] =
+              modelDeployment_B.dv9[3];
           }
         }
 
         mo_addFlatSegmentsToPPFormParts(modelDeployment_P.Constant8_Value,
-          modelDeployment_B.coefMat_g, modelDeployment_B.modBreaks_n,
+          modelDeployment_B.coefMat_g, modelDeployment_B.modBreaks_d,
           modelDeployment_B.coefMat_p);
         PolyTrajSys_updateStoredPPForms(&modelDeployment_DW.obj_f,
-          modelDeployment_B.modBreaks_n, modelDeployment_B.coefMat_p);
+          modelDeployment_B.modBreaks_d, modelDeployment_B.coefMat_p);
         modelDeployment_DW.obj_f.PPFormUpdatedNeeded = false;
       }
 
@@ -2891,8 +3134,7 @@ void modelDeployment_step(void)
       // MATLABSystem: '<S93>/Polynomial Trajectory2'
       modelDeployment_ppval(modelDeployment_DW.obj_f.PPDStruct.breaks,
                             modelDeployment_DW.obj_f.PPDStruct.coefs,
-                            modelDeployment_B.Product1_or,
-                            modelDeployment_B.pose_d);
+                            modelDeployment_B.Product1_or, modelDeployment_B.dv6);
 
       // Merge: '<S88>/Merge' incorporates:
       //   Constant: '<S93>/Constant6'
@@ -2902,18 +3144,18 @@ void modelDeployment_step(void)
       //   Product: '<S107>/Product3'
       //   SignalConversion generated from: '<S93>/yawturn'
 
-      modelDeployment_B.Merge[6] = modelDeployment_B.pose_d[0];
+      modelDeployment_B.Merge[6] = modelDeployment_B.dv6[0];
       modelDeployment_B.Merge[9] = 0.0;
-      modelDeployment_B.Merge[7] = modelDeployment_B.pose_d[1];
+      modelDeployment_B.Merge[7] = modelDeployment_B.dv6[1];
       modelDeployment_B.Merge[10] = 0.0;
-      modelDeployment_B.Merge[8] = modelDeployment_B.pose_d[2];
+      modelDeployment_B.Merge[8] = modelDeployment_B.dv6[2];
       modelDeployment_B.Merge[11] = modelDeployment_B.Product3_g;
-      for (modelDeployment_B.ParamStep_g = 0; modelDeployment_B.ParamStep_g < 6;
-           modelDeployment_B.ParamStep_g++) {
-        modelDeployment_B.Merge[modelDeployment_B.ParamStep_g] =
-          modelDeployment_B.PolynomialTrajectory2_o1[modelDeployment_B.ParamStep_g];
-        modelDeployment_B.Merge[modelDeployment_B.ParamStep_g + 12] =
-          modelDeployment_P.Constant6_Value[modelDeployment_B.ParamStep_g];
+      for (modelDeployment_B.ParamStep_m = 0; modelDeployment_B.ParamStep_m < 6;
+           modelDeployment_B.ParamStep_m++) {
+        modelDeployment_B.Merge[modelDeployment_B.ParamStep_m] =
+          modelDeployment_B.PolynomialTrajectory2_o1[modelDeployment_B.ParamStep_m];
+        modelDeployment_B.Merge[modelDeployment_B.ParamStep_m + 12] =
+          modelDeployment_P.Constant6_Value[modelDeployment_B.ParamStep_m];
       }
 
       modelDeployment_B.Merge[18] = modelDeployment_B.qx_c[0] /
@@ -2945,10 +3187,10 @@ void modelDeployment_step(void)
         modelDeployment_B.PolynomialTrajectory2_o1[5] = 0.0;
       } else if ((modelDeployment_B.t_reset >= 3.0) &&
                  (modelDeployment_B.t_reset < 6.0)) {
-        for (modelDeployment_B.ParamStep_g = 0; modelDeployment_B.ParamStep_g <
-             6; modelDeployment_B.ParamStep_g++) {
-          modelDeployment_B.PolynomialTrajectory2_o1[modelDeployment_B.ParamStep_g]
-            = b[modelDeployment_B.ParamStep_g];
+        for (modelDeployment_B.ParamStep_m = 0; modelDeployment_B.ParamStep_m <
+             6; modelDeployment_B.ParamStep_m++) {
+          modelDeployment_B.PolynomialTrajectory2_o1[modelDeployment_B.ParamStep_m]
+            = b[modelDeployment_B.ParamStep_m];
         }
       } else if ((modelDeployment_B.t_reset >= 6.0) &&
                  (modelDeployment_B.t_reset < 8.0)) {
@@ -2972,10 +3214,10 @@ void modelDeployment_step(void)
         modelDeployment_B.PolynomialTrajectory2_o1[5] = 0.0;
       } else if ((modelDeployment_B.t_reset >= 33.0) &&
                  (modelDeployment_B.t_reset < 36.0)) {
-        for (modelDeployment_B.ParamStep_g = 0; modelDeployment_B.ParamStep_g <
-             6; modelDeployment_B.ParamStep_g++) {
-          modelDeployment_B.PolynomialTrajectory2_o1[modelDeployment_B.ParamStep_g]
-            = c[modelDeployment_B.ParamStep_g];
+        for (modelDeployment_B.ParamStep_m = 0; modelDeployment_B.ParamStep_m <
+             6; modelDeployment_B.ParamStep_m++) {
+          modelDeployment_B.PolynomialTrajectory2_o1[modelDeployment_B.ParamStep_m]
+            = c[modelDeployment_B.ParamStep_m];
         }
       } else if ((modelDeployment_B.t_reset >= 36.0) &&
                  (modelDeployment_B.t_reset < 39.0)) {
@@ -2987,10 +3229,10 @@ void modelDeployment_step(void)
         modelDeployment_B.PolynomialTrajectory2_o1[4] = 0.0;
         modelDeployment_B.PolynomialTrajectory2_o1[5] = 0.0;
       } else {
-        for (modelDeployment_B.ParamStep_g = 0; modelDeployment_B.ParamStep_g <
-             6; modelDeployment_B.ParamStep_g++) {
-          modelDeployment_B.PolynomialTrajectory2_o1[modelDeployment_B.ParamStep_g]
-            = b[modelDeployment_B.ParamStep_g];
+        for (modelDeployment_B.ParamStep_m = 0; modelDeployment_B.ParamStep_m <
+             6; modelDeployment_B.ParamStep_m++) {
+          modelDeployment_B.PolynomialTrajectory2_o1[modelDeployment_B.ParamStep_m]
+            = b[modelDeployment_B.ParamStep_m];
         }
       }
 
@@ -3093,17 +3335,17 @@ void modelDeployment_step(void)
       //
       modelDeployment_B.NOT = false;
       modelDeployment_B.p = true;
-      modelDeployment_B.ParamStep_g = 0;
+      modelDeployment_B.ParamStep_m = 0;
       exitg1 = false;
-      while ((!exitg1) && (modelDeployment_B.ParamStep_g < 126)) {
-        if (!(modelDeployment_DW.obj.VelocityBoundaryCondition[modelDeployment_B.ParamStep_g]
+      while ((!exitg1) && (modelDeployment_B.ParamStep_m < 126)) {
+        if (!(modelDeployment_DW.obj.VelocityBoundaryCondition[modelDeployment_B.ParamStep_m]
               ==
-              modelDeployment_P.PolynomialTrajectory3_VelocityB[modelDeployment_B.ParamStep_g]))
+              modelDeployment_P.PolynomialTrajectory3_VelocityB[modelDeployment_B.ParamStep_m]))
         {
           modelDeployment_B.p = false;
           exitg1 = true;
         } else {
-          modelDeployment_B.ParamStep_g++;
+          modelDeployment_B.ParamStep_m++;
         }
       }
 
@@ -3124,17 +3366,17 @@ void modelDeployment_step(void)
 
       modelDeployment_B.NOT = false;
       modelDeployment_B.p = true;
-      modelDeployment_B.ParamStep_g = 0;
+      modelDeployment_B.ParamStep_m = 0;
       exitg1 = false;
-      while ((!exitg1) && (modelDeployment_B.ParamStep_g < 126)) {
-        if (!(modelDeployment_DW.obj.AccelerationBoundaryCondition[modelDeployment_B.ParamStep_g]
+      while ((!exitg1) && (modelDeployment_B.ParamStep_m < 126)) {
+        if (!(modelDeployment_DW.obj.AccelerationBoundaryCondition[modelDeployment_B.ParamStep_m]
               ==
-              modelDeployment_P.PolynomialTrajectory3_Accelerat[modelDeployment_B.ParamStep_g]))
+              modelDeployment_P.PolynomialTrajectory3_Accelerat[modelDeployment_B.ParamStep_m]))
         {
           modelDeployment_B.p = false;
           exitg1 = true;
         } else {
-          modelDeployment_B.ParamStep_g++;
+          modelDeployment_B.ParamStep_m++;
         }
       }
 
@@ -3163,9 +3405,9 @@ void modelDeployment_step(void)
         }
 
         modelDeployment_DW.obj.PPFormUpdatedNeeded = modelDeployment_B.NOT;
-        for (modelDeployment_B.ParamStep_g = 0; modelDeployment_B.ParamStep_g <
-             5; modelDeployment_B.ParamStep_g++) {
-          modelDeployment_DW.obj.tunablePropertyChanged[modelDeployment_B.ParamStep_g]
+        for (modelDeployment_B.ParamStep_m = 0; modelDeployment_B.ParamStep_m <
+             5; modelDeployment_B.ParamStep_m++) {
+          modelDeployment_DW.obj.tunablePropertyChanged[modelDeployment_B.ParamStep_m]
             = false;
         }
       }
@@ -3176,17 +3418,17 @@ void modelDeployment_step(void)
       } else {
         modelDeployment_B.NOT = false;
         modelDeployment_B.p = true;
-        modelDeployment_B.ParamStep_g = 0;
+        modelDeployment_B.ParamStep_m = 0;
         exitg1 = false;
-        while ((!exitg1) && (modelDeployment_B.ParamStep_g < 126)) {
-          if (!(modelDeployment_P.Constant10_Value[modelDeployment_B.ParamStep_g]
+        while ((!exitg1) && (modelDeployment_B.ParamStep_m < 126)) {
+          if (!(modelDeployment_P.Constant10_Value[modelDeployment_B.ParamStep_m]
                 ==
-                modelDeployment_DW.obj.PrevOptInputs.f1[modelDeployment_B.ParamStep_g]))
+                modelDeployment_DW.obj.PrevOptInputs.f1[modelDeployment_B.ParamStep_m]))
           {
             modelDeployment_B.p = false;
             exitg1 = true;
           } else {
-            modelDeployment_B.ParamStep_g++;
+            modelDeployment_B.ParamStep_m++;
           }
         }
 
@@ -3194,17 +3436,17 @@ void modelDeployment_step(void)
           modelDeployment_B.p = false;
         } else {
           modelDeployment_B.p = true;
-          modelDeployment_B.ParamStep_g = 0;
+          modelDeployment_B.ParamStep_m = 0;
           exitg1 = false;
-          while ((!exitg1) && (modelDeployment_B.ParamStep_g < 21)) {
-            if (!(modelDeployment_P.Constant11_Value[modelDeployment_B.ParamStep_g]
+          while ((!exitg1) && (modelDeployment_B.ParamStep_m < 21)) {
+            if (!(modelDeployment_P.Constant11_Value[modelDeployment_B.ParamStep_m]
                   ==
-                  modelDeployment_DW.obj.PrevOptInputs.f2[modelDeployment_B.ParamStep_g]))
+                  modelDeployment_DW.obj.PrevOptInputs.f2[modelDeployment_B.ParamStep_m]))
             {
               modelDeployment_B.p = false;
               exitg1 = true;
             } else {
-              modelDeployment_B.ParamStep_g++;
+              modelDeployment_B.ParamStep_m++;
             }
           }
         }
@@ -3224,37 +3466,37 @@ void modelDeployment_step(void)
 
       if (guard1) {
         memset(&modelDeployment_B.coefMat[0], 0, 720U * sizeof(real_T));
-        for (modelDeployment_B.b_i = 0; modelDeployment_B.b_i < 20;
-             modelDeployment_B.b_i++) {
+        for (modelDeployment_B.i = 0; modelDeployment_B.i < 20;
+             modelDeployment_B.i++) {
           modelDeployment_B.Product3_g =
-            modelDeployment_P.Constant11_Value[modelDeployment_B.b_i + 1] -
-            modelDeployment_P.Constant11_Value[modelDeployment_B.b_i];
+            modelDeployment_P.Constant11_Value[modelDeployment_B.i + 1] -
+            modelDeployment_P.Constant11_Value[modelDeployment_B.i];
           for (modelDeployment_B.b_j = 0; modelDeployment_B.b_j < 6;
                modelDeployment_B.b_j++) {
-            modelDeployment_B.ParamStep_g = modelDeployment_B.b_i * 6 +
+            modelDeployment_B.ParamStep_m = modelDeployment_B.i * 6 +
               modelDeployment_B.b_j;
-            modelDeployment_B.dv11[0] =
-              modelDeployment_P.Constant10_Value[modelDeployment_B.ParamStep_g];
-            modelDeployment_B.dv12[0] =
-              modelDeployment_DW.obj.VelocityBoundaryCondition[modelDeployment_B.ParamStep_g];
-            modelDeployment_B.dv13[0] =
-              modelDeployment_DW.obj.AccelerationBoundaryCondition[modelDeployment_B.ParamStep_g];
-            modelDeployment_B.i = (modelDeployment_B.b_i + 1) * 6 +
+            modelDeployment_B.dv14[0] =
+              modelDeployment_P.Constant10_Value[modelDeployment_B.ParamStep_m];
+            modelDeployment_B.dv15[0] =
+              modelDeployment_DW.obj.VelocityBoundaryCondition[modelDeployment_B.ParamStep_m];
+            modelDeployment_B.dv16[0] =
+              modelDeployment_DW.obj.AccelerationBoundaryCondition[modelDeployment_B.ParamStep_m];
+            modelDeployment_B.i_m = (modelDeployment_B.i + 1) * 6 +
               modelDeployment_B.b_j;
-            modelDeployment_B.dv11[1] =
-              modelDeployment_P.Constant10_Value[modelDeployment_B.i];
-            modelDeployment_B.dv12[1] =
-              modelDeployment_DW.obj.VelocityBoundaryCondition[modelDeployment_B.i];
-            modelDeployment_B.dv13[1] =
-              modelDeployment_DW.obj.AccelerationBoundaryCondition[modelDeployment_B.i];
-            modelDepl_generateQuinticCoeffs(modelDeployment_B.dv11,
-              modelDeployment_B.dv12, modelDeployment_B.dv13,
-              modelDeployment_B.Product3_g, modelDeployment_B.pose_d);
-            for (modelDeployment_B.i = 0; modelDeployment_B.i < 6;
-                 modelDeployment_B.i++) {
-              modelDeployment_B.coefMat[modelDeployment_B.ParamStep_g + 120 *
-                modelDeployment_B.i] =
-                modelDeployment_B.pose_d[modelDeployment_B.i];
+            modelDeployment_B.dv14[1] =
+              modelDeployment_P.Constant10_Value[modelDeployment_B.i_m];
+            modelDeployment_B.dv15[1] =
+              modelDeployment_DW.obj.VelocityBoundaryCondition[modelDeployment_B.i_m];
+            modelDeployment_B.dv16[1] =
+              modelDeployment_DW.obj.AccelerationBoundaryCondition[modelDeployment_B.i_m];
+            modelDepl_generateQuinticCoeffs(modelDeployment_B.dv14,
+              modelDeployment_B.dv15, modelDeployment_B.dv16,
+              modelDeployment_B.Product3_g, modelDeployment_B.dv6);
+            for (modelDeployment_B.i_m = 0; modelDeployment_B.i_m < 6;
+                 modelDeployment_B.i_m++) {
+              modelDeployment_B.coefMat[modelDeployment_B.ParamStep_m + 120 *
+                modelDeployment_B.i_m] =
+                modelDeployment_B.dv6[modelDeployment_B.i_m];
             }
           }
         }
@@ -3330,19 +3572,19 @@ void modelDeployment_step(void)
       // MATLABSystem: '<S91>/Polynomial Trajectory3'
       modelDeployment_ppval_f(modelDeployment_DW.obj.PPDStruct.breaks,
         modelDeployment_DW.obj.PPDStruct.coefs, modelDeployment_B.Product1_or,
-        modelDeployment_B.pose_d);
-      for (modelDeployment_B.ParamStep_g = 0; modelDeployment_B.ParamStep_g < 6;
-           modelDeployment_B.ParamStep_g++) {
+        modelDeployment_B.dv6);
+      for (modelDeployment_B.ParamStep_m = 0; modelDeployment_B.ParamStep_m < 6;
+           modelDeployment_B.ParamStep_m++) {
         // Merge: '<S88>/Merge' incorporates:
         //   Constant: '<S91>/Constant6'
         //   SignalConversion generated from: '<S91>/rollpitch'
 
-        modelDeployment_B.Merge[modelDeployment_B.ParamStep_g] =
-          modelDeployment_B.PolynomialTrajectory2_o1[modelDeployment_B.ParamStep_g];
-        modelDeployment_B.Merge[modelDeployment_B.ParamStep_g + 6] =
-          modelDeployment_B.pose_d[modelDeployment_B.ParamStep_g];
-        modelDeployment_B.Merge[modelDeployment_B.ParamStep_g + 12] =
-          modelDeployment_P.Constant6_Value_a[modelDeployment_B.ParamStep_g];
+        modelDeployment_B.Merge[modelDeployment_B.ParamStep_m] =
+          modelDeployment_B.PolynomialTrajectory2_o1[modelDeployment_B.ParamStep_m];
+        modelDeployment_B.Merge[modelDeployment_B.ParamStep_m + 6] =
+          modelDeployment_B.dv6[modelDeployment_B.ParamStep_m];
+        modelDeployment_B.Merge[modelDeployment_B.ParamStep_m + 12] =
+          modelDeployment_P.Constant6_Value_a[modelDeployment_B.ParamStep_m];
       }
 
       // Merge: '<S88>/Merge' incorporates:
@@ -3374,17 +3616,17 @@ void modelDeployment_step(void)
       //
       modelDeployment_B.NOT = false;
       modelDeployment_B.p = true;
-      modelDeployment_B.ParamStep_g = 0;
+      modelDeployment_B.ParamStep_m = 0;
       exitg1 = false;
-      while ((!exitg1) && (modelDeployment_B.ParamStep_g < 36)) {
-        if (!(modelDeployment_DW.obj_fs.VelocityBoundaryCondition[modelDeployment_B.ParamStep_g]
+      while ((!exitg1) && (modelDeployment_B.ParamStep_m < 36)) {
+        if (!(modelDeployment_DW.obj_fs.VelocityBoundaryCondition[modelDeployment_B.ParamStep_m]
               ==
-              modelDeployment_P.PolynomialTrajectory_VelocityBo[modelDeployment_B.ParamStep_g]))
+              modelDeployment_P.PolynomialTrajectory_VelocityBo[modelDeployment_B.ParamStep_m]))
         {
           modelDeployment_B.p = false;
           exitg1 = true;
         } else {
-          modelDeployment_B.ParamStep_g++;
+          modelDeployment_B.ParamStep_m++;
         }
       }
 
@@ -3413,9 +3655,9 @@ void modelDeployment_step(void)
         }
 
         modelDeployment_DW.obj_fs.PPFormUpdatedNeeded = modelDeployment_B.NOT;
-        for (modelDeployment_B.ParamStep_g = 0; modelDeployment_B.ParamStep_g <
-             5; modelDeployment_B.ParamStep_g++) {
-          modelDeployment_DW.obj_fs.tunablePropertyChanged[modelDeployment_B.ParamStep_g]
+        for (modelDeployment_B.ParamStep_m = 0; modelDeployment_B.ParamStep_m <
+             5; modelDeployment_B.ParamStep_m++) {
+          modelDeployment_DW.obj_fs.tunablePropertyChanged[modelDeployment_B.ParamStep_m]
             = false;
         }
       }
@@ -3426,17 +3668,17 @@ void modelDeployment_step(void)
       } else {
         modelDeployment_B.NOT = false;
         modelDeployment_B.p = true;
-        modelDeployment_B.ParamStep_g = 0;
+        modelDeployment_B.ParamStep_m = 0;
         exitg1 = false;
-        while ((!exitg1) && (modelDeployment_B.ParamStep_g < 36)) {
-          if (!(modelDeployment_P.Constant1_Value_f[modelDeployment_B.ParamStep_g]
+        while ((!exitg1) && (modelDeployment_B.ParamStep_m < 36)) {
+          if (!(modelDeployment_P.Constant1_Value_f[modelDeployment_B.ParamStep_m]
                 ==
-                modelDeployment_DW.obj_fs.PrevOptInputs.f1[modelDeployment_B.ParamStep_g]))
+                modelDeployment_DW.obj_fs.PrevOptInputs.f1[modelDeployment_B.ParamStep_m]))
           {
             modelDeployment_B.p = false;
             exitg1 = true;
           } else {
-            modelDeployment_B.ParamStep_g++;
+            modelDeployment_B.ParamStep_m++;
           }
         }
 
@@ -3444,17 +3686,17 @@ void modelDeployment_step(void)
           modelDeployment_B.p = false;
         } else {
           modelDeployment_B.p = true;
-          modelDeployment_B.ParamStep_g = 0;
+          modelDeployment_B.ParamStep_m = 0;
           exitg1 = false;
-          while ((!exitg1) && (modelDeployment_B.ParamStep_g < 6)) {
-            if (!(modelDeployment_P.Constant4_Value[modelDeployment_B.ParamStep_g]
+          while ((!exitg1) && (modelDeployment_B.ParamStep_m < 6)) {
+            if (!(modelDeployment_P.Constant4_Value[modelDeployment_B.ParamStep_m]
                   ==
-                  modelDeployment_DW.obj_fs.PrevOptInputs.f2[modelDeployment_B.ParamStep_g]))
+                  modelDeployment_DW.obj_fs.PrevOptInputs.f2[modelDeployment_B.ParamStep_m]))
             {
               modelDeployment_B.p = false;
               exitg1 = true;
             } else {
-              modelDeployment_B.ParamStep_g++;
+              modelDeployment_B.ParamStep_m++;
             }
           }
         }
@@ -3478,44 +3720,44 @@ void modelDeployment_step(void)
 
       if (guard1) {
         memset(&modelDeployment_B.coefMat_j[0], 0, 120U * sizeof(real_T));
-        for (modelDeployment_B.b_i = 0; modelDeployment_B.b_i < 5;
-             modelDeployment_B.b_i++) {
+        for (modelDeployment_B.i = 0; modelDeployment_B.i < 5;
+             modelDeployment_B.i++) {
           modelDeployment_B.Product3_g =
-            modelDeployment_P.Constant4_Value[modelDeployment_B.b_i + 1] -
-            modelDeployment_P.Constant4_Value[modelDeployment_B.b_i];
+            modelDeployment_P.Constant4_Value[modelDeployment_B.i + 1] -
+            modelDeployment_P.Constant4_Value[modelDeployment_B.i];
           for (modelDeployment_B.b_j = 0; modelDeployment_B.b_j < 6;
                modelDeployment_B.b_j++) {
-            modelDeployment_B.ParamStep_g = modelDeployment_B.b_i * 6 +
+            modelDeployment_B.ParamStep_m = modelDeployment_B.i * 6 +
               modelDeployment_B.b_j;
-            modelDeployment_B.dv11[0] =
-              modelDeployment_P.Constant1_Value_f[modelDeployment_B.ParamStep_g];
-            modelDeployment_B.dv12[0] =
-              modelDeployment_DW.obj_fs.VelocityBoundaryCondition[modelDeployment_B.ParamStep_g];
-            modelDeployment_B.i = (modelDeployment_B.b_i + 1) * 6 +
+            modelDeployment_B.dv14[0] =
+              modelDeployment_P.Constant1_Value_f[modelDeployment_B.ParamStep_m];
+            modelDeployment_B.dv15[0] =
+              modelDeployment_DW.obj_fs.VelocityBoundaryCondition[modelDeployment_B.ParamStep_m];
+            modelDeployment_B.i_m = (modelDeployment_B.i + 1) * 6 +
               modelDeployment_B.b_j;
-            modelDeployment_B.dv11[1] =
-              modelDeployment_P.Constant1_Value_f[modelDeployment_B.i];
-            modelDeployment_B.dv12[1] =
-              modelDeployment_DW.obj_fs.VelocityBoundaryCondition[modelDeployment_B.i];
-            modelDeploy_generateCubicCoeffs(modelDeployment_B.dv11,
-              modelDeployment_B.dv12, modelDeployment_B.Product3_g,
-              modelDeployment_B.dv7);
-            modelDeployment_B.coefMat_j[modelDeployment_B.ParamStep_g] =
-              modelDeployment_B.dv7[0];
-            modelDeployment_B.coefMat_j[modelDeployment_B.ParamStep_g + 30] =
-              modelDeployment_B.dv7[1];
-            modelDeployment_B.coefMat_j[modelDeployment_B.ParamStep_g + 60] =
-              modelDeployment_B.dv7[2];
-            modelDeployment_B.coefMat_j[modelDeployment_B.ParamStep_g + 90] =
-              modelDeployment_B.dv7[3];
+            modelDeployment_B.dv14[1] =
+              modelDeployment_P.Constant1_Value_f[modelDeployment_B.i_m];
+            modelDeployment_B.dv15[1] =
+              modelDeployment_DW.obj_fs.VelocityBoundaryCondition[modelDeployment_B.i_m];
+            modelDeploy_generateCubicCoeffs(modelDeployment_B.dv14,
+              modelDeployment_B.dv15, modelDeployment_B.Product3_g,
+              modelDeployment_B.dv9);
+            modelDeployment_B.coefMat_j[modelDeployment_B.ParamStep_m] =
+              modelDeployment_B.dv9[0];
+            modelDeployment_B.coefMat_j[modelDeployment_B.ParamStep_m + 30] =
+              modelDeployment_B.dv9[1];
+            modelDeployment_B.coefMat_j[modelDeployment_B.ParamStep_m + 60] =
+              modelDeployment_B.dv9[2];
+            modelDeployment_B.coefMat_j[modelDeployment_B.ParamStep_m + 90] =
+              modelDeployment_B.dv9[3];
           }
         }
 
         addFlatSegmentsToPPFormParts_fj(modelDeployment_P.Constant4_Value,
-          modelDeployment_B.coefMat_j, modelDeployment_B.modBreaks_h,
+          modelDeployment_B.coefMat_j, modelDeployment_B.coeffMat,
           modelDeployment_B.modCoeffs_n);
         PolyTrajSys_updateStoredPPFo_fj(&modelDeployment_DW.obj_fs,
-          modelDeployment_B.modBreaks_h, modelDeployment_B.modCoeffs_n);
+          modelDeployment_B.coeffMat, modelDeployment_B.modCoeffs_n);
         modelDeployment_DW.obj_fs.PPFormUpdatedNeeded = false;
       }
 
@@ -3533,22 +3775,22 @@ void modelDeployment_step(void)
       // MATLABSystem: '<S90>/Polynomial Trajectory'
       modelDeployment_ppval_fj(modelDeployment_DW.obj_fs.PPStruct.breaks,
         modelDeployment_DW.obj_fs.PPStruct.coefs, modelDeployment_B.t_reset,
-        modelDeployment_B.pose_d);
+        modelDeployment_B.dv6);
       modelDeployment_ppval_fj(modelDeployment_DW.obj_fs.PPDStruct.breaks,
         modelDeployment_DW.obj_fs.PPDStruct.coefs, modelDeployment_B.Product1_or,
         modelDeployment_B.PolynomialTrajectory2_o1);
-      for (modelDeployment_B.ParamStep_g = 0; modelDeployment_B.ParamStep_g < 6;
-           modelDeployment_B.ParamStep_g++) {
+      for (modelDeployment_B.ParamStep_m = 0; modelDeployment_B.ParamStep_m < 6;
+           modelDeployment_B.ParamStep_m++) {
         // Merge: '<S88>/Merge' incorporates:
         //   Constant: '<S90>/Constant'
         //   SignalConversion generated from: '<S90>/take-off'
 
-        modelDeployment_B.Merge[modelDeployment_B.ParamStep_g] =
-          modelDeployment_B.pose_d[modelDeployment_B.ParamStep_g];
-        modelDeployment_B.Merge[modelDeployment_B.ParamStep_g + 6] =
-          modelDeployment_B.PolynomialTrajectory2_o1[modelDeployment_B.ParamStep_g];
-        modelDeployment_B.Merge[modelDeployment_B.ParamStep_g + 12] =
-          modelDeployment_P.Constant_Value_c[modelDeployment_B.ParamStep_g];
+        modelDeployment_B.Merge[modelDeployment_B.ParamStep_m] =
+          modelDeployment_B.dv6[modelDeployment_B.ParamStep_m];
+        modelDeployment_B.Merge[modelDeployment_B.ParamStep_m + 6] =
+          modelDeployment_B.PolynomialTrajectory2_o1[modelDeployment_B.ParamStep_m];
+        modelDeployment_B.Merge[modelDeployment_B.ParamStep_m + 12] =
+          modelDeployment_P.Constant_Value_c[modelDeployment_B.ParamStep_m];
       }
 
       // Merge: '<S88>/Merge' incorporates:
@@ -3573,17 +3815,17 @@ void modelDeployment_step(void)
       //
       modelDeployment_B.NOT = false;
       modelDeployment_B.p = true;
-      modelDeployment_B.ParamStep_g = 0;
+      modelDeployment_B.ParamStep_m = 0;
       exitg1 = false;
-      while ((!exitg1) && (modelDeployment_B.ParamStep_g < 72)) {
-        if (!(modelDeployment_DW.obj_c.VelocityBoundaryCondition[modelDeployment_B.ParamStep_g]
+      while ((!exitg1) && (modelDeployment_B.ParamStep_m < 72)) {
+        if (!(modelDeployment_DW.obj_c.VelocityBoundaryCondition[modelDeployment_B.ParamStep_m]
               ==
-              modelDeployment_P.PolynomialTrajectory3_Velocit_e[modelDeployment_B.ParamStep_g]))
+              modelDeployment_P.PolynomialTrajectory3_Velocit_e[modelDeployment_B.ParamStep_m]))
         {
           modelDeployment_B.p = false;
           exitg1 = true;
         } else {
-          modelDeployment_B.ParamStep_g++;
+          modelDeployment_B.ParamStep_m++;
         }
       }
 
@@ -3612,9 +3854,9 @@ void modelDeployment_step(void)
         }
 
         modelDeployment_DW.obj_c.PPFormUpdatedNeeded = modelDeployment_B.NOT;
-        for (modelDeployment_B.ParamStep_g = 0; modelDeployment_B.ParamStep_g <
-             5; modelDeployment_B.ParamStep_g++) {
-          modelDeployment_DW.obj_c.tunablePropertyChanged[modelDeployment_B.ParamStep_g]
+        for (modelDeployment_B.ParamStep_m = 0; modelDeployment_B.ParamStep_m <
+             5; modelDeployment_B.ParamStep_m++) {
+          modelDeployment_DW.obj_c.tunablePropertyChanged[modelDeployment_B.ParamStep_m]
             = false;
         }
       }
@@ -3625,17 +3867,17 @@ void modelDeployment_step(void)
       } else {
         modelDeployment_B.NOT = false;
         modelDeployment_B.p = true;
-        modelDeployment_B.ParamStep_g = 0;
+        modelDeployment_B.ParamStep_m = 0;
         exitg1 = false;
-        while ((!exitg1) && (modelDeployment_B.ParamStep_g < 72)) {
-          if (!(modelDeployment_P.Constant10_Value_o[modelDeployment_B.ParamStep_g]
+        while ((!exitg1) && (modelDeployment_B.ParamStep_m < 72)) {
+          if (!(modelDeployment_P.Constant10_Value_o[modelDeployment_B.ParamStep_m]
                 ==
-                modelDeployment_DW.obj_c.PrevOptInputs.f1[modelDeployment_B.ParamStep_g]))
+                modelDeployment_DW.obj_c.PrevOptInputs.f1[modelDeployment_B.ParamStep_m]))
           {
             modelDeployment_B.p = false;
             exitg1 = true;
           } else {
-            modelDeployment_B.ParamStep_g++;
+            modelDeployment_B.ParamStep_m++;
           }
         }
 
@@ -3643,17 +3885,17 @@ void modelDeployment_step(void)
           modelDeployment_B.p = false;
         } else {
           modelDeployment_B.p = true;
-          modelDeployment_B.ParamStep_g = 0;
+          modelDeployment_B.ParamStep_m = 0;
           exitg1 = false;
-          while ((!exitg1) && (modelDeployment_B.ParamStep_g < 12)) {
-            if (!(modelDeployment_P.Constant11_Value_g[modelDeployment_B.ParamStep_g]
+          while ((!exitg1) && (modelDeployment_B.ParamStep_m < 12)) {
+            if (!(modelDeployment_P.Constant11_Value_g[modelDeployment_B.ParamStep_m]
                   ==
-                  modelDeployment_DW.obj_c.PrevOptInputs.f2[modelDeployment_B.ParamStep_g]))
+                  modelDeployment_DW.obj_c.PrevOptInputs.f2[modelDeployment_B.ParamStep_m]))
             {
               modelDeployment_B.p = false;
               exitg1 = true;
             } else {
-              modelDeployment_B.ParamStep_g++;
+              modelDeployment_B.ParamStep_m++;
             }
           }
         }
@@ -3673,36 +3915,36 @@ void modelDeployment_step(void)
 
       if (guard1) {
         memset(&modelDeployment_B.coefMat_p[0], 0, 264U * sizeof(real_T));
-        for (modelDeployment_B.b_i = 0; modelDeployment_B.b_i < 11;
-             modelDeployment_B.b_i++) {
+        for (modelDeployment_B.i = 0; modelDeployment_B.i < 11;
+             modelDeployment_B.i++) {
           modelDeployment_B.Product3_g =
-            modelDeployment_P.Constant11_Value_g[modelDeployment_B.b_i + 1] -
-            modelDeployment_P.Constant11_Value_g[modelDeployment_B.b_i];
+            modelDeployment_P.Constant11_Value_g[modelDeployment_B.i + 1] -
+            modelDeployment_P.Constant11_Value_g[modelDeployment_B.i];
           for (modelDeployment_B.b_j = 0; modelDeployment_B.b_j < 6;
                modelDeployment_B.b_j++) {
-            modelDeployment_B.ParamStep_g = modelDeployment_B.b_i * 6 +
+            modelDeployment_B.ParamStep_m = modelDeployment_B.i * 6 +
               modelDeployment_B.b_j;
-            modelDeployment_B.dv11[0] =
-              modelDeployment_P.Constant10_Value_o[modelDeployment_B.ParamStep_g];
-            modelDeployment_B.dv12[0] =
-              modelDeployment_DW.obj_c.VelocityBoundaryCondition[modelDeployment_B.ParamStep_g];
-            modelDeployment_B.i = (modelDeployment_B.b_i + 1) * 6 +
+            modelDeployment_B.dv14[0] =
+              modelDeployment_P.Constant10_Value_o[modelDeployment_B.ParamStep_m];
+            modelDeployment_B.dv15[0] =
+              modelDeployment_DW.obj_c.VelocityBoundaryCondition[modelDeployment_B.ParamStep_m];
+            modelDeployment_B.i_m = (modelDeployment_B.i + 1) * 6 +
               modelDeployment_B.b_j;
-            modelDeployment_B.dv11[1] =
-              modelDeployment_P.Constant10_Value_o[modelDeployment_B.i];
-            modelDeployment_B.dv12[1] =
-              modelDeployment_DW.obj_c.VelocityBoundaryCondition[modelDeployment_B.i];
-            modelDeploy_generateCubicCoeffs(modelDeployment_B.dv11,
-              modelDeployment_B.dv12, modelDeployment_B.Product3_g,
-              modelDeployment_B.dv7);
-            modelDeployment_B.coefMat_p[modelDeployment_B.ParamStep_g] =
-              modelDeployment_B.dv7[0];
-            modelDeployment_B.coefMat_p[modelDeployment_B.ParamStep_g + 66] =
-              modelDeployment_B.dv7[1];
-            modelDeployment_B.coefMat_p[modelDeployment_B.ParamStep_g + 132] =
-              modelDeployment_B.dv7[2];
-            modelDeployment_B.coefMat_p[modelDeployment_B.ParamStep_g + 198] =
-              modelDeployment_B.dv7[3];
+            modelDeployment_B.dv14[1] =
+              modelDeployment_P.Constant10_Value_o[modelDeployment_B.i_m];
+            modelDeployment_B.dv15[1] =
+              modelDeployment_DW.obj_c.VelocityBoundaryCondition[modelDeployment_B.i_m];
+            modelDeploy_generateCubicCoeffs(modelDeployment_B.dv14,
+              modelDeployment_B.dv15, modelDeployment_B.Product3_g,
+              modelDeployment_B.dv9);
+            modelDeployment_B.coefMat_p[modelDeployment_B.ParamStep_m] =
+              modelDeployment_B.dv9[0];
+            modelDeployment_B.coefMat_p[modelDeployment_B.ParamStep_m + 66] =
+              modelDeployment_B.dv9[1];
+            modelDeployment_B.coefMat_p[modelDeployment_B.ParamStep_m + 132] =
+              modelDeployment_B.dv9[2];
+            modelDeployment_B.coefMat_p[modelDeployment_B.ParamStep_m + 198] =
+              modelDeployment_B.dv9[3];
           }
         }
 
@@ -3728,22 +3970,22 @@ void modelDeployment_step(void)
       // MATLABSystem: '<S89>/Polynomial Trajectory3'
       modelDeployment_ppval_fjc(modelDeployment_DW.obj_c.PPStruct.breaks,
         modelDeployment_DW.obj_c.PPStruct.coefs, modelDeployment_B.t_reset,
-        modelDeployment_B.pose_d);
+        modelDeployment_B.dv6);
       modelDeployment_ppval_fjc(modelDeployment_DW.obj_c.PPDStruct.breaks,
         modelDeployment_DW.obj_c.PPDStruct.coefs, modelDeployment_B.Product1_or,
         modelDeployment_B.PolynomialTrajectory2_o1);
-      for (modelDeployment_B.ParamStep_g = 0; modelDeployment_B.ParamStep_g < 6;
-           modelDeployment_B.ParamStep_g++) {
+      for (modelDeployment_B.ParamStep_m = 0; modelDeployment_B.ParamStep_m < 6;
+           modelDeployment_B.ParamStep_m++) {
         // Merge: '<S88>/Merge' incorporates:
         //   Constant: '<S89>/Constant9'
         //   SignalConversion generated from: '<S89>/square'
 
-        modelDeployment_B.Merge[modelDeployment_B.ParamStep_g] =
-          modelDeployment_B.pose_d[modelDeployment_B.ParamStep_g];
-        modelDeployment_B.Merge[modelDeployment_B.ParamStep_g + 6] =
-          modelDeployment_B.PolynomialTrajectory2_o1[modelDeployment_B.ParamStep_g];
-        modelDeployment_B.Merge[modelDeployment_B.ParamStep_g + 12] =
-          modelDeployment_P.Constant9_Value[modelDeployment_B.ParamStep_g];
+        modelDeployment_B.Merge[modelDeployment_B.ParamStep_m] =
+          modelDeployment_B.dv6[modelDeployment_B.ParamStep_m];
+        modelDeployment_B.Merge[modelDeployment_B.ParamStep_m + 6] =
+          modelDeployment_B.PolynomialTrajectory2_o1[modelDeployment_B.ParamStep_m];
+        modelDeployment_B.Merge[modelDeployment_B.ParamStep_m + 12] =
+          modelDeployment_P.Constant9_Value[modelDeployment_B.ParamStep_m];
       }
 
       // Merge: '<S88>/Merge' incorporates:
@@ -3764,76 +4006,72 @@ void modelDeployment_step(void)
 
       // MATLAB Function: '<S94>/Lemniscate Trajectory'
       modelDeployment_B.Product3_g = 6.2831853071795862 *
-        modelDeployment_B.t_reset / 25.0;
+        modelDeployment_B.t_reset / 30.0;
       if (modelDeployment_B.t_reset < 3.0) {
-        modelDeployment_B.pose_d[0] = 0.0;
-        modelDeployment_B.pose_d[1] = 0.0;
-        modelDeployment_B.pose_d[2] = modelDeployment_B.t_reset * 0.1;
-        modelDeployment_B.pose_d[3] = 0.0;
-        modelDeployment_B.pose_d[4] = 0.0;
-        modelDeployment_B.pose_d[5] = 0.0;
+        modelDeployment_B.PolynomialTrajectory2_o1[0] = 0.0;
+        modelDeployment_B.PolynomialTrajectory2_o1[1] = 0.0;
+        modelDeployment_B.PolynomialTrajectory2_o1[3] = 0.0;
+        modelDeployment_B.PolynomialTrajectory2_o1[4] = 0.0;
+        modelDeployment_B.PolynomialTrajectory2_o1[5] = 0.0;
       } else if ((modelDeployment_B.t_reset >= 3.0) &&
                  (modelDeployment_B.t_reset < 6.0)) {
-        for (modelDeployment_B.ParamStep_g = 0; modelDeployment_B.ParamStep_g <
-             6; modelDeployment_B.ParamStep_g++) {
-          modelDeployment_B.pose_d[modelDeployment_B.ParamStep_g] =
-            b[modelDeployment_B.ParamStep_g];
+        for (modelDeployment_B.ParamStep_m = 0; modelDeployment_B.ParamStep_m <
+             6; modelDeployment_B.ParamStep_m++) {
+          modelDeployment_B.PolynomialTrajectory2_o1[modelDeployment_B.ParamStep_m]
+            = b[modelDeployment_B.ParamStep_m];
         }
       } else if ((modelDeployment_B.t_reset >= 6.0) &&
                  (modelDeployment_B.t_reset < 8.0)) {
-        modelDeployment_B.pose_d[0] = 0.0;
-        modelDeployment_B.pose_d[1] = 0.0;
-        modelDeployment_B.pose_d[2] = (modelDeployment_B.t_reset - 8.0) * 0.9 /
-          2.0 + 1.2;
-        modelDeployment_B.pose_d[3] = 0.0;
-        modelDeployment_B.pose_d[4] = 0.0;
-        modelDeployment_B.pose_d[5] = 0.0;
+        modelDeployment_B.PolynomialTrajectory2_o1[0] = 0.0;
+        modelDeployment_B.PolynomialTrajectory2_o1[1] = 0.0;
+        modelDeployment_B.PolynomialTrajectory2_o1[3] = 0.0;
+        modelDeployment_B.PolynomialTrajectory2_o1[4] = 0.0;
+        modelDeployment_B.PolynomialTrajectory2_o1[5] = 0.0;
       } else if ((modelDeployment_B.t_reset >= 8.0) &&
                  (modelDeployment_B.t_reset < 11.0)) {
-        modelDeployment_B.pose_d[0] = 0.0;
-        modelDeployment_B.pose_d[1] = 0.0;
-        modelDeployment_B.pose_d[2] = 1.2;
-        modelDeployment_B.pose_d[3] = 0.0;
-        modelDeployment_B.pose_d[4] = 0.0;
-        modelDeployment_B.pose_d[5] = (modelDeployment_B.t_reset - 8.0) *
-          -0.261746077120484;
+        modelDeployment_B.PolynomialTrajectory2_o1[0] = 0.0;
+        modelDeployment_B.PolynomialTrajectory2_o1[1] = 0.0;
+        modelDeployment_B.PolynomialTrajectory2_o1[3] = 0.0;
+        modelDeployment_B.PolynomialTrajectory2_o1[4] = 0.0;
+        modelDeployment_B.PolynomialTrajectory2_o1[5] =
+          (modelDeployment_B.t_reset - 8.0) * -0.261746077120484;
       } else if ((modelDeployment_B.t_reset >= 11.0) &&
-                 (modelDeployment_B.t_reset < 36.0)) {
-        modelDeployment_B.t_reset = sin(modelDeployment_B.Product3_g - 2.75);
-        modelDeployment_B.Product1_or = cos(modelDeployment_B.Product3_g - 2.75);
-        modelDeployment_B.pose_d[0] = 3.0 * modelDeployment_B.t_reset;
-        modelDeployment_B.pose_d[1] = 3.0 * modelDeployment_B.t_reset *
+                 (modelDeployment_B.t_reset < 41.0)) {
+        modelDeployment_B.Product1_or = sin(modelDeployment_B.Product3_g -
+          2.3038346126325147);
+        modelDeployment_B.Product2_p = cos(modelDeployment_B.Product3_g -
+          2.3038346126325147);
+        modelDeployment_B.PolynomialTrajectory2_o1[0] = 3.0 *
           modelDeployment_B.Product1_or;
-        modelDeployment_B.pose_d[2] = 1.2;
-        modelDeployment_B.pose_d[3] = 0.0;
-        modelDeployment_B.pose_d[4] = 0.0;
-        modelDeployment_B.pose_d[5] = modelDeployment_rt_atan2d_snf(cos
-          ((modelDeployment_B.Product3_g - 2.75) * 2.0) * 18.849555921538759 /
-          25.0, 18.849555921538759 * modelDeployment_B.Product1_or / 25.0) -
+        modelDeployment_B.PolynomialTrajectory2_o1[1] = 3.0 *
+          modelDeployment_B.Product1_or * modelDeployment_B.Product2_p;
+        modelDeployment_B.PolynomialTrajectory2_o1[3] = 0.0;
+        modelDeployment_B.PolynomialTrajectory2_o1[4] = 0.0;
+        modelDeployment_B.PolynomialTrajectory2_o1[5] =
+          modelDeployment_rt_atan2d_snf(cos((modelDeployment_B.Product3_g -
+          2.3038346126325147) * 2.0) * 18.849555921538759 / 30.0,
+          18.849555921538759 * modelDeployment_B.Product2_p / 30.0) -
           1.5707963267948966;
-      } else if ((modelDeployment_B.t_reset >= 36.0) &&
-                 (modelDeployment_B.t_reset < 39.0)) {
-        modelDeployment_B.pose_d[0] = 0.0;
-        modelDeployment_B.pose_d[1] = 0.0;
-        modelDeployment_B.pose_d[2] = 1.2;
-        modelDeployment_B.pose_d[3] = 0.0;
-        modelDeployment_B.pose_d[4] = 0.0;
-        modelDeployment_B.pose_d[5] = (modelDeployment_B.t_reset - 39.0) *
-          0.261746077120484;
-      } else if ((modelDeployment_B.t_reset >= 39.0) &&
-                 (modelDeployment_B.t_reset < 42.0)) {
-        modelDeployment_B.pose_d[0] = 0.0;
-        modelDeployment_B.pose_d[1] = 0.0;
-        modelDeployment_B.pose_d[2] = (modelDeployment_B.t_reset - 42.0) * -0.9 /
-          3.0 + 0.3;
-        modelDeployment_B.pose_d[3] = 0.0;
-        modelDeployment_B.pose_d[4] = 0.0;
-        modelDeployment_B.pose_d[5] = 0.0;
+      } else if ((modelDeployment_B.t_reset >= 41.0) &&
+                 (modelDeployment_B.t_reset < 44.0)) {
+        modelDeployment_B.PolynomialTrajectory2_o1[0] = 0.0;
+        modelDeployment_B.PolynomialTrajectory2_o1[1] = 0.0;
+        modelDeployment_B.PolynomialTrajectory2_o1[3] = 0.0;
+        modelDeployment_B.PolynomialTrajectory2_o1[4] = 0.0;
+        modelDeployment_B.PolynomialTrajectory2_o1[5] =
+          (modelDeployment_B.t_reset - 44.0) * 0.261746077120484;
+      } else if ((modelDeployment_B.t_reset >= 44.0) &&
+                 (modelDeployment_B.t_reset < 47.0)) {
+        modelDeployment_B.PolynomialTrajectory2_o1[0] = 0.0;
+        modelDeployment_B.PolynomialTrajectory2_o1[1] = 0.0;
+        modelDeployment_B.PolynomialTrajectory2_o1[3] = 0.0;
+        modelDeployment_B.PolynomialTrajectory2_o1[4] = 0.0;
+        modelDeployment_B.PolynomialTrajectory2_o1[5] = 0.0;
       } else {
-        for (modelDeployment_B.ParamStep_g = 0; modelDeployment_B.ParamStep_g <
-             6; modelDeployment_B.ParamStep_g++) {
-          modelDeployment_B.pose_d[modelDeployment_B.ParamStep_g] =
-            b[modelDeployment_B.ParamStep_g];
+        for (modelDeployment_B.ParamStep_m = 0; modelDeployment_B.ParamStep_m <
+             6; modelDeployment_B.ParamStep_m++) {
+          modelDeployment_B.PolynomialTrajectory2_o1[modelDeployment_B.ParamStep_m]
+            = b[modelDeployment_B.ParamStep_m];
         }
       }
 
@@ -3841,51 +4079,29 @@ void modelDeployment_step(void)
 
       // S-Function (sdspunwrap2): '<S94>/Unwrap1'
       if (modelDeployment_DW.Unwrap1_FirstStep) {
-        modelDeployment_DW.Unwrap1_Prev = modelDeployment_B.pose_d[5];
+        modelDeployment_DW.Unwrap1_Prev =
+          modelDeployment_B.PolynomialTrajectory2_o1[5];
         modelDeployment_DW.Unwrap1_FirstStep = false;
       }
 
-      modelDeployment_B.Product3_g = modelDeployment_B.pose_d[5] -
-        modelDeployment_DW.Unwrap1_Prev;
-      modelDeployment_B.t_reset = modelDeployment_B.Product3_g - floor
+      modelDeployment_B.Product3_g = modelDeployment_B.PolynomialTrajectory2_o1
+        [5] - modelDeployment_DW.Unwrap1_Prev;
+      modelDeployment_B.Product1_or = modelDeployment_B.Product3_g - floor
         ((modelDeployment_B.Product3_g + 3.1415926535897931) /
          6.2831853071795862) * 6.2831853071795862;
-      if ((modelDeployment_B.t_reset == -3.1415926535897931) &&
+      if ((modelDeployment_B.Product1_or == -3.1415926535897931) &&
           (modelDeployment_B.Product3_g > 0.0)) {
-        modelDeployment_B.t_reset = 3.1415926535897931;
+        modelDeployment_B.Product1_or = 3.1415926535897931;
       }
 
-      modelDeployment_B.Product3_g = modelDeployment_B.t_reset -
+      modelDeployment_B.Product3_g = modelDeployment_B.Product1_or -
         modelDeployment_B.Product3_g;
       if (fabs(modelDeployment_B.Product3_g) > 3.1415926535897931) {
         modelDeployment_DW.Unwrap1_Cumsum += modelDeployment_B.Product3_g;
       }
 
-      modelDeployment_DW.Unwrap1_Prev = modelDeployment_B.pose_d[5];
-      for (modelDeployment_B.i = 0; modelDeployment_B.i < 5; modelDeployment_B.i
-           ++) {
-        // Product: '<S117>/Product6' incorporates:
-        //   Constant: '<S94>/Constant13'
-
-        modelDeployment_B.Product3_g =
-          modelDeployment_P.Constant13_Value_f[modelDeployment_B.i];
-
-        // DiscreteIntegrator: '<S117>/Discrete-Time Integrator' incorporates:
-        //   Constant: '<S94>/Constant13'
-        //   Memory: '<S117>/Memory'
-        //   Product: '<S117>/Product6'
-        //   Product: '<S117>/Product7'
-        //   Sum: '<S117>/Sum5'
-        //   Sum: '<S117>/Sum6'
-
-        modelDeployment_B.PolynomialTrajectory2_o1[modelDeployment_B.i] =
-          ((modelDeployment_B.pose_d[modelDeployment_B.i] -
-            modelDeployment_DW.Memory_PreviousInput[modelDeployment_B.i]) *
-           modelDeployment_B.Product3_g -
-           modelDeployment_DW.Memory1_PreviousInput[modelDeployment_B.i]) *
-          modelDeployment_B.Product3_g *
-          modelDeployment_P.DiscreteTimeIntegrator_gainva_k;
-      }
+      modelDeployment_DW.Unwrap1_Prev =
+        modelDeployment_B.PolynomialTrajectory2_o1[5];
 
       // DiscreteIntegrator: '<S117>/Discrete-Time Integrator' incorporates:
       //   Constant: '<S94>/Constant13'
@@ -3896,56 +4112,258 @@ void modelDeployment_step(void)
       //   Sum: '<S117>/Sum5'
       //   Sum: '<S117>/Sum6'
 
-      modelDeployment_B.PolynomialTrajectory2_o1[5] =
-        (((modelDeployment_B.pose_d[5] + modelDeployment_DW.Unwrap1_Cumsum) -
-          modelDeployment_DW.Memory_PreviousInput[5]) *
-         modelDeployment_P.Constant13_Value_f[5] -
-         modelDeployment_DW.Memory1_PreviousInput[5]) *
-        modelDeployment_P.Constant13_Value_f[5] *
+      modelDeployment_B.gamma_hat_2_tmp[0] =
+        ((modelDeployment_B.PolynomialTrajectory2_o1[0] -
+          modelDeployment_DW.Memory_PreviousInput[0]) *
+         modelDeployment_P.Constant13_Value_f[0] -
+         modelDeployment_DW.Memory1_PreviousInput[0]) *
+        modelDeployment_P.Constant13_Value_f[0] *
         modelDeployment_P.DiscreteTimeIntegrator_gainva_k;
-      for (modelDeployment_B.i = 0; modelDeployment_B.i < 6; modelDeployment_B.i
-           ++) {
+      modelDeployment_B.gamma_hat_2_tmp[2] =
+        ((modelDeployment_B.PolynomialTrajectory2_o1[3] -
+          modelDeployment_DW.Memory_PreviousInput[2]) *
+         modelDeployment_P.Constant13_Value_f[2] -
+         modelDeployment_DW.Memory1_PreviousInput[2]) *
+        modelDeployment_P.Constant13_Value_f[2] *
+        modelDeployment_P.DiscreteTimeIntegrator_gainva_k;
+      modelDeployment_B.gamma_hat_2_tmp[1] =
+        ((modelDeployment_B.PolynomialTrajectory2_o1[1] -
+          modelDeployment_DW.Memory_PreviousInput[1]) *
+         modelDeployment_P.Constant13_Value_f[1] -
+         modelDeployment_DW.Memory1_PreviousInput[1]) *
+        modelDeployment_P.Constant13_Value_f[1] *
+        modelDeployment_P.DiscreteTimeIntegrator_gainva_k;
+      modelDeployment_B.gamma_hat_2_tmp[3] =
+        ((modelDeployment_B.PolynomialTrajectory2_o1[4] -
+          modelDeployment_DW.Memory_PreviousInput[3]) *
+         modelDeployment_P.Constant13_Value_f[3] -
+         modelDeployment_DW.Memory1_PreviousInput[3]) *
+        modelDeployment_P.Constant13_Value_f[3] *
+        modelDeployment_P.DiscreteTimeIntegrator_gainva_k;
+      modelDeployment_B.gamma_hat_2_tmp[4] =
+        (((modelDeployment_B.PolynomialTrajectory2_o1[5] +
+           modelDeployment_DW.Unwrap1_Cumsum) -
+          modelDeployment_DW.Memory_PreviousInput[4]) *
+         modelDeployment_P.Constant13_Value_f[4] -
+         modelDeployment_DW.Memory1_PreviousInput[4]) *
+        modelDeployment_P.Constant13_Value_f[4] *
+        modelDeployment_P.DiscreteTimeIntegrator_gainva_k;
+      for (modelDeployment_B.ParamStep_m = 0; modelDeployment_B.ParamStep_m < 5;
+           modelDeployment_B.ParamStep_m++) {
         // DiscreteIntegrator: '<S117>/Discrete-Time Integrator'
         modelDeployment_B.Product3_g =
-          modelDeployment_DW.DiscreteTimeIntegrator_DSTATE[modelDeployment_B.i]
-          + modelDeployment_B.PolynomialTrajectory2_o1[modelDeployment_B.i];
-        modelDeployment_DW.DiscreteTimeIntegrator_DSTATE[modelDeployment_B.i] =
-          modelDeployment_B.Product3_g;
+          modelDeployment_DW.DiscreteTimeIntegrator_DSTATE[modelDeployment_B.ParamStep_m]
+          + modelDeployment_B.gamma_hat_2_tmp[modelDeployment_B.ParamStep_m];
+        modelDeployment_DW.DiscreteTimeIntegrator_DSTATE[modelDeployment_B.ParamStep_m]
+          = modelDeployment_B.Product3_g;
 
         // DiscreteIntegrator: '<S117>/Discrete-Time Integrator1' incorporates:
         //   DiscreteIntegrator: '<S117>/Discrete-Time Integrator'
 
-        modelDeployment_B.Product1_or =
-          modelDeployment_P.DiscreteTimeIntegrator1_gainv_i *
+        modelDeployment_B.Product3_g *=
+          modelDeployment_P.DiscreteTimeIntegrator1_gainv_i;
+        modelDeployment_B.gamma_hat_2_j_tmp[modelDeployment_B.ParamStep_m] =
           modelDeployment_B.Product3_g;
-        modelDeployment_B.pose_d[modelDeployment_B.i] =
-          modelDeployment_B.Product1_or;
 
         // DiscreteIntegrator: '<S117>/Discrete-Time Integrator1'
-        modelDeployment_DW.Memory_PreviousInput[modelDeployment_B.i] =
-          modelDeployment_DW.DiscreteTimeIntegrator1_DSTATE[modelDeployment_B.i]
-          + modelDeployment_B.Product1_or;
+        modelDeployment_DW.Memory_PreviousInput[modelDeployment_B.ParamStep_m] =
+          modelDeployment_DW.DiscreteTimeIntegrator1_DSTATE[modelDeployment_B.ParamStep_m]
+          + modelDeployment_B.Product3_g;
       }
 
+      // MATLABSystem: '<S94>/Polynomial Trajectory3' incorporates:
+      //   Constant: '<S94>/Constant'
+      //   Constant: '<S94>/Constant1'
+      //
+      modelDeployment_B.NOT = false;
+      modelDeployment_B.p = true;
+      modelDeployment_B.ParamStep_m = 0;
+      exitg1 = false;
+      while ((!exitg1) && (modelDeployment_B.ParamStep_m < 14)) {
+        if (!(modelDeployment_DW.obj_d.VelocityBoundaryCondition[modelDeployment_B.ParamStep_m]
+              ==
+              modelDeployment_P.PolynomialTrajectory3_Velocit_a[modelDeployment_B.ParamStep_m]))
+        {
+          modelDeployment_B.p = false;
+          exitg1 = true;
+        } else {
+          modelDeployment_B.ParamStep_m++;
+        }
+      }
+
+      if (modelDeployment_B.p) {
+        modelDeployment_B.NOT = true;
+      }
+
+      if (!modelDeployment_B.NOT) {
+        if (modelDeployment_DW.obj_d.isInitialized == 1) {
+          modelDeployment_DW.obj_d.TunablePropsChanged = true;
+          modelDeployment_DW.obj_d.tunablePropertyChanged[3] = true;
+        }
+
+        memcpy(&modelDeployment_DW.obj_d.VelocityBoundaryCondition[0],
+               &modelDeployment_P.PolynomialTrajectory3_Velocit_a[0], 14U *
+               sizeof(real_T));
+      }
+
+      if (modelDeployment_DW.obj_d.TunablePropsChanged) {
+        modelDeployment_DW.obj_d.TunablePropsChanged = false;
+        if (modelDeployment_DW.obj_d.tunablePropertyChanged[3] ||
+            modelDeployment_DW.obj_d.tunablePropertyChanged[4]) {
+          modelDeployment_B.NOT = true;
+        } else {
+          modelDeployment_B.NOT = false;
+        }
+
+        modelDeployment_DW.obj_d.PPFormUpdatedNeeded = modelDeployment_B.NOT;
+        for (modelDeployment_B.ParamStep_m = 0; modelDeployment_B.ParamStep_m <
+             5; modelDeployment_B.ParamStep_m++) {
+          modelDeployment_DW.obj_d.tunablePropertyChanged[modelDeployment_B.ParamStep_m]
+            = false;
+        }
+      }
+
+      guard1 = false;
+      if (modelDeployment_DW.obj_d.PPFormUpdatedNeeded) {
+        guard1 = true;
+      } else {
+        modelDeployment_B.NOT = false;
+        modelDeployment_B.p = true;
+        modelDeployment_B.ParamStep_m = 0;
+        exitg1 = false;
+        while ((!exitg1) && (modelDeployment_B.ParamStep_m < 14)) {
+          if (!(modelDeployment_P.Constant1_Value_n[modelDeployment_B.ParamStep_m]
+                ==
+                modelDeployment_DW.obj_d.PrevOptInputs.f1[modelDeployment_B.ParamStep_m]))
+          {
+            modelDeployment_B.p = false;
+            exitg1 = true;
+          } else {
+            modelDeployment_B.ParamStep_m++;
+          }
+        }
+
+        if (!modelDeployment_B.p) {
+          modelDeployment_B.p = false;
+        } else {
+          modelDeployment_B.p = true;
+          modelDeployment_B.ParamStep_m = 0;
+          exitg1 = false;
+          while ((!exitg1) && (modelDeployment_B.ParamStep_m < 7)) {
+            if (!(modelDeployment_P.Constant_Value_fj[modelDeployment_B.ParamStep_m]
+                  ==
+                  modelDeployment_DW.obj_d.PrevOptInputs.f2[modelDeployment_B.ParamStep_m]))
+            {
+              modelDeployment_B.p = false;
+              exitg1 = true;
+            } else {
+              modelDeployment_B.ParamStep_m++;
+            }
+          }
+        }
+
+        if (modelDeployment_B.p) {
+          modelDeployment_B.NOT = true;
+        }
+
+        memcpy(&modelDeployment_DW.obj_d.PrevOptInputs.f1[0],
+               &modelDeployment_P.Constant1_Value_n[0], 14U * sizeof(real_T));
+        for (modelDeployment_B.i = 0; modelDeployment_B.i < 7;
+             modelDeployment_B.i++) {
+          modelDeployment_DW.obj_d.PrevOptInputs.f2[modelDeployment_B.i] =
+            modelDeployment_P.Constant_Value_fj[modelDeployment_B.i];
+        }
+
+        if (!modelDeployment_B.NOT) {
+          guard1 = true;
+        }
+      }
+
+      if (guard1) {
+        memset(&modelDeployment_B.coefMat_dy[0], 0, 48U * sizeof(real_T));
+        for (modelDeployment_B.i = 0; modelDeployment_B.i < 6;
+             modelDeployment_B.i++) {
+          modelDeployment_B.Product3_g =
+            modelDeployment_P.Constant_Value_fj[modelDeployment_B.i + 1] -
+            modelDeployment_P.Constant_Value_fj[modelDeployment_B.i];
+          for (modelDeployment_B.b_j = 0; modelDeployment_B.b_j < 2;
+               modelDeployment_B.b_j++) {
+            modelDeployment_B.ParamStep_m = (modelDeployment_B.i << 1) +
+              modelDeployment_B.b_j;
+            modelDeployment_B.dv14[0] =
+              modelDeployment_P.Constant1_Value_n[modelDeployment_B.ParamStep_m];
+            modelDeployment_B.dv15[0] =
+              modelDeployment_DW.obj_d.VelocityBoundaryCondition[modelDeployment_B.ParamStep_m];
+            modelDeployment_B.ParamStep_m = ((modelDeployment_B.i + 1) << 1) +
+              modelDeployment_B.b_j;
+            modelDeployment_B.dv14[1] =
+              modelDeployment_P.Constant1_Value_n[modelDeployment_B.ParamStep_m];
+            modelDeployment_B.dv15[1] =
+              modelDeployment_DW.obj_d.VelocityBoundaryCondition[modelDeployment_B.ParamStep_m];
+            modelDeploy_generateCubicCoeffs(modelDeployment_B.dv14,
+              modelDeployment_B.dv15, modelDeployment_B.Product3_g,
+              modelDeployment_B.dv9);
+            modelDeployment_B.ParamStep_m = ((modelDeployment_B.i << 1) +
+              modelDeployment_B.b_j) + 1;
+            modelDeployment_B.coefMat_dy[modelDeployment_B.ParamStep_m - 1] =
+              modelDeployment_B.dv9[0];
+            modelDeployment_B.coefMat_dy[modelDeployment_B.ParamStep_m + 11] =
+              modelDeployment_B.dv9[1];
+            modelDeployment_B.coefMat_dy[modelDeployment_B.ParamStep_m + 23] =
+              modelDeployment_B.dv9[2];
+            modelDeployment_B.coefMat_dy[modelDeployment_B.ParamStep_m + 35] =
+              modelDeployment_B.dv9[3];
+          }
+        }
+
+        addFlatSegmentsToPPFormPar_fjc1(modelDeployment_P.Constant_Value_fj,
+          modelDeployment_B.coefMat_dy, modelDeployment_B.VectorConcatenate,
+          modelDeployment_B.modCoeffs_g);
+        PolyTrajSys_updateStoredPP_fjc1(&modelDeployment_DW.obj_d,
+          modelDeployment_B.VectorConcatenate, modelDeployment_B.modCoeffs_g);
+        modelDeployment_DW.obj_d.PPFormUpdatedNeeded = false;
+      }
+
+      modelDeployment_B.Product1_or = modelDeployment_B.t_reset;
+      if (modelDeployment_B.t_reset == modelDeployment_DW.obj_d.PPStruct.breaks
+          [7]) {
+        for (modelDeployment_B.i = 0; modelDeployment_B.i < 1;
+             modelDeployment_B.i++) {
+          modelDeployment_B.Product1_or =
+            modelDeployment_DW.obj_d.PPStruct.breaks[7] - 2.2204460492503131E-15;
+        }
+      }
+
+      // SignalConversion generated from: '<S118>/ SFunction ' incorporates:
+      //   MATLAB Function: '<S94>/rpyd2quaterniond'
+      //   MATLABSystem: '<S94>/Polynomial Trajectory3'
+      //
+      modelDeployment_B.PolynomialTrajectory2_o1[3] =
+        modelDeployment_DW.Memory_PreviousInput[2];
+      modelDeployment_B.PolynomialTrajectory2_o1[4] =
+        modelDeployment_DW.Memory_PreviousInput[3];
+      modelDeployment_B.PolynomialTrajectory2_o1[5] =
+        modelDeployment_DW.Memory_PreviousInput[4];
+
       // MATLAB Function: '<S94>/rpyd2quaterniond'
-      modelDeployment_B.r_b1[0] = cos(modelDeployment_DW.Memory_PreviousInput[3]
-        / 2.0);
-      modelDeployment_B.r_b1[1] = sin(modelDeployment_DW.Memory_PreviousInput[3]
-        / 2.0);
+      modelDeployment_B.r_b1[0] = cos
+        (modelDeployment_B.PolynomialTrajectory2_o1[3] / 2.0);
+      modelDeployment_B.r_b1[1] = sin
+        (modelDeployment_B.PolynomialTrajectory2_o1[3] / 2.0);
       modelDeployment_B.r_b1[2] = 0.0;
       modelDeployment_B.r_b1[3] = 0.0;
-      modelDeployment_B.qx_c[0] = cos(modelDeployment_DW.Memory_PreviousInput[4]
-        / 2.0);
+      modelDeployment_B.qx_c[0] = cos
+        (modelDeployment_B.PolynomialTrajectory2_o1[4] / 2.0);
       modelDeployment_B.qx_c[1] = 0.0;
-      modelDeployment_B.qx_c[2] = sin(modelDeployment_DW.Memory_PreviousInput[4]
-        / 2.0);
+      modelDeployment_B.qx_c[2] = sin
+        (modelDeployment_B.PolynomialTrajectory2_o1[4] / 2.0);
       modelDeployment_B.qx_c[3] = 0.0;
-      modelDeployment_B.qz_e[0] = cos(modelDeployment_DW.Memory_PreviousInput[5]
-        / 2.0);
+      modelDeployment_B.qz_e[0] = cos
+        (modelDeployment_B.PolynomialTrajectory2_o1[5] / 2.0);
       modelDeployment_B.qz_e[1] = 0.0;
       modelDeployment_B.qz_e[2] = 0.0;
-      modelDeployment_B.qz_e[3] = sin(modelDeployment_DW.Memory_PreviousInput[5]
-        / 2.0);
+      modelDeployment_B.qz_e[3] = sin
+        (modelDeployment_B.PolynomialTrajectory2_o1[5] / 2.0);
 
       // MATLAB Function: '<S114>/Kronecker_product'
       modelDeployme_Kronecker_product(modelDeployment_B.r_b1,
@@ -3971,12 +4389,53 @@ void modelDeployment_step(void)
         modelDeployment_B.r_b1[3]);
 
       // Merge: '<S88>/Merge' incorporates:
+      //   SignalConversion generated from: '<S94>/lemniquat'
+
+      modelDeployment_B.Merge[0] = modelDeployment_DW.Memory_PreviousInput[0];
+      modelDeployment_B.Merge[1] = modelDeployment_DW.Memory_PreviousInput[1];
+
+      // MATLABSystem: '<S94>/Polynomial Trajectory3'
+      modelDeployment_ppval_fjc1(modelDeployment_DW.obj_d.PPStruct.breaks,
+        modelDeployment_DW.obj_d.PPStruct.coefs, modelDeployment_B.t_reset,
+        modelDeployment_B.dv14);
+
+      // Merge: '<S88>/Merge' incorporates:
+      //   SignalConversion generated from: '<S94>/lemniquat'
+
+      modelDeployment_B.Merge[2] = modelDeployment_B.dv14[0];
+      modelDeployment_B.Merge[3] = modelDeployment_DW.Memory_PreviousInput[2];
+      modelDeployment_B.Merge[4] = modelDeployment_DW.Memory_PreviousInput[3];
+      modelDeployment_B.Merge[5] = modelDeployment_DW.Memory_PreviousInput[4];
+      modelDeployment_B.Merge[6] =
+        modelDeployment_DW.DiscreteTimeIntegrator_DSTATE[0];
+      modelDeployment_B.Merge[7] =
+        modelDeployment_DW.DiscreteTimeIntegrator_DSTATE[1];
+
+      // MATLABSystem: '<S94>/Polynomial Trajectory3'
+      modelDeployment_ppval_fjc1(modelDeployment_DW.obj_d.PPDStruct.breaks,
+        modelDeployment_DW.obj_d.PPDStruct.coefs, modelDeployment_B.Product1_or,
+        modelDeployment_B.dv14);
+
+      // Merge: '<S88>/Merge' incorporates:
       //   Constant: '<S94>/Constant12'
       //   Product: '<S116>/Product'
       //   Product: '<S116>/Product1'
       //   Product: '<S116>/Product2'
       //   Product: '<S116>/Product3'
       //   SignalConversion generated from: '<S94>/lemniquat'
+
+      modelDeployment_B.Merge[8] = modelDeployment_B.dv14[0];
+      modelDeployment_B.Merge[9] =
+        modelDeployment_DW.DiscreteTimeIntegrator_DSTATE[2];
+      modelDeployment_B.Merge[10] =
+        modelDeployment_DW.DiscreteTimeIntegrator_DSTATE[3];
+      modelDeployment_B.Merge[11] =
+        modelDeployment_DW.DiscreteTimeIntegrator_DSTATE[4];
+      for (modelDeployment_B.ParamStep_m = 0; modelDeployment_B.ParamStep_m < 6;
+           modelDeployment_B.ParamStep_m++) {
+        modelDeployment_B.Merge[modelDeployment_B.ParamStep_m + 12] =
+          modelDeployment_P.Constant12_Value[modelDeployment_B.ParamStep_m];
+      }
 
       modelDeployment_B.Merge[18] = modelDeployment_B.r_b1[0] /
         modelDeployment_B.Product3_g;
@@ -3986,20 +4445,15 @@ void modelDeployment_step(void)
         modelDeployment_B.Product3_g;
       modelDeployment_B.Merge[21] = modelDeployment_B.r_b1[3] /
         modelDeployment_B.Product3_g;
-      for (modelDeployment_B.i = 0; modelDeployment_B.i < 6; modelDeployment_B.i
+      for (modelDeployment_B.i = 0; modelDeployment_B.i < 5; modelDeployment_B.i
            ++) {
-        modelDeployment_B.t_reset =
-          modelDeployment_DW.Memory_PreviousInput[modelDeployment_B.i];
-        modelDeployment_B.Merge[modelDeployment_B.i] = modelDeployment_B.t_reset;
+        // Gain: '<S117>/zeta' incorporates:
+        //   DiscreteIntegrator: '<S117>/Discrete-Time Integrator'
+
         modelDeployment_B.Product3_g =
           modelDeployment_DW.DiscreteTimeIntegrator_DSTATE[modelDeployment_B.i];
-        modelDeployment_B.Merge[modelDeployment_B.i + 6] =
-          modelDeployment_B.Product3_g;
-        modelDeployment_B.Merge[modelDeployment_B.i + 12] =
-          modelDeployment_P.Constant12_Value[modelDeployment_B.i];
 
         // Update for Memory: '<S117>/Memory1' incorporates:
-        //   Constant: '<S94>/Constant12'
         //   DiscreteIntegrator: '<S117>/Discrete-Time Integrator'
         //   Gain: '<S117>/zeta'
 
@@ -4009,12 +4463,12 @@ void modelDeployment_step(void)
         // Update for DiscreteIntegrator: '<S117>/Discrete-Time Integrator'
         modelDeployment_DW.DiscreteTimeIntegrator_DSTATE[modelDeployment_B.i] =
           modelDeployment_B.Product3_g +
-          modelDeployment_B.PolynomialTrajectory2_o1[modelDeployment_B.i];
+          modelDeployment_B.gamma_hat_2_tmp[modelDeployment_B.i];
 
         // Update for DiscreteIntegrator: '<S117>/Discrete-Time Integrator1'
         modelDeployment_DW.DiscreteTimeIntegrator1_DSTATE[modelDeployment_B.i] =
-          modelDeployment_B.t_reset +
-          modelDeployment_B.pose_d[modelDeployment_B.i];
+          modelDeployment_DW.Memory_PreviousInput[modelDeployment_B.i] +
+          modelDeployment_B.gamma_hat_2_j_tmp[modelDeployment_B.i];
       }
 
       // End of Outputs for SubSystem: '<S88>/If Action Subsystem5'
@@ -4111,27 +4565,27 @@ void modelDeployment_step(void)
   // Product: '<S67>/Product3' incorporates:
   //   Product: '<S71>/Product3'
 
-  modelDeployment_B.rtb_VectorConcatenate_tmp_jz = modelDeployment_B.t_reset *
+  modelDeployment_B.rtb_VectorConcatenate_tmp_m = modelDeployment_B.t_reset *
     modelDeployment_B.t_reset;
 
   // Product: '<S67>/Product2' incorporates:
   //   Product: '<S71>/Product2'
 
-  modelDeployment_B.rtb_VectorConcatenate_tmp_o = modelDeployment_B.Product1_or *
-    modelDeployment_B.Product1_or;
+  modelDeployment_B.rtb_VectorConcatenate_tmp_m3 = modelDeployment_B.Product1_or
+    * modelDeployment_B.Product1_or;
 
   // Product: '<S67>/Product1' incorporates:
   //   Product: '<S71>/Product1'
   //   Product: '<S75>/Product1'
 
-  modelDeployment_B.rtb_VectorConcatenate_tmp_n = modelDeployment_B.Product2_p *
+  modelDeployment_B.rtb_VectorConcatenate_tmp_j = modelDeployment_B.Product2_p *
     modelDeployment_B.Product2_p;
 
   // Product: '<S67>/Product' incorporates:
   //   Product: '<S71>/Product'
   //   Product: '<S75>/Product'
 
-  modelDeployment_B.rtb_VectorConcatenate_tmp_i = modelDeployment_B.Product3_g *
+  modelDeployment_B.rtb_VectorConcatenate_tmp_h = modelDeployment_B.Product3_g *
     modelDeployment_B.Product3_g;
 
   // Sum: '<S67>/Sum' incorporates:
@@ -4141,10 +4595,10 @@ void modelDeployment_step(void)
   //   Product: '<S67>/Product3'
 
   modelDeployment_B.VectorConcatenate[0] =
-    ((modelDeployment_B.rtb_VectorConcatenate_tmp_jz +
-      modelDeployment_B.rtb_VectorConcatenate_tmp_o) -
-     modelDeployment_B.rtb_VectorConcatenate_tmp_n) -
-    modelDeployment_B.rtb_VectorConcatenate_tmp_i;
+    ((modelDeployment_B.rtb_VectorConcatenate_tmp_m +
+      modelDeployment_B.rtb_VectorConcatenate_tmp_m3) -
+     modelDeployment_B.rtb_VectorConcatenate_tmp_j) -
+    modelDeployment_B.rtb_VectorConcatenate_tmp_h;
 
   // Product: '<S70>/Product3' incorporates:
   //   Product: '<S68>/Product3'
@@ -4155,7 +4609,7 @@ void modelDeployment_step(void)
   // Product: '<S70>/Product2' incorporates:
   //   Product: '<S68>/Product2'
 
-  modelDeployment_B.rtb_VectorConcatenate_tmp_j = modelDeployment_B.Product1_or *
+  modelDeployment_B.rtb_VectorConcatenate_tmp_c = modelDeployment_B.Product1_or *
     modelDeployment_B.Product2_p;
 
   // Gain: '<S70>/Gain' incorporates:
@@ -4164,20 +4618,20 @@ void modelDeployment_step(void)
   //   Sum: '<S70>/Sum'
 
   modelDeployment_B.VectorConcatenate[1] =
-    (modelDeployment_B.rtb_VectorConcatenate_tmp_j -
+    (modelDeployment_B.rtb_VectorConcatenate_tmp_c -
      modelDeployment_B.rtb_VectorConcatenate_tmp) *
     modelDeployment_P.Gain_Gain_a;
 
   // Product: '<S73>/Product2' incorporates:
   //   Product: '<S69>/Product2'
 
-  modelDeployment_B.rtb_VectorConcatenate_tmp_oy = modelDeployment_B.Product1_or
+  modelDeployment_B.rtb_VectorConcatenate_tmp_c0 = modelDeployment_B.Product1_or
     * modelDeployment_B.Product3_g;
 
   // Product: '<S73>/Product1' incorporates:
   //   Product: '<S69>/Product1'
 
-  modelDeployment_B.rtb_VectorConcatenate_tmp_nv = modelDeployment_B.t_reset *
+  modelDeployment_B.rtb_VectorConcatenate_tmp_ct = modelDeployment_B.t_reset *
     modelDeployment_B.Product2_p;
 
   // Gain: '<S73>/Gain' incorporates:
@@ -4186,8 +4640,8 @@ void modelDeployment_step(void)
   //   Sum: '<S73>/Sum'
 
   modelDeployment_B.VectorConcatenate[2] =
-    (modelDeployment_B.rtb_VectorConcatenate_tmp_nv +
-     modelDeployment_B.rtb_VectorConcatenate_tmp_oy) *
+    (modelDeployment_B.rtb_VectorConcatenate_tmp_ct +
+     modelDeployment_B.rtb_VectorConcatenate_tmp_c0) *
     modelDeployment_P.Gain_Gain_m;
 
   // Gain: '<S68>/Gain' incorporates:
@@ -4195,23 +4649,23 @@ void modelDeployment_step(void)
 
   modelDeployment_B.VectorConcatenate[3] =
     (modelDeployment_B.rtb_VectorConcatenate_tmp +
-     modelDeployment_B.rtb_VectorConcatenate_tmp_j) *
+     modelDeployment_B.rtb_VectorConcatenate_tmp_c) *
     modelDeployment_P.Gain_Gain_g;
 
   // Sum: '<S71>/Sum' incorporates:
   //   Sum: '<S75>/Sum'
 
-  modelDeployment_B.rtb_VectorConcatenate_tmp_jz -=
-    modelDeployment_B.rtb_VectorConcatenate_tmp_o;
+  modelDeployment_B.rtb_VectorConcatenate_tmp_m -=
+    modelDeployment_B.rtb_VectorConcatenate_tmp_m3;
   modelDeployment_B.VectorConcatenate[4] =
-    (modelDeployment_B.rtb_VectorConcatenate_tmp_jz +
-     modelDeployment_B.rtb_VectorConcatenate_tmp_n) -
-    modelDeployment_B.rtb_VectorConcatenate_tmp_i;
+    (modelDeployment_B.rtb_VectorConcatenate_tmp_m +
+     modelDeployment_B.rtb_VectorConcatenate_tmp_j) -
+    modelDeployment_B.rtb_VectorConcatenate_tmp_h;
 
   // Product: '<S74>/Product1' incorporates:
   //   Product: '<S72>/Product1'
 
-  modelDeployment_B.rtb_VectorConcatenate_tmp_o = modelDeployment_B.t_reset *
+  modelDeployment_B.rtb_VectorConcatenate_tmp_m3 = modelDeployment_B.t_reset *
     modelDeployment_B.Product1_or;
 
   // Product: '<S74>/Product2' incorporates:
@@ -4227,30 +4681,30 @@ void modelDeployment_step(void)
 
   modelDeployment_B.VectorConcatenate[5] =
     (modelDeployment_B.rtb_VectorConcatenate_tmp -
-     modelDeployment_B.rtb_VectorConcatenate_tmp_o) *
+     modelDeployment_B.rtb_VectorConcatenate_tmp_m3) *
     modelDeployment_P.Gain_Gain_k;
 
   // Gain: '<S69>/Gain' incorporates:
   //   Sum: '<S69>/Sum'
 
   modelDeployment_B.VectorConcatenate[6] =
-    (modelDeployment_B.rtb_VectorConcatenate_tmp_oy -
-     modelDeployment_B.rtb_VectorConcatenate_tmp_nv) *
+    (modelDeployment_B.rtb_VectorConcatenate_tmp_c0 -
+     modelDeployment_B.rtb_VectorConcatenate_tmp_ct) *
     modelDeployment_P.Gain_Gain_l;
 
   // Gain: '<S72>/Gain' incorporates:
   //   Sum: '<S72>/Sum'
 
   modelDeployment_B.VectorConcatenate[7] =
-    (modelDeployment_B.rtb_VectorConcatenate_tmp_o +
+    (modelDeployment_B.rtb_VectorConcatenate_tmp_m3 +
      modelDeployment_B.rtb_VectorConcatenate_tmp) *
     modelDeployment_P.Gain_Gain_n;
 
   // Sum: '<S75>/Sum'
   modelDeployment_B.VectorConcatenate[8] =
-    (modelDeployment_B.rtb_VectorConcatenate_tmp_jz -
-     modelDeployment_B.rtb_VectorConcatenate_tmp_n) +
-    modelDeployment_B.rtb_VectorConcatenate_tmp_i;
+    (modelDeployment_B.rtb_VectorConcatenate_tmp_m -
+     modelDeployment_B.rtb_VectorConcatenate_tmp_j) +
+    modelDeployment_B.rtb_VectorConcatenate_tmp_h;
 
   // Gain: '<S42>/Gain1' incorporates:
   //   Concatenate: '<S76>/Vector Concatenate'
@@ -4270,7 +4724,7 @@ void modelDeployment_step(void)
     //   Gain: '<S42>/Gain3'
     //   Selector: '<S42>/Selector3'
 
-    modelDeployment_B.Merge_b[0] = modelDeployment_rt_atan2d_snf
+    modelDeployment_B.Merge_n[0] = modelDeployment_rt_atan2d_snf
       (modelDeployment_P.Gain3_Gain[0] * modelDeployment_B.VectorConcatenate[7],
        modelDeployment_P.Gain3_Gain[1] * modelDeployment_B.VectorConcatenate[4]);
 
@@ -4294,10 +4748,10 @@ void modelDeployment_step(void)
     // End of If: '<S48>/If'
 
     // Fcn: '<S41>/Fcn2'
-    modelDeployment_B.Merge_b[1] = asin(modelDeployment_B.Product3_g);
+    modelDeployment_B.Merge_n[1] = asin(modelDeployment_B.Product3_g);
 
     // Fcn: '<S41>/Fcn3'
-    modelDeployment_B.Merge_b[2] = 0.0;
+    modelDeployment_B.Merge_n[2] = 0.0;
 
     // End of Outputs for SubSystem: '<S38>/AxisRotZeroR3'
   } else {
@@ -4309,7 +4763,7 @@ void modelDeployment_step(void)
     //   Gain: '<S42>/Gain1'
     //   Selector: '<S42>/Selector1'
 
-    modelDeployment_B.Merge_b[0] = modelDeployment_rt_atan2d_snf
+    modelDeployment_B.Merge_n[0] = modelDeployment_rt_atan2d_snf
       (modelDeployment_P.Gain1_Gain_e[0] * modelDeployment_B.VectorConcatenate[5],
        modelDeployment_P.Gain1_Gain_e[1] * modelDeployment_B.VectorConcatenate[8]);
 
@@ -4320,7 +4774,7 @@ void modelDeployment_step(void)
     //   Fcn: '<S40>/Fcn2'
     //   SignalConversion generated from: '<S47>/In'
 
-    modelDeployment_B.Merge_b[1] = asin(modelDeployment_B.Product3_g);
+    modelDeployment_B.Merge_n[1] = asin(modelDeployment_B.Product3_g);
 
     // End of Outputs for SubSystem: '<S44>/If Action Subsystem2'
 
@@ -4329,7 +4783,7 @@ void modelDeployment_step(void)
     //   Gain: '<S42>/Gain2'
     //   Selector: '<S42>/Selector2'
 
-    modelDeployment_B.Merge_b[2] = modelDeployment_rt_atan2d_snf
+    modelDeployment_B.Merge_n[2] = modelDeployment_rt_atan2d_snf
       (modelDeployment_P.Gain2_Gain[0] * modelDeployment_B.VectorConcatenate[1],
        modelDeployment_B.VectorConcatenate[0] * modelDeployment_P.Gain2_Gain[1]);
 
@@ -4377,15 +4831,15 @@ void modelDeployment_step(void)
       //   Constant: '<S11>/Tmotor_10inch_allo_inv'
 
       modelDeployment_B.Product2_p = 0.0;
-      for (modelDeployment_B.ParamStep_g = 0; modelDeployment_B.ParamStep_g < 6;
-           modelDeployment_B.ParamStep_g++) {
+      for (modelDeployment_B.ParamStep_m = 0; modelDeployment_B.ParamStep_m < 6;
+           modelDeployment_B.ParamStep_m++) {
         // Product: '<S11>/Matrix Multiply1' incorporates:
         //   Constant: '<S11>/Tmotor_10inch_allo_inv'
         //   UnitDelay generated from: '<S8>/Unit Delay'
 
         modelDeployment_B.Product2_p += rtP_allo_i[6 *
-          modelDeployment_B.ParamStep_g + modelDeployment_B.i] *
-          modelDeployment_DW.UnitDelay_1_DSTATE[modelDeployment_B.ParamStep_g];
+          modelDeployment_B.ParamStep_m + modelDeployment_B.i] *
+          modelDeployment_DW.UnitDelay_1_DSTATE[modelDeployment_B.ParamStep_m];
       }
 
       // Product: '<S11>/Matrix Multiply1' incorporates:
@@ -4398,9 +4852,9 @@ void modelDeployment_step(void)
     // MATLABSystem: '<S8>/Read Parameter1'
     modelDeployment_B.NOT = MW_Param_Step
       (modelDeployment_DW.obj_pq.MW_PARAMHANDLE, MW_INT32,
-       &modelDeployment_B.ParamStep_g);
+       &modelDeployment_B.ParamStep_m);
     if (modelDeployment_B.NOT) {
-      modelDeployment_B.ParamStep_g = 0;
+      modelDeployment_B.ParamStep_m = 0;
     }
 
     // SwitchCase: '<S8>/Switch Case1' incorporates:
@@ -4408,7 +4862,7 @@ void modelDeployment_step(void)
     //   MATLABSystem: '<S8>/Read Parameter1'
     //
     modelDeployment_B.ParamStep = static_cast<real32_T>(fmod(static_cast<real_T>
-      (static_cast<real32_T>(modelDeployment_B.ParamStep_g)), 4.294967296E+9));
+      (static_cast<real32_T>(modelDeployment_B.ParamStep_m)), 4.294967296E+9));
     switch (modelDeployment_B.ParamStep < 0.0F ? -static_cast<int32_T>(
              static_cast<uint32_T>(-modelDeployment_B.ParamStep)) : static_cast<
             int32_T>(static_cast<uint32_T>(modelDeployment_B.ParamStep))) {
@@ -4419,7 +4873,7 @@ void modelDeployment_step(void)
       // Merge generated from: '<S8>/Merge1' incorporates:
       //   ModelReference generated from: '<S12>/Model'
 
-      FxTDiffSim(&modelDeployment_B.Gain1[0], &modelDeployment_B.Merge_b[0],
+      FxTDiffSim(&modelDeployment_B.Gain1[0], &modelDeployment_B.Merge_n[0],
                  &modelDeployment_B.DataTypeConversion_c[0],
                  &modelDeployment_B.DataTypeConversion3_c[0],
                  &modelDeployment_B.DataTypeConversion2_m[0],
@@ -4441,7 +4895,7 @@ void modelDeployment_step(void)
       //   ModelReference generated from: '<S13>/Model'
       //   UnitDelay generated from: '<S8>/Unit Delay'
 
-      FxTESO(&modelDeployment_B.Gain1[0], &modelDeployment_B.Merge_b[0],
+      FxTESO(&modelDeployment_B.Gain1[0], &modelDeployment_B.Merge_n[0],
              &modelDeployment_B.MCData[0],
              &modelDeployment_B.DataTypeConversion3_k[0],
              &modelDeployment_B.DataTypeConversion_n[0],
@@ -4590,9 +5044,9 @@ void modelDeployment_step(void)
     // MATLABSystem: '<S8>/Read Parameter'
     modelDeployment_B.NOT = MW_Param_Step
       (modelDeployment_DW.obj_bi.MW_PARAMHANDLE, MW_INT32,
-       &modelDeployment_B.ParamStep_g);
+       &modelDeployment_B.ParamStep_m);
     if (modelDeployment_B.NOT) {
-      modelDeployment_B.ParamStep_g = 0;
+      modelDeployment_B.ParamStep_m = 0;
     }
 
     // SwitchCase: '<S8>/Switch Case' incorporates:
@@ -4600,7 +5054,7 @@ void modelDeployment_step(void)
     //   MATLABSystem: '<S8>/Read Parameter'
     //
     modelDeployment_B.ParamStep = static_cast<real32_T>(fmod(static_cast<real_T>
-      (static_cast<real32_T>(modelDeployment_B.ParamStep_g)), 4.294967296E+9));
+      (static_cast<real32_T>(modelDeployment_B.ParamStep_m)), 4.294967296E+9));
     switch (modelDeployment_B.ParamStep < 0.0F ? -static_cast<int32_T>(
              static_cast<uint32_T>(-modelDeployment_B.ParamStep)) : static_cast<
             int32_T>(static_cast<uint32_T>(modelDeployment_B.ParamStep))) {
@@ -4700,6 +5154,7 @@ void modelDeployment_step(void)
                        &modelDeployment_B.DataTypeConversion2[0],
                        &modelDeployment_B.DataTypeConversion[0],
                        &modelDeployment_B.DataTypeConversion1[0],
+                       &modelDeployment_B.DataTypeConversion5[0],
                        &modelDeployment_B.MCData[0], &modelDeployment_B.Fu_f[0],
                        &modelDeployment_B.e_h[0], &modelDeployment_B.e_dot[0],
                        &modelDeployment_B.sigma_f[0], &modelDeployment_B.kt_b[0],
@@ -4806,7 +5261,7 @@ void modelDeployment_step(void)
     // SignalConversion generated from: '<S8>/data_out_Outport_2' incorporates:
     //   Merge: '<S38>/Merge'
 
-    modelDeployment_B.att[0] = modelDeployment_B.Merge_b[0];
+    modelDeployment_B.att[0] = modelDeployment_B.Merge_n[0];
 
     // SignalConversion generated from: '<S8>/data_out_Outport_2' incorporates:
     //   Gain: '<S4>/Gain1'
@@ -4816,7 +5271,7 @@ void modelDeployment_step(void)
     // SignalConversion generated from: '<S8>/data_out_Outport_2' incorporates:
     //   Merge: '<S38>/Merge'
 
-    modelDeployment_B.att[1] = modelDeployment_B.Merge_b[1];
+    modelDeployment_B.att[1] = modelDeployment_B.Merge_n[1];
 
     // SignalConversion generated from: '<S8>/data_out_Outport_2' incorporates:
     //   Gain: '<S4>/Gain1'
@@ -4826,7 +5281,7 @@ void modelDeployment_step(void)
     // SignalConversion generated from: '<S8>/data_out_Outport_2' incorporates:
     //   Merge: '<S38>/Merge'
 
-    modelDeployment_B.att[2] = modelDeployment_B.Merge_b[2];
+    modelDeployment_B.att[2] = modelDeployment_B.Merge_n[2];
   }
 
   // End of Outputs for SubSystem: '<S1>/EnableController'
@@ -4837,11 +5292,11 @@ void modelDeployment_step(void)
   modelDeployment_B.Product3_g = rtP_coeff[0];
   modelDeployment_B.t_reset = rtP_coeff[1];
   modelDeployment_B.Product1_or = rtP_coeff[2];
-  for (modelDeployment_B.ParamStep_g = 0; modelDeployment_B.ParamStep_g < 6;
-       modelDeployment_B.ParamStep_g++) {
+  for (modelDeployment_B.ParamStep_m = 0; modelDeployment_B.ParamStep_m < 6;
+       modelDeployment_B.ParamStep_m++) {
     // Product: '<S11>/Matrix Multiply1'
     modelDeployment_B.Product2_p =
-      modelDeployment_B.MatrixMultiply1[modelDeployment_B.ParamStep_g];
+      modelDeployment_B.MatrixMultiply1[modelDeployment_B.ParamStep_m];
 
     // Saturate: '<S2>/Saturation' incorporates:
     //   Product: '<S11>/Matrix Multiply1'
@@ -4857,7 +5312,7 @@ void modelDeployment_step(void)
       modelDeployment_B.Product2_p = modelDeployment_P.Saturation_LowerSat;
     }
 
-    modelDeployment_B.DataTypeConversion3[modelDeployment_B.ParamStep_g] =
+    modelDeployment_B.DataTypeConversion3[modelDeployment_B.ParamStep_m] =
       modelDeployment_B.Product2_p;
 
     // End of Saturate: '<S2>/Saturation'
@@ -4871,16 +5326,16 @@ void modelDeployment_step(void)
     // Saturate: '<S2>/Saturation1'
     if (modelDeployment_B.Product2_p > modelDeployment_P.Saturation1_UpperSat) {
       // DataTypeConversion: '<S2>/Data Type Conversion'
-      modelDeployment_B.DataTypeConversion_b[modelDeployment_B.ParamStep_g] =
+      modelDeployment_B.DataTypeConversion_b[modelDeployment_B.ParamStep_m] =
         static_cast<real32_T>(modelDeployment_P.Saturation1_UpperSat);
     } else if (modelDeployment_B.Product2_p <
                modelDeployment_P.Saturation1_LowerSat) {
       // DataTypeConversion: '<S2>/Data Type Conversion'
-      modelDeployment_B.DataTypeConversion_b[modelDeployment_B.ParamStep_g] =
+      modelDeployment_B.DataTypeConversion_b[modelDeployment_B.ParamStep_m] =
         static_cast<real32_T>(modelDeployment_P.Saturation1_LowerSat);
     } else {
       // DataTypeConversion: '<S2>/Data Type Conversion'
-      modelDeployment_B.DataTypeConversion_b[modelDeployment_B.ParamStep_g] =
+      modelDeployment_B.DataTypeConversion_b[modelDeployment_B.ParamStep_m] =
         static_cast<real32_T>(modelDeployment_B.Product2_p);
     }
 
@@ -4890,14 +5345,14 @@ void modelDeployment_step(void)
   // End of MATLAB Function: '<S2>/calculatePWM'
 
   // MATLABSystem: '<Root>/PX4 Actuator Write'
-  for (modelDeployment_B.ParamStep_g = 0; modelDeployment_B.ParamStep_g < 12;
-       modelDeployment_B.ParamStep_g++) {
-    modelDeployment_B.motorValues[modelDeployment_B.ParamStep_g] = (rtNaNF);
+  for (modelDeployment_B.ParamStep_m = 0; modelDeployment_B.ParamStep_m < 12;
+       modelDeployment_B.ParamStep_m++) {
+    modelDeployment_B.motorValues[modelDeployment_B.ParamStep_m] = (rtNaNF);
   }
 
-  for (modelDeployment_B.ParamStep_g = 0; modelDeployment_B.ParamStep_g < 8;
-       modelDeployment_B.ParamStep_g++) {
-    modelDeployment_B.servoValues[modelDeployment_B.ParamStep_g] = (rtNaNF);
+  for (modelDeployment_B.ParamStep_m = 0; modelDeployment_B.ParamStep_m < 8;
+       modelDeployment_B.ParamStep_m++) {
+    modelDeployment_B.servoValues[modelDeployment_B.ParamStep_m] = (rtNaNF);
   }
 
   modelDeployment_B.motorValues[0] = modelDeployment_B.DataTypeConversion_b[0];
@@ -4976,13 +5431,13 @@ void modelDeployment_step(void)
   }
 
   // MATLABSystem: '<S7>/PX4 Timestamp'
-  modelDeployment_B.rtb_PX4Timestamp_a = hrt_absolute_time();
+  modelDeployment_B.rtb_PX4Timestamp_m = hrt_absolute_time();
 
   // BusAssignment: '<S7>/Bus Assignment9' incorporates:
   //   MATLABSystem: '<S7>/PX4 Timestamp'
 
   modelDeployment_B.BusAssignment9.timestamp =
-    modelDeployment_B.rtb_PX4Timestamp_a;
+    modelDeployment_B.rtb_PX4Timestamp_m;
   modelDeployment_B.BusAssignment9.ehatx =
     modelDeployment_B.DataTypeConversion9[0];
   modelDeployment_B.BusAssignment9.ehaty =
@@ -5007,7 +5462,7 @@ void modelDeployment_step(void)
   //   MATLABSystem: '<S7>/PX4 Timestamp'
 
   modelDeployment_B.BusAssignment.timestamp =
-    modelDeployment_B.rtb_PX4Timestamp_a;
+    modelDeployment_B.rtb_PX4Timestamp_m;
   modelDeployment_B.BusAssignment.fx = modelDeployment_B.DataTypeConversion_k[0];
   modelDeployment_B.BusAssignment.fy = modelDeployment_B.DataTypeConversion_k[1];
   modelDeployment_B.BusAssignment.fz = modelDeployment_B.DataTypeConversion_k[2];
@@ -5029,7 +5484,7 @@ void modelDeployment_step(void)
   //   MATLABSystem: '<S7>/PX4 Timestamp'
 
   modelDeployment_B.BusAssignment1.timestamp =
-    modelDeployment_B.rtb_PX4Timestamp_a;
+    modelDeployment_B.rtb_PX4Timestamp_m;
   modelDeployment_B.BusAssignment1.xhat =
     modelDeployment_B.DataTypeConversion1_m[0];
   modelDeployment_B.BusAssignment1.yhat =
@@ -5054,7 +5509,7 @@ void modelDeployment_step(void)
   //   MATLABSystem: '<S7>/PX4 Timestamp'
 
   modelDeployment_B.BusAssignment11.timestamp =
-    modelDeployment_B.rtb_PX4Timestamp_a;
+    modelDeployment_B.rtb_PX4Timestamp_m;
   modelDeployment_B.BusAssignment11.gamma3_x =
     modelDeployment_B.DataTypeConversion11[0];
   modelDeployment_B.BusAssignment11.gamma3_y =
@@ -5080,7 +5535,7 @@ void modelDeployment_step(void)
   //   MATLABSystem: '<S7>/PX4 Timestamp'
 
   modelDeployment_B.BusAssignment2.timestamp =
-    modelDeployment_B.rtb_PX4Timestamp_a;
+    modelDeployment_B.rtb_PX4Timestamp_m;
   modelDeployment_B.BusAssignment2.x = static_cast<real32_T>
     (modelDeployment_B.pos[0]);
   modelDeployment_B.BusAssignment2.y = static_cast<real32_T>
@@ -5105,7 +5560,7 @@ void modelDeployment_step(void)
   //   MATLABSystem: '<S7>/PX4 Timestamp'
 
   modelDeployment_B.BusAssignment3.timestamp =
-    modelDeployment_B.rtb_PX4Timestamp_a;
+    modelDeployment_B.rtb_PX4Timestamp_m;
   modelDeployment_B.BusAssignment3.xhatdot =
     modelDeployment_B.DataTypeConversion3_f[0];
   modelDeployment_B.BusAssignment3.yhatdot =
@@ -5130,7 +5585,7 @@ void modelDeployment_step(void)
   //   MATLABSystem: '<S7>/PX4 Timestamp'
 
   modelDeployment_B.BusAssignment4.timestamp =
-    modelDeployment_B.rtb_PX4Timestamp_a;
+    modelDeployment_B.rtb_PX4Timestamp_m;
   modelDeployment_B.BusAssignment4.ex = modelDeployment_B.DataTypeConversion4_f
     [0];
   modelDeployment_B.BusAssignment4.ey = modelDeployment_B.DataTypeConversion4_f
@@ -5155,7 +5610,7 @@ void modelDeployment_step(void)
   //   MATLABSystem: '<S7>/PX4 Timestamp'
 
   modelDeployment_B.BusAssignment6.timestamp =
-    modelDeployment_B.rtb_PX4Timestamp_a;
+    modelDeployment_B.rtb_PX4Timestamp_m;
   modelDeployment_B.BusAssignment6.xd = modelDeployment_B.DataTypeConversion6_n
     [0];
   modelDeployment_B.BusAssignment6.yd = modelDeployment_B.DataTypeConversion6_n
@@ -5180,7 +5635,7 @@ void modelDeployment_step(void)
   //   MATLABSystem: '<S7>/PX4 Timestamp'
 
   modelDeployment_B.BusAssignment7.timestamp =
-    modelDeployment_B.rtb_PX4Timestamp_a;
+    modelDeployment_B.rtb_PX4Timestamp_m;
   modelDeployment_B.BusAssignment7.sigmax =
     modelDeployment_B.DataTypeConversion7[0];
   modelDeployment_B.BusAssignment7.sigmay =
@@ -5205,7 +5660,7 @@ void modelDeployment_step(void)
   //   MATLABSystem: '<S7>/PX4 Timestamp'
 
   modelDeployment_B.BusAssignment8.timestamp =
-    modelDeployment_B.rtb_PX4Timestamp_a;
+    modelDeployment_B.rtb_PX4Timestamp_m;
   modelDeployment_B.BusAssignment8.ktx = modelDeployment_B.DataTypeConversion8[0];
   modelDeployment_B.BusAssignment8.kty = modelDeployment_B.DataTypeConversion8[1];
   modelDeployment_B.BusAssignment8.ktz = modelDeployment_B.DataTypeConversion8[2];
@@ -5227,7 +5682,7 @@ void modelDeployment_step(void)
   //   MATLABSystem: '<S7>/PX4 Timestamp'
 
   modelDeployment_B.BusAssignment5.timestamp =
-    modelDeployment_B.rtb_PX4Timestamp_a;
+    modelDeployment_B.rtb_PX4Timestamp_m;
   modelDeployment_B.BusAssignment5.pwm1 =
     modelDeployment_B.DataTypeConversion_b[0];
   modelDeployment_B.BusAssignment5.pwm2 =
@@ -5253,7 +5708,7 @@ void modelDeployment_step(void)
   //   MATLABSystem: '<S7>/PX4 Timestamp'
 
   modelDeployment_B.BusAssignment10.timestamp =
-    modelDeployment_B.rtb_PX4Timestamp_a;
+    modelDeployment_B.rtb_PX4Timestamp_m;
   modelDeployment_B.BusAssignment10.q0d = static_cast<real32_T>
     (modelDeployment_B.quaternion_d[0]);
   modelDeployment_B.BusAssignment10.q1d = static_cast<real32_T>
@@ -5306,22 +5761,22 @@ void modelDeployment_step(void)
     //   Math: '<S56>/Math Function'
     //   Product: '<S56>/Product'
 
-    for (modelDeployment_B.ParamStep_g = 0; modelDeployment_B.ParamStep_g < 3;
-         modelDeployment_B.ParamStep_g++) {
-      for (modelDeployment_B.i = 0; modelDeployment_B.i < 3; modelDeployment_B.i
-           ++) {
-        modelDeployment_B.b_i = 3 * modelDeployment_B.i +
-          modelDeployment_B.ParamStep_g;
-        modelDeployment_B.posGains[modelDeployment_B.b_i] =
+    for (modelDeployment_B.ParamStep_m = 0; modelDeployment_B.ParamStep_m < 3;
+         modelDeployment_B.ParamStep_m++) {
+      for (modelDeployment_B.i_m = 0; modelDeployment_B.i_m < 3;
+           modelDeployment_B.i_m++) {
+        modelDeployment_B.i = 3 * modelDeployment_B.i_m +
+          modelDeployment_B.ParamStep_m;
+        modelDeployment_B.posGains[modelDeployment_B.i] =
           ((modelDeployment_B.VectorConcatenate[3 *
-            modelDeployment_B.ParamStep_g + 1] *
-            modelDeployment_B.VectorConcatenate[3 * modelDeployment_B.i + 1] +
+            modelDeployment_B.ParamStep_m + 1] *
+            modelDeployment_B.VectorConcatenate[3 * modelDeployment_B.i_m + 1] +
             modelDeployment_B.VectorConcatenate[3 *
-            modelDeployment_B.ParamStep_g] *
-            modelDeployment_B.VectorConcatenate[3 * modelDeployment_B.i]) +
-           modelDeployment_B.VectorConcatenate[3 * modelDeployment_B.ParamStep_g
-           + 2] * modelDeployment_B.VectorConcatenate[3 * modelDeployment_B.i +
-           2]) + modelDeployment_P.Bias1_Bias[modelDeployment_B.b_i];
+            modelDeployment_B.ParamStep_m] *
+            modelDeployment_B.VectorConcatenate[3 * modelDeployment_B.i_m]) +
+           modelDeployment_B.VectorConcatenate[3 * modelDeployment_B.ParamStep_m
+           + 2] * modelDeployment_B.VectorConcatenate[3 * modelDeployment_B.i_m
+           + 2]) + modelDeployment_P.Bias1_Bias[modelDeployment_B.i];
       }
     }
 
@@ -5331,10 +5786,10 @@ void modelDeployment_step(void)
     //   Abs: '<S56>/Abs2'
     //   Constant: '<S64>/Constant'
 
-    for (modelDeployment_B.ParamStep_g = 0; modelDeployment_B.ParamStep_g < 9;
-         modelDeployment_B.ParamStep_g++) {
-      modelDeployment_B.Compare[modelDeployment_B.ParamStep_g] = (fabs
-        (modelDeployment_B.posGains[modelDeployment_B.ParamStep_g]) >
+    for (modelDeployment_B.ParamStep_m = 0; modelDeployment_B.ParamStep_m < 9;
+         modelDeployment_B.ParamStep_m++) {
+      modelDeployment_B.Compare[modelDeployment_B.ParamStep_m] = (fabs
+        (modelDeployment_B.posGains[modelDeployment_B.ParamStep_m]) >
         modelDeployment_P.DirectionCosineMatrixtoRotation);
     }
 
@@ -5344,10 +5799,10 @@ void modelDeployment_step(void)
     //   RelationalOperator: '<S64>/Compare'
 
     modelDeployment_B.NOT = modelDeployment_B.Compare[0];
-    for (modelDeployment_B.ParamStep_g = 0; modelDeployment_B.ParamStep_g < 8;
-         modelDeployment_B.ParamStep_g++) {
+    for (modelDeployment_B.ParamStep_m = 0; modelDeployment_B.ParamStep_m < 8;
+         modelDeployment_B.ParamStep_m++) {
       modelDeployment_B.NOT = (modelDeployment_B.NOT ||
-        modelDeployment_B.Compare[modelDeployment_B.ParamStep_g + 1]);
+        modelDeployment_B.Compare[modelDeployment_B.ParamStep_m + 1]);
     }
 
     // If: '<S52>/If' incorporates:
@@ -5828,7 +6283,7 @@ void modelDeployment_initialize(void)
     // SystemInitialize for IfAction SubSystem: '<S88>/If Action Subsystem5'
     // InitializeConditions for S-Function (sdspunwrap2): '<S94>/Unwrap1'
     modelDeployment_DW.Unwrap1_FirstStep = true;
-    for (i = 0; i < 6; i++) {
+    for (i = 0; i < 5; i++) {
       // InitializeConditions for Memory: '<S117>/Memory'
       modelDeployment_DW.Memory_PreviousInput[i] =
         modelDeployment_P.Memory_InitialCondition_a[i];
@@ -5846,6 +6301,21 @@ void modelDeployment_initialize(void)
         modelDeployment_P.DiscreteTimeIntegrator1_IC_l[i];
     }
 
+    // Start for MATLABSystem: '<S94>/Polynomial Trajectory3'
+    memset(&modelDeployment_DW.obj_d.AccelerationBoundaryCondition[0], 0, 10U *
+           sizeof(real_T));
+    for (i = 0; i < 5; i++) {
+      modelDeployment_DW.obj_d.tunablePropertyChanged[i] = false;
+    }
+
+    memcpy(&modelDeployment_DW.obj_d.VelocityBoundaryCondition[0],
+           &modelDeployment_P.PolynomialTrajectory3_Velocit_a[0], 14U * sizeof
+           (real_T));
+    modelDeployment_DW.obj_d.isInitialized = 1;
+    mode_PolyTrajSys_setupImpl_fjc1(&modelDeployment_DW.obj_d);
+    modelDeployment_DW.obj_d.TunablePropsChanged = false;
+
+    // End of Start for MATLABSystem: '<S94>/Polynomial Trajectory3'
     // End of SystemInitialize for SubSystem: '<S88>/If Action Subsystem5'
     for (i = 0; i < 22; i++) {
       // SystemInitialize for Merge: '<S88>/Merge'
@@ -6223,11 +6693,11 @@ void modelDeployment_initialize(void)
     modelDeployment_DW.obj_mt.isSetupComplete = true;
 
     // Start for MATLABSystem: '<S86>/Read Parameter9'
-    modelDeployment_DW.obj_d.matlabCodegenIsDeleted = false;
-    modelDeployment_DW.obj_d.isInitialized = 1;
-    modelDeployment_DW.obj_d.MW_PARAMHANDLE = MW_Init_Param(&ParameterNameStr_6
-      [0], true, 4.0);
-    modelDeployment_DW.obj_d.isSetupComplete = true;
+    modelDeployment_DW.obj_dx.matlabCodegenIsDeleted = false;
+    modelDeployment_DW.obj_dx.isInitialized = 1;
+    modelDeployment_DW.obj_dx.MW_PARAMHANDLE = MW_Init_Param
+      (&ParameterNameStr_6[0], true, 4.0);
+    modelDeployment_DW.obj_dx.isSetupComplete = true;
 
     // Start for MATLABSystem: '<S86>/Read Parameter7'
     modelDeployment_DW.obj_h.matlabCodegenIsDeleted = false;
@@ -6953,11 +7423,11 @@ void modelDeployment_initialize(void)
     modelDeployment_DW.obj_h3.isSetupComplete = true;
 
     // Start for MATLABSystem: '<S83>/Read Parameter30'
-    modelDeployment_DW.obj_dx.matlabCodegenIsDeleted = false;
-    modelDeployment_DW.obj_dx.isInitialized = 1;
-    modelDeployment_DW.obj_dx.MW_PARAMHANDLE = MW_Init_Param
+    modelDeployment_DW.obj_dxt.matlabCodegenIsDeleted = false;
+    modelDeployment_DW.obj_dxt.isInitialized = 1;
+    modelDeployment_DW.obj_dxt.MW_PARAMHANDLE = MW_Init_Param
       (&ParameterNameStr_32[0], true, 4.0);
-    modelDeployment_DW.obj_dx.isSetupComplete = true;
+    modelDeployment_DW.obj_dxt.isSetupComplete = true;
 
     // Start for MATLABSystem: '<S83>/Read Parameter26'
     modelDeployment_DW.obj_hx.matlabCodegenIsDeleted = false;
@@ -7329,8 +7799,8 @@ void modelDeployment_terminate(void)
   // End of Terminate for MATLABSystem: '<S86>/Read Parameter6'
 
   // Terminate for MATLABSystem: '<S86>/Read Parameter9'
-  if (!modelDeployment_DW.obj_d.matlabCodegenIsDeleted) {
-    modelDeployment_DW.obj_d.matlabCodegenIsDeleted = true;
+  if (!modelDeployment_DW.obj_dx.matlabCodegenIsDeleted) {
+    modelDeployment_DW.obj_dx.matlabCodegenIsDeleted = true;
   }
 
   // End of Terminate for MATLABSystem: '<S86>/Read Parameter9'
@@ -8059,8 +8529,8 @@ void modelDeployment_terminate(void)
   // End of Terminate for MATLABSystem: '<S83>/Read Parameter23'
 
   // Terminate for MATLABSystem: '<S83>/Read Parameter30'
-  if (!modelDeployment_DW.obj_dx.matlabCodegenIsDeleted) {
-    modelDeployment_DW.obj_dx.matlabCodegenIsDeleted = true;
+  if (!modelDeployment_DW.obj_dxt.matlabCodegenIsDeleted) {
+    modelDeployment_DW.obj_dxt.matlabCodegenIsDeleted = true;
   }
 
   // End of Terminate for MATLABSystem: '<S83>/Read Parameter30'
@@ -8204,7 +8674,7 @@ void modelDeployment_terminate(void)
     if ((modelDeployment_DW.obj_o.isInitialized == 1) &&
         modelDeployment_DW.obj_o.isSetupComplete) {
       for (i = 0; i < 12; i++) {
-        modelDeployment_B.motorValues_e[i] = (rtNaNF);
+        modelDeployment_B.motorValues_o[i] = (rtNaNF);
       }
 
       for (i = 0; i < 8; i++) {
@@ -8213,7 +8683,7 @@ void modelDeployment_terminate(void)
 
       for (i = 0; i < 12; i++) {
         if (modelDeployment_DW.obj_o.ValidMotorIdx[i]) {
-          modelDeployment_B.motorValues_e[i] = 0.0F;
+          modelDeployment_B.motorValues_o[i] = 0.0F;
         }
       }
 
@@ -8223,7 +8693,7 @@ void modelDeployment_terminate(void)
         }
       }
 
-      MW_actuators_set(false, &modelDeployment_B.motorValues_e[0], &servoValues
+      MW_actuators_set(false, &modelDeployment_B.motorValues_o[0], &servoValues
                        [0]);
       MW_actuators_terminate();
     }

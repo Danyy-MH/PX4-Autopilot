@@ -7,9 +7,9 @@
 //
 // Code generated for Simulink model 'modelDeployment'.
 //
-// Model version                  : 1.199
+// Model version                  : 1.215
 // Simulink Coder version         : 24.2 (R2024b) 21-Jun-2024
-// C/C++ source code generated on : Mon Apr 28 16:20:26 2025
+// C/C++ source code generated on : Mon Jun  9 16:25:09 2025
 //
 // Target selection: ert.tlc
 // Embedded hardware selection: ARM Compatible->ARM Cortex
@@ -943,45 +943,61 @@ P_modelDeployment_T modelDeployment_P = {
 
   { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 },
 
+  // Expression: zeros(2, 7)
+  //  Referenced by: '<S94>/Polynomial Trajectory3'
+
+  { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 },
+
+  // Expression: [0, 0.3, 0.3, 1.2, 1.2, 1.2, 0.3;
+  // zeros(1, 7)]
+  //  Referenced by: '<S94>/Constant1'
+
+  { 0.0, 0.0, 0.3, 0.0, 0.3, 0.0, 1.2, 0.0, 1.2, 0.0, 1.2, 0.0, 0.3, 0.0 },
+
+  // Expression: [0, 3, 6, 8, 11, 44, 47]
+  //  Referenced by: '<S94>/Constant'
+
+  { 0.0, 3.0, 6.0, 8.0, 11.0, 44.0, 47.0 },
+
   // Expression: [0; 0; 0; 0; 0; 0]
   //  Referenced by: '<S94>/Constant12'
 
   { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 },
 
-  // Expression: ones(6, 1) * 2
+  // Expression: ones(5, 1) * 2
   //  Referenced by: '<S94>/Constant13'
 
-  { 2.0, 2.0, 2.0, 2.0, 2.0, 2.0 },
+  { 2.0, 2.0, 2.0, 2.0, 2.0 },
 
-  // Expression: [0; 0; 0; 0; 0; 0]
+  // Expression: [0; 0; 0; 0; 0]
   //  Referenced by: '<S117>/Memory'
 
-  { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 },
+  { 0.0, 0.0, 0.0, 0.0, 0.0 },
 
-  // Expression: [0; 0; 0; 0; 0; 0]
+  // Expression: [0; 0; 0; 0; 0]
   //  Referenced by: '<S117>/Memory1'
 
-  { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 },
+  { 0.0, 0.0, 0.0, 0.0, 0.0 },
 
   // Computed Parameter: DiscreteTimeIntegrator_gainva_k
   //  Referenced by: '<S117>/Discrete-Time Integrator'
 
   0.002,
 
-  // Expression: [0; 0; 0; 0; 0; 0]
+  // Expression: [0; 0; 0; 0; 0]
   //  Referenced by: '<S117>/Discrete-Time Integrator'
 
-  { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 },
+  { 0.0, 0.0, 0.0, 0.0, 0.0 },
 
   // Computed Parameter: DiscreteTimeIntegrator1_gainv_i
   //  Referenced by: '<S117>/Discrete-Time Integrator1'
 
   0.002,
 
-  // Expression: [0; 0; 0; 0; 0; 0]
+  // Expression: [0; 0; 0; 0; 0]
   //  Referenced by: '<S117>/Discrete-Time Integrator1'
 
-  { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 },
+  { 0.0, 0.0, 0.0, 0.0, 0.0 },
 
   // Expression: 2
   //  Referenced by: '<S117>/zeta'

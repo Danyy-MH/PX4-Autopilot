@@ -7,9 +7,9 @@
 //
 // Code generated for Simulink model 'FxtD_Quaternion'.
 //
-// Model version                  : 1.17
+// Model version                  : 1.27
 // Simulink Coder version         : 24.2 (R2024b) 21-Jun-2024
-// C/C++ source code generated on : Wed Apr 23 20:30:32 2025
+// C/C++ source code generated on : Mon Jun  9 16:22:35 2025
 //
 // Target selection: ert.tlc
 // Embedded hardware selection: ARM Compatible->ARM Cortex
@@ -1038,9 +1038,9 @@ void FxtD_Quaternion(const real_T rtu_pos[3], const real_T
       localB->Cv[c_k] = (rtNaN);
     }
   } else {
-    FxtD_Quaternion_svd_60uAVgXi(localB->A, localB->U, localB->Product8,
-      localB->V, localB);
-    localB->absx = fabs(localB->Product8[0]);
+    FxtD_Quaternion_svd_60uAVgXi(localB->A, localB->U, localB->s, localB->V,
+      localB);
+    localB->absx = fabs(localB->s[0]);
     if (rtIsInf(localB->absx) || rtIsNaN(localB->absx)) {
       localB->absx = (rtNaN);
     } else if (localB->absx < 4.4501477170144028E-308) {
@@ -1054,7 +1054,7 @@ void FxtD_Quaternion(const real_T rtu_pos[3], const real_T
     c_k = 0;
     exitg1 = false;
     while ((!exitg1) && (c_k < 3)) {
-      if (rtIsInf(localB->Product8[c_k]) || rtIsNaN(localB->Product8[c_k])) {
+      if (rtIsInf(localB->s[c_k]) || rtIsNaN(localB->s[c_k])) {
         localB->absx = 1.7976931348623157E+308;
         exitg1 = true;
       } else {
@@ -1064,7 +1064,7 @@ void FxtD_Quaternion(const real_T rtu_pos[3], const real_T
 
     localB->r_n = -1;
     c_k = 0;
-    while ((c_k < 3) && (localB->Product8[c_k] > localB->absx)) {
+    while ((c_k < 3) && (localB->s[c_k] > localB->absx)) {
       localB->r_n++;
       c_k++;
     }
@@ -1072,7 +1072,7 @@ void FxtD_Quaternion(const real_T rtu_pos[3], const real_T
     if (localB->r_n + 1 > 0) {
       vcol = 1;
       for (c_k = 0; c_k <= localB->r_n; c_k++) {
-        localB->absx = 1.0 / localB->Product8[c_k];
+        localB->absx = 1.0 / localB->s[c_k];
         for (exponent = vcol; exponent <= vcol + 2; exponent++) {
           localB->V[exponent - 1] *= localB->absx;
         }
@@ -1163,8 +1163,8 @@ void FxtD_Quaternion(const real_T rtu_pos[3], const real_T
   // SignalConversion generated from: '<Root>/state_hat_Outport_1' incorporates:
   //   Constant: '<Root>/Constant'
 
-  localB->Product3_eu = localDW->Memory4_PreviousInput[0];
-  rty_state_hat_pos_hat[0] = localB->Product3_eu;
+  localB->Product1_c = localDW->Memory4_PreviousInput[0];
+  rty_state_hat_pos_hat[0] = localB->Product1_c;
   rty_state_hat_pos_hat[3] = FxtD_Quaternion_P.Constant_Value[0];
 
   // SignalConversion generated from: '<Root>/state_hat_Outport_1'
@@ -1174,58 +1174,58 @@ void FxtD_Quaternion(const real_T rtu_pos[3], const real_T
   // Sum: '<Root>/Sum' incorporates:
   //   Math: '<Root>/Power1'
 
-  localB->Product3_eu = rtu_pos[0] - localB->Product3_eu;
-  localDW->Memory4_PreviousInput[0] = localB->Product3_eu;
+  localB->Product1_c = rtu_pos[0] - localB->Product1_c;
+  localDW->Memory4_PreviousInput[0] = localB->Product1_c;
 
   // SignalConversion generated from: '<Root>/state_hat_Outport_1' incorporates:
   //   Constant: '<Root>/Constant4'
 
-  rty_state_hat_e_hat[0] = localB->Product3_eu;
+  rty_state_hat_e_hat[0] = localB->Product1_c;
   rty_state_hat_e_hat[3] = FxtD_Quaternion_P.Constant4_Value[0];
 
   // Signum: '<Root>/Sign3'
   p = rtIsNaN(localB->Sum);
   if (p) {
-    localB->rtb_Cv_m = (rtNaN);
+    localB->Sum_m = (rtNaN);
   } else if (localB->Sum < 0.0) {
-    localB->rtb_Cv_m = -1.0;
+    localB->Sum_m = -1.0;
   } else {
-    localB->rtb_Cv_m = (localB->Sum > 0.0);
+    localB->Sum_m = (localB->Sum > 0.0);
   }
 
   // Product: '<Root>/Product6' incorporates:
   //   Product: '<Root>/Product7'
   //   Signum: '<Root>/Sign3'
 
-  localB->Sum_m = localB->rtb_Cv_m * rtu_PX4Params_FxTDiffg_G1[3];
+  localB->rtb_Product9_tmp = localB->Sum_m * rtu_PX4Params_FxTDiffg_G1[3];
 
   // Abs: '<Root>/Abs4' incorporates:
   //   Abs: '<Root>/Abs5'
   //   Abs: '<Root>/Abs6'
   //   Abs: '<Root>/Abs7'
 
-  localB->Product3_eu = fabs(localB->Sum);
-  localB->absx = localB->Product3_eu;
+  localB->Product1_c = fabs(localB->Sum);
+  localB->Product3_eu = localB->Product1_c;
 
   // Product: '<Root>/Product6' incorporates:
   //   Abs: '<Root>/Abs4'
   //   Math: '<Root>/Power3'
 
-  localB->Product2_d = localB->Sum_m * rt_powd_snf(localB->Product3_eu,
-    rtu_PX4Params_FxTDiffg_lam1[3]);
+  localB->UnaryMinus1 = localB->rtb_Product9_tmp * rt_powd_snf
+    (localB->Product1_c, rtu_PX4Params_FxTDiffg_lam1[3]);
 
   // Product: '<Root>/Product7' incorporates:
   //   Abs: '<Root>/Abs5'
   //   Math: '<Root>/Power4'
 
-  localB->rtb_Product8_tmp_idx_0 = localB->Sum_m * rt_powd_snf
-    (localB->Product3_eu, rtu_PX4Params_FxTDiffg_vrho1[3]);
+  localB->rtb_Product9_tmp_idx_0 = localB->rtb_Product9_tmp * rt_powd_snf
+    (localB->Product1_c, rtu_PX4Params_FxTDiffg_vrho1[3]);
 
   // SignalConversion generated from: '<Root>/state_hat_Outport_1' incorporates:
   //   Constant: '<Root>/Constant'
 
-  localB->Product3_eu = localDW->Memory4_PreviousInput[1];
-  rty_state_hat_pos_hat[1] = localB->Product3_eu;
+  localB->Product1_c = localDW->Memory4_PreviousInput[1];
+  rty_state_hat_pos_hat[1] = localB->Product1_c;
   rty_state_hat_pos_hat[4] = FxtD_Quaternion_P.Constant_Value[1];
 
   // SignalConversion generated from: '<Root>/state_hat_Outport_1'
@@ -1235,58 +1235,58 @@ void FxtD_Quaternion(const real_T rtu_pos[3], const real_T
   // Sum: '<Root>/Sum' incorporates:
   //   Math: '<Root>/Power1'
 
-  localB->Product3_eu = rtu_pos[1] - localB->Product3_eu;
-  localDW->Memory4_PreviousInput[1] = localB->Product3_eu;
+  localB->Product1_c = rtu_pos[1] - localB->Product1_c;
+  localDW->Memory4_PreviousInput[1] = localB->Product1_c;
 
   // SignalConversion generated from: '<Root>/state_hat_Outport_1' incorporates:
   //   Constant: '<Root>/Constant4'
 
-  rty_state_hat_e_hat[1] = localB->Product3_eu;
+  rty_state_hat_e_hat[1] = localB->Product1_c;
   rty_state_hat_e_hat[4] = FxtD_Quaternion_P.Constant4_Value[1];
 
   // Signum: '<Root>/Sign3'
   tmp = rtIsNaN(localB->Sum_f);
   if (tmp) {
-    localB->rtb_Cv_m = (rtNaN);
+    localB->Sum_m = (rtNaN);
   } else if (localB->Sum_f < 0.0) {
-    localB->rtb_Cv_m = -1.0;
+    localB->Sum_m = -1.0;
   } else {
-    localB->rtb_Cv_m = (localB->Sum_f > 0.0);
+    localB->Sum_m = (localB->Sum_f > 0.0);
   }
 
   // Product: '<Root>/Product6' incorporates:
   //   Product: '<Root>/Product7'
   //   Signum: '<Root>/Sign3'
 
-  localB->Sum_m = localB->rtb_Cv_m * rtu_PX4Params_FxTDiffg_G1[4];
+  localB->rtb_Product9_tmp = localB->Sum_m * rtu_PX4Params_FxTDiffg_G1[4];
 
   // Abs: '<Root>/Abs4' incorporates:
   //   Abs: '<Root>/Abs5'
   //   Abs: '<Root>/Abs6'
   //   Abs: '<Root>/Abs7'
 
-  localB->Product3_eu = fabs(localB->Sum_f);
-  localB->Product1_c = localB->Product3_eu;
+  localB->Product1_c = fabs(localB->Sum_f);
+  localB->Product2_d = localB->Product1_c;
 
   // Product: '<Root>/Product6' incorporates:
   //   Abs: '<Root>/Abs4'
   //   Math: '<Root>/Power3'
 
-  localB->UnaryMinus1 = localB->Sum_m * rt_powd_snf(localB->Product3_eu,
+  localB->absx = localB->rtb_Product9_tmp * rt_powd_snf(localB->Product1_c,
     rtu_PX4Params_FxTDiffg_lam1[4]);
 
   // Product: '<Root>/Product7' incorporates:
   //   Abs: '<Root>/Abs5'
   //   Math: '<Root>/Power4'
 
-  localB->rtb_Product8_tmp_idx_1 = localB->Sum_m * rt_powd_snf
-    (localB->Product3_eu, rtu_PX4Params_FxTDiffg_vrho1[4]);
+  localB->rtb_Product9_tmp_idx_1 = localB->rtb_Product9_tmp * rt_powd_snf
+    (localB->Product1_c, rtu_PX4Params_FxTDiffg_vrho1[4]);
 
   // SignalConversion generated from: '<Root>/state_hat_Outport_1' incorporates:
   //   Constant: '<Root>/Constant'
 
-  localB->Product3_eu = localDW->Memory4_PreviousInput[2];
-  rty_state_hat_pos_hat[2] = localB->Product3_eu;
+  localB->Product1_c = localDW->Memory4_PreviousInput[2];
+  rty_state_hat_pos_hat[2] = localB->Product1_c;
   rty_state_hat_pos_hat[5] = FxtD_Quaternion_P.Constant_Value[2];
 
   // SignalConversion generated from: '<Root>/state_hat_Outport_1'
@@ -1296,80 +1296,80 @@ void FxtD_Quaternion(const real_T rtu_pos[3], const real_T
   // Sum: '<Root>/Sum' incorporates:
   //   Math: '<Root>/Power1'
 
-  localB->Product3_eu = rtu_pos[2] - localB->Product3_eu;
-  localDW->Memory4_PreviousInput[2] = localB->Product3_eu;
+  localB->Product1_c = rtu_pos[2] - localB->Product1_c;
+  localDW->Memory4_PreviousInput[2] = localB->Product1_c;
 
   // SignalConversion generated from: '<Root>/state_hat_Outport_1' incorporates:
   //   Constant: '<Root>/Constant4'
 
-  rty_state_hat_e_hat[2] = localB->Product3_eu;
+  rty_state_hat_e_hat[2] = localB->Product1_c;
   rty_state_hat_e_hat[5] = FxtD_Quaternion_P.Constant4_Value[2];
 
   // Signum: '<Root>/Sign3'
   tmp_0 = rtIsNaN(localB->Sum_b);
   if (tmp_0) {
-    localB->rtb_Cv_m = (rtNaN);
+    localB->Sum_m = (rtNaN);
   } else if (localB->Sum_b < 0.0) {
-    localB->rtb_Cv_m = -1.0;
+    localB->Sum_m = -1.0;
   } else {
-    localB->rtb_Cv_m = (localB->Sum_b > 0.0);
+    localB->Sum_m = (localB->Sum_b > 0.0);
   }
 
   // Product: '<Root>/Product6' incorporates:
   //   Product: '<Root>/Product7'
   //   Signum: '<Root>/Sign3'
 
-  localB->Sum_m = localB->rtb_Cv_m * rtu_PX4Params_FxTDiffg_G1[5];
+  localB->rtb_Product9_tmp = localB->Sum_m * rtu_PX4Params_FxTDiffg_G1[5];
 
   // Abs: '<Root>/Abs4' incorporates:
   //   Abs: '<Root>/Abs5'
   //   Abs: '<Root>/Abs6'
   //   Abs: '<Root>/Abs7'
 
-  localB->Product3_eu = fabs(localB->Sum_b);
+  localB->Product1_c = fabs(localB->Sum_b);
 
   // Product: '<Root>/Product6' incorporates:
   //   Abs: '<Root>/Abs4'
   //   Math: '<Root>/Power3'
 
-  localB->rtb_Product8_tmp_idx_2 = localB->Sum_m * rt_powd_snf
-    (localB->Product3_eu, rtu_PX4Params_FxTDiffg_lam1[5]);
+  localB->rtb_Product9_tmp_idx_2 = localB->rtb_Product9_tmp * rt_powd_snf
+    (localB->Product1_c, rtu_PX4Params_FxTDiffg_lam1[5]);
 
   // Product: '<Root>/Product7' incorporates:
   //   Abs: '<Root>/Abs5'
   //   Math: '<Root>/Power4'
 
-  localB->Sum_m *= rt_powd_snf(localB->Product3_eu,
+  localB->rtb_Product9_tmp *= rt_powd_snf(localB->Product1_c,
     rtu_PX4Params_FxTDiffg_vrho1[5]);
   for (c_k = 0; c_k < 3; c_k++) {
     // Sum: '<Root>/Sum7' incorporates:
     //   Product: '<Root>/Matrix Multiply1'
 
-    localB->Sum_d = localB->Cv[c_k];
-    localB->rtb_Cv_m = localB->Sum_d * localB->Product2_d;
+    localB->rtb_Cv_m = localB->Cv[c_k];
+    localB->Sum_m = localB->rtb_Cv_m * localB->UnaryMinus1;
 
     // Product: '<Root>/Matrix Multiply2'
-    localB->rtb_Cv_c = localB->Sum_d * localB->rtb_Product8_tmp_idx_0;
+    localB->rtb_Cv_c = localB->rtb_Cv_m * localB->rtb_Product9_tmp_idx_0;
 
     // Sum: '<Root>/Sum7' incorporates:
     //   Product: '<Root>/Matrix Multiply1'
 
-    localB->Sum_d = localB->Cv[c_k + 3];
-    localB->rtb_Cv_m += localB->Sum_d * localB->UnaryMinus1;
+    localB->rtb_Cv_m = localB->Cv[c_k + 3];
+    localB->Sum_m += localB->rtb_Cv_m * localB->absx;
 
     // Product: '<Root>/Matrix Multiply2'
-    localB->rtb_Cv_c += localB->Sum_d * localB->rtb_Product8_tmp_idx_1;
+    localB->rtb_Cv_c += localB->rtb_Cv_m * localB->rtb_Product9_tmp_idx_1;
 
     // Sum: '<Root>/Sum7' incorporates:
     //   Memory: '<Root>/Memory2'
     //   Product: '<Root>/Matrix Multiply1'
     //   Product: '<Root>/Matrix Multiply2'
-    //   Product: '<Root>/Product8'
+    //   Product: '<Root>/Product9'
 
-    localB->Sum_d = localB->Cv[c_k + 6];
-    localB->Product8[c_k] = ((localB->Sum_d * localB->rtb_Product8_tmp_idx_2 +
-      localB->rtb_Cv_m) + localDW->Memory2_PreviousInput[c_k]) + (localB->Sum_d *
-      localB->Sum_m + localB->rtb_Cv_c);
+    localB->rtb_Cv_m = localB->Cv[c_k + 6];
+    localB->Product9[c_k] = ((localB->rtb_Cv_m * localB->rtb_Product9_tmp_idx_2
+      + localB->Sum_m) + localDW->Memory2_PreviousInput[c_k]) +
+      (localB->rtb_Cv_m * localB->rtb_Product9_tmp + localB->rtb_Cv_c);
   }
 
   // Sum: '<S13>/Sum' incorporates:
@@ -1379,10 +1379,10 @@ void FxtD_Quaternion(const real_T rtu_pos[3], const real_T
   //   Product: '<S13>/Product2'
   //   Product: '<S13>/Product3'
 
-  localB->Product2_d = ((localB->rtb_Gain4_idx_0 *
-    FxtD_Quaternion_P.Constant8_Value - localB->Product8[0] *
-    localB->rtb_Gain4_idx_1) - localB->Product8[1] * localB->rtb_Gain4_idx_2) -
-    localB->Product8[2] * localB->rtb_Gain4_idx_3;
+  localB->UnaryMinus1 = ((localB->rtb_Gain4_idx_0 *
+    FxtD_Quaternion_P.Constant8_Value - localB->Product9[0] *
+    localB->rtb_Gain4_idx_1) - localB->Product9[1] * localB->rtb_Gain4_idx_2) -
+    localB->Product9[2] * localB->rtb_Gain4_idx_3;
 
   // Sum: '<S14>/Sum' incorporates:
   //   Constant: '<Root>/Constant8'
@@ -1391,10 +1391,10 @@ void FxtD_Quaternion(const real_T rtu_pos[3], const real_T
   //   Product: '<S14>/Product2'
   //   Product: '<S14>/Product3'
 
-  localB->UnaryMinus1 = ((localB->rtb_Gain4_idx_0 * localB->Product8[0] +
-    localB->rtb_Gain4_idx_1 * FxtD_Quaternion_P.Constant8_Value) +
-    localB->rtb_Gain4_idx_2 * localB->Product8[2]) - localB->Product8[1] *
-    localB->rtb_Gain4_idx_3;
+  localB->absx = ((localB->rtb_Gain4_idx_0 * localB->Product9[0] +
+                   localB->rtb_Gain4_idx_1 * FxtD_Quaternion_P.Constant8_Value)
+                  + localB->rtb_Gain4_idx_2 * localB->Product9[2]) -
+    localB->Product9[1] * localB->rtb_Gain4_idx_3;
 
   // Sum: '<S15>/Sum' incorporates:
   //   Constant: '<Root>/Constant8'
@@ -1403,10 +1403,10 @@ void FxtD_Quaternion(const real_T rtu_pos[3], const real_T
   //   Product: '<S15>/Product2'
   //   Product: '<S15>/Product3'
 
-  localB->Sum_m = ((localB->rtb_Gain4_idx_0 * localB->Product8[1] -
-                    localB->rtb_Gain4_idx_1 * localB->Product8[2]) +
+  localB->Sum_m = ((localB->rtb_Gain4_idx_0 * localB->Product9[1] -
+                    localB->rtb_Gain4_idx_1 * localB->Product9[2]) +
                    localB->rtb_Gain4_idx_2 * FxtD_Quaternion_P.Constant8_Value)
-    + localB->Product8[0] * localB->rtb_Gain4_idx_3;
+    + localB->Product9[0] * localB->rtb_Gain4_idx_3;
 
   // Sum: '<S16>/Sum' incorporates:
   //   Constant: '<Root>/Constant8'
@@ -1415,10 +1415,10 @@ void FxtD_Quaternion(const real_T rtu_pos[3], const real_T
   //   Product: '<S16>/Product2'
   //   Product: '<S16>/Product3'
 
-  localB->Sum_d = ((localB->rtb_Gain4_idx_0 * localB->Product8[2] +
-                    localB->rtb_Gain4_idx_1 * localB->Product8[1]) -
-                   localB->Product8[0] * localB->rtb_Gain4_idx_2) +
-    localB->rtb_Gain4_idx_3 * FxtD_Quaternion_P.Constant8_Value;
+  localB->rtb_Gain4_idx_3 = ((localB->rtb_Gain4_idx_0 * localB->Product9[2] +
+    localB->rtb_Gain4_idx_1 * localB->Product9[1]) - localB->Product9[0] *
+    localB->rtb_Gain4_idx_2) + localB->rtb_Gain4_idx_3 *
+    FxtD_Quaternion_P.Constant8_Value;
 
   // DiscreteIntegrator: '<Root>/Discrete-Time Integrator4' incorporates:
   //   Product: '<S17>/Product'
@@ -1430,9 +1430,9 @@ void FxtD_Quaternion(const real_T rtu_pos[3], const real_T
   //   UnaryMinus: '<S1>/Unary Minus1'
   //   UnaryMinus: '<S1>/Unary Minus2'
 
-  localB->rtb_Gain4_idx_0 = (((localB->Product2_d * localB->Sum_a -
-    localB->UnaryMinus1 * -localB->Sum) - localB->Sum_m * -localB->Sum_f) -
-    localB->Sum_d * -localB->Sum_b) *
+  localB->rtb_Gain4_idx_0 = (((localB->UnaryMinus1 * localB->Sum_a -
+    localB->absx * -localB->Sum) - localB->Sum_m * -localB->Sum_f) -
+    localB->rtb_Gain4_idx_3 * -localB->Sum_b) *
     FxtD_Quaternion_P.DiscreteTimeIntegrator4_gainval;
 
   // DiscreteIntegrator: '<Root>/Discrete-Time Integrator4'
@@ -1449,10 +1449,9 @@ void FxtD_Quaternion(const real_T rtu_pos[3], const real_T
   //   UnaryMinus: '<S1>/Unary Minus1'
   //   UnaryMinus: '<S1>/Unary Minus2'
 
-  localB->rtb_Gain4_idx_1 = (((localB->Product2_d * -localB->Sum +
-    localB->UnaryMinus1 * localB->Sum_a) + localB->Sum_m * -localB->Sum_b) -
-    localB->Sum_d * -localB->Sum_f) *
-    FxtD_Quaternion_P.DiscreteTimeIntegrator4_gainval;
+  localB->rtb_Gain4_idx_1 = (((localB->UnaryMinus1 * -localB->Sum + localB->absx
+    * localB->Sum_a) + localB->Sum_m * -localB->Sum_b) - localB->rtb_Gain4_idx_3
+    * -localB->Sum_f) * FxtD_Quaternion_P.DiscreteTimeIntegrator4_gainval;
 
   // DiscreteIntegrator: '<Root>/Discrete-Time Integrator4'
   localDW->Memory3_PreviousInput[1] = localB->rtb_Gain4_idx_1 +
@@ -1468,9 +1467,9 @@ void FxtD_Quaternion(const real_T rtu_pos[3], const real_T
   //   UnaryMinus: '<S1>/Unary Minus1'
   //   UnaryMinus: '<S1>/Unary Minus2'
 
-  localB->rtb_Gain4_idx_2 = (((localB->Product2_d * -localB->Sum_f -
-    localB->UnaryMinus1 * -localB->Sum_b) + localB->Sum_m * localB->Sum_a) +
-    localB->Sum_d * -localB->Sum) *
+  localB->rtb_Gain4_idx_2 = (((localB->UnaryMinus1 * -localB->Sum_f -
+    localB->absx * -localB->Sum_b) + localB->Sum_m * localB->Sum_a) +
+    localB->rtb_Gain4_idx_3 * -localB->Sum) *
     FxtD_Quaternion_P.DiscreteTimeIntegrator4_gainval;
 
   // DiscreteIntegrator: '<Root>/Discrete-Time Integrator4'
@@ -1487,9 +1486,9 @@ void FxtD_Quaternion(const real_T rtu_pos[3], const real_T
   //   UnaryMinus: '<S1>/Unary Minus1'
   //   UnaryMinus: '<S1>/Unary Minus2'
 
-  localB->Sum_a = (((localB->Product2_d * -localB->Sum_b + localB->UnaryMinus1 *
+  localB->Sum_a = (((localB->UnaryMinus1 * -localB->Sum_b + localB->absx *
                      -localB->Sum_f) - localB->Sum_m * -localB->Sum) +
-                   localB->Sum_d * localB->Sum_a) *
+                   localB->rtb_Gain4_idx_3 * localB->Sum_a) *
     FxtD_Quaternion_P.DiscreteTimeIntegrator4_gainval;
 
   // DiscreteIntegrator: '<Root>/Discrete-Time Integrator4'
@@ -1515,7 +1514,8 @@ void FxtD_Quaternion(const real_T rtu_pos[3], const real_T
   //   Product: '<Root>/Product1'
   //   Signum: '<Root>/Sign2'
 
-  localB->Sum_m = rtu_PX4Params_FxTDiffg_G2[0] * localB->rtb_Gain4_idx_3;
+  localB->rtb_Product9_tmp = rtu_PX4Params_FxTDiffg_G2[0] *
+    localB->rtb_Gain4_idx_3;
 
   // Abs: '<Root>/Abs2' incorporates:
   //   Abs: '<Root>/Abs'
@@ -1523,7 +1523,7 @@ void FxtD_Quaternion(const real_T rtu_pos[3], const real_T
   //   Abs: '<Root>/Abs3'
   //   Math: '<Root>/Power1'
 
-  localB->Sum_d = fabs(localDW->Memory4_PreviousInput[0]);
+  localB->Sum_m = fabs(localDW->Memory4_PreviousInput[0]);
 
   // DiscreteIntegrator: '<Root>/Discrete-Time Integrator1' incorporates:
   //   Abs: '<Root>/Abs2'
@@ -1534,13 +1534,14 @@ void FxtD_Quaternion(const real_T rtu_pos[3], const real_T
   //   Product: '<Root>/Product5'
   //   Sum: '<Root>/Sum4'
 
-  localB->Sum_m = (localB->Sum_m * rt_powd_snf(localB->Sum_d, localB->Sum1[0]) +
-                   localB->Sum_m * rt_powd_snf(localB->Sum_d, localB->Sum2[0])) *
+  localB->rtb_Product9_tmp = (localB->rtb_Product9_tmp * rt_powd_snf
+    (localB->Sum_m, localB->Sum1[0]) + localB->rtb_Product9_tmp * rt_powd_snf
+    (localB->Sum_m, localB->Sum2[0])) *
     FxtD_Quaternion_P.DiscreteTimeIntegrator1_gainval;
-  localB->Product2_d = localB->Sum_m;
+  localB->UnaryMinus1 = localB->rtb_Product9_tmp;
 
   // DiscreteIntegrator: '<Root>/Discrete-Time Integrator1'
-  localDW->DiscreteTimeIntegrator1_DSTATE[0] += localB->Sum_m;
+  localDW->DiscreteTimeIntegrator1_DSTATE[0] += localB->rtb_Product9_tmp;
 
   // Product: '<Root>/Product3' incorporates:
   //   Product: '<Root>/Product4'
@@ -1559,13 +1560,13 @@ void FxtD_Quaternion(const real_T rtu_pos[3], const real_T
   //   Sum: '<Root>/Sum3'
 
   localB->rtb_Gain4_idx_3 = ((localB->rtb_Gain4_idx_3 * rt_powd_snf
-    (localB->Sum_d, rtu_PX4Params_FxTDiffg_lam1[0]) +
+    (localB->Sum_m, rtu_PX4Params_FxTDiffg_lam1[0]) +
     localDW->Memory1_PreviousInput[0]) + localB->rtb_Gain4_idx_3 * rt_powd_snf
-    (localB->Sum_d, rtu_PX4Params_FxTDiffg_vrho1[0])) *
+    (localB->Sum_m, rtu_PX4Params_FxTDiffg_vrho1[0])) *
     FxtD_Quaternion_P.DiscreteTimeIntegrator3_gainval;
 
   // Product: '<Root>/Product3'
-  localB->Product8[0] = localB->rtb_Gain4_idx_3;
+  localB->Product9[0] = localB->rtb_Gain4_idx_3;
 
   // DiscreteIntegrator: '<Root>/Discrete-Time Integrator3'
   localDW->Memory4_PreviousInput[0] = localDW->DiscreteTimeIntegrator3_DSTATE[0]
@@ -1573,27 +1574,37 @@ void FxtD_Quaternion(const real_T rtu_pos[3], const real_T
 
   // Signum: '<Root>/Sign3'
   if (p) {
-    localB->rtb_Cv_m = (rtNaN);
+    localB->Sum_m = (rtNaN);
   } else if (localB->Sum < 0.0) {
-    localB->rtb_Cv_m = -1.0;
+    localB->Sum_m = -1.0;
   } else {
-    localB->rtb_Cv_m = (localB->Sum > 0.0);
+    localB->Sum_m = (localB->Sum > 0.0);
   }
 
   // Product: '<Root>/Product8' incorporates:
-  //   Abs: '<Root>/Abs6'
-  //   Math: '<Root>/Power5'
   //   Product: '<Root>/Product9'
   //   Signum: '<Root>/Sign3'
 
-  localB->Sum_d = rtu_PX4Params_FxTDiffg_G2[3] * localB->rtb_Cv_m;
-  localB->Sum = localB->Sum_d * rt_powd_snf(localB->absx, localB->Sum1[3]);
+  localB->Sum = rtu_PX4Params_FxTDiffg_G2[3] * localB->Sum_m;
 
-  // Product: '<Root>/Product9' incorporates:
+  // DiscreteIntegrator: '<Root>/Discrete-Time Integrator2' incorporates:
   //   Abs: '<Root>/Abs6'
+  //   Math: '<Root>/Power5'
   //   Math: '<Root>/Power6'
+  //   Product: '<Root>/Product8'
+  //   Product: '<Root>/Product9'
+  //   Sum: '<Root>/Sum11'
 
-  localB->absx = localB->Sum_d * rt_powd_snf(localB->absx, localB->Sum2[3]);
+  localB->Sum = (localB->Sum * rt_powd_snf(localB->Product3_eu, localB->Sum1[3])
+                 + localB->Sum * rt_powd_snf(localB->Product3_eu, localB->Sum2[3]))
+    * FxtD_Quaternion_P.DiscreteTimeIntegrator2_gainval;
+
+  // Product: '<Root>/Product8'
+  localB->s[0] = localB->Sum;
+
+  // DiscreteIntegrator: '<Root>/Discrete-Time Integrator2'
+  localDW->Memory2_PreviousInput[0] = localDW->DiscreteTimeIntegrator2_DSTATE[0]
+    + localB->Sum;
 
   // Signum: '<Root>/Sign2' incorporates:
   //   Math: '<Root>/Power1'
@@ -1614,7 +1625,8 @@ void FxtD_Quaternion(const real_T rtu_pos[3], const real_T
   //   Product: '<Root>/Product1'
   //   Signum: '<Root>/Sign2'
 
-  localB->Sum_m = rtu_PX4Params_FxTDiffg_G2[1] * localB->rtb_Gain4_idx_3;
+  localB->rtb_Product9_tmp = rtu_PX4Params_FxTDiffg_G2[1] *
+    localB->rtb_Gain4_idx_3;
 
   // Abs: '<Root>/Abs2' incorporates:
   //   Abs: '<Root>/Abs'
@@ -1622,7 +1634,7 @@ void FxtD_Quaternion(const real_T rtu_pos[3], const real_T
   //   Abs: '<Root>/Abs3'
   //   Math: '<Root>/Power1'
 
-  localB->Sum_d = fabs(localDW->Memory4_PreviousInput[1]);
+  localB->Sum_m = fabs(localDW->Memory4_PreviousInput[1]);
 
   // DiscreteIntegrator: '<Root>/Discrete-Time Integrator1' incorporates:
   //   Abs: '<Root>/Abs2'
@@ -1633,13 +1645,14 @@ void FxtD_Quaternion(const real_T rtu_pos[3], const real_T
   //   Product: '<Root>/Product5'
   //   Sum: '<Root>/Sum4'
 
-  localB->Sum_m = (localB->Sum_m * rt_powd_snf(localB->Sum_d, localB->Sum1[1]) +
-                   localB->Sum_m * rt_powd_snf(localB->Sum_d, localB->Sum2[1])) *
+  localB->rtb_Product9_tmp = (localB->rtb_Product9_tmp * rt_powd_snf
+    (localB->Sum_m, localB->Sum1[1]) + localB->rtb_Product9_tmp * rt_powd_snf
+    (localB->Sum_m, localB->Sum2[1])) *
     FxtD_Quaternion_P.DiscreteTimeIntegrator1_gainval;
-  localB->UnaryMinus1 = localB->Sum_m;
+  localB->absx = localB->rtb_Product9_tmp;
 
   // DiscreteIntegrator: '<Root>/Discrete-Time Integrator1'
-  localDW->DiscreteTimeIntegrator1_DSTATE[1] += localB->Sum_m;
+  localDW->DiscreteTimeIntegrator1_DSTATE[1] += localB->rtb_Product9_tmp;
 
   // Product: '<Root>/Product3' incorporates:
   //   Product: '<Root>/Product4'
@@ -1658,13 +1671,13 @@ void FxtD_Quaternion(const real_T rtu_pos[3], const real_T
   //   Sum: '<Root>/Sum3'
 
   localB->rtb_Gain4_idx_3 = ((localB->rtb_Gain4_idx_3 * rt_powd_snf
-    (localB->Sum_d, rtu_PX4Params_FxTDiffg_lam1[1]) +
+    (localB->Sum_m, rtu_PX4Params_FxTDiffg_lam1[1]) +
     localDW->Memory1_PreviousInput[1]) + localB->rtb_Gain4_idx_3 * rt_powd_snf
-    (localB->Sum_d, rtu_PX4Params_FxTDiffg_vrho1[1])) *
+    (localB->Sum_m, rtu_PX4Params_FxTDiffg_vrho1[1])) *
     FxtD_Quaternion_P.DiscreteTimeIntegrator3_gainval;
 
   // Product: '<Root>/Product3'
-  localB->Product8[1] = localB->rtb_Gain4_idx_3;
+  localB->Product9[1] = localB->rtb_Gain4_idx_3;
 
   // DiscreteIntegrator: '<Root>/Discrete-Time Integrator3'
   localDW->Memory4_PreviousInput[1] = localDW->DiscreteTimeIntegrator3_DSTATE[1]
@@ -1672,28 +1685,37 @@ void FxtD_Quaternion(const real_T rtu_pos[3], const real_T
 
   // Signum: '<Root>/Sign3'
   if (tmp) {
-    localB->rtb_Cv_m = (rtNaN);
+    localB->Sum_m = (rtNaN);
   } else if (localB->Sum_f < 0.0) {
-    localB->rtb_Cv_m = -1.0;
+    localB->Sum_m = -1.0;
   } else {
-    localB->rtb_Cv_m = (localB->Sum_f > 0.0);
+    localB->Sum_m = (localB->Sum_f > 0.0);
   }
 
   // Product: '<Root>/Product8' incorporates:
-  //   Abs: '<Root>/Abs6'
-  //   Math: '<Root>/Power5'
   //   Product: '<Root>/Product9'
   //   Signum: '<Root>/Sign3'
 
-  localB->Sum_d = rtu_PX4Params_FxTDiffg_G2[4] * localB->rtb_Cv_m;
-  localB->Sum_f = localB->Sum_d * rt_powd_snf(localB->Product1_c, localB->Sum1[4]);
+  localB->Sum = rtu_PX4Params_FxTDiffg_G2[4] * localB->Sum_m;
 
-  // Product: '<Root>/Product9' incorporates:
+  // DiscreteIntegrator: '<Root>/Discrete-Time Integrator2' incorporates:
   //   Abs: '<Root>/Abs6'
+  //   Math: '<Root>/Power5'
   //   Math: '<Root>/Power6'
+  //   Product: '<Root>/Product8'
+  //   Product: '<Root>/Product9'
+  //   Sum: '<Root>/Sum11'
 
-  localB->Product1_c = localB->Sum_d * rt_powd_snf(localB->Product1_c,
-    localB->Sum2[4]);
+  localB->Sum = (localB->Sum * rt_powd_snf(localB->Product2_d, localB->Sum1[4])
+                 + localB->Sum * rt_powd_snf(localB->Product2_d, localB->Sum2[4]))
+    * FxtD_Quaternion_P.DiscreteTimeIntegrator2_gainval;
+
+  // Product: '<Root>/Product8'
+  localB->s[1] = localB->Sum;
+
+  // DiscreteIntegrator: '<Root>/Discrete-Time Integrator2'
+  localDW->Memory2_PreviousInput[1] = localDW->DiscreteTimeIntegrator2_DSTATE[1]
+    + localB->Sum;
 
   // Signum: '<Root>/Sign2' incorporates:
   //   Math: '<Root>/Power1'
@@ -1714,7 +1736,8 @@ void FxtD_Quaternion(const real_T rtu_pos[3], const real_T
   //   Product: '<Root>/Product1'
   //   Signum: '<Root>/Sign2'
 
-  localB->Sum_m = rtu_PX4Params_FxTDiffg_G2[2] * localB->rtb_Gain4_idx_3;
+  localB->rtb_Product9_tmp = rtu_PX4Params_FxTDiffg_G2[2] *
+    localB->rtb_Gain4_idx_3;
 
   // Abs: '<Root>/Abs2' incorporates:
   //   Abs: '<Root>/Abs'
@@ -1722,7 +1745,7 @@ void FxtD_Quaternion(const real_T rtu_pos[3], const real_T
   //   Abs: '<Root>/Abs3'
   //   Math: '<Root>/Power1'
 
-  localB->Sum_d = fabs(localDW->Memory4_PreviousInput[2]);
+  localB->Sum_m = fabs(localDW->Memory4_PreviousInput[2]);
 
   // DiscreteIntegrator: '<Root>/Discrete-Time Integrator1' incorporates:
   //   Abs: '<Root>/Abs2'
@@ -1733,12 +1756,13 @@ void FxtD_Quaternion(const real_T rtu_pos[3], const real_T
   //   Product: '<Root>/Product5'
   //   Sum: '<Root>/Sum4'
 
-  localB->Sum_m = (localB->Sum_m * rt_powd_snf(localB->Sum_d, localB->Sum1[2]) +
-                   localB->Sum_m * rt_powd_snf(localB->Sum_d, localB->Sum2[2])) *
+  localB->rtb_Product9_tmp = (localB->rtb_Product9_tmp * rt_powd_snf
+    (localB->Sum_m, localB->Sum1[2]) + localB->rtb_Product9_tmp * rt_powd_snf
+    (localB->Sum_m, localB->Sum2[2])) *
     FxtD_Quaternion_P.DiscreteTimeIntegrator1_gainval;
 
   // DiscreteIntegrator: '<Root>/Discrete-Time Integrator1'
-  localDW->DiscreteTimeIntegrator1_DSTATE[2] += localB->Sum_m;
+  localDW->DiscreteTimeIntegrator1_DSTATE[2] += localB->rtb_Product9_tmp;
 
   // Product: '<Root>/Product3' incorporates:
   //   Product: '<Root>/Product4'
@@ -1757,9 +1781,9 @@ void FxtD_Quaternion(const real_T rtu_pos[3], const real_T
   //   Sum: '<Root>/Sum3'
 
   localB->rtb_Gain4_idx_3 = ((localB->rtb_Gain4_idx_3 * rt_powd_snf
-    (localB->Sum_d, rtu_PX4Params_FxTDiffg_lam1[2]) +
+    (localB->Sum_m, rtu_PX4Params_FxTDiffg_lam1[2]) +
     localDW->Memory1_PreviousInput[2]) + localB->rtb_Gain4_idx_3 * rt_powd_snf
-    (localB->Sum_d, rtu_PX4Params_FxTDiffg_vrho1[2])) *
+    (localB->Sum_m, rtu_PX4Params_FxTDiffg_vrho1[2])) *
     FxtD_Quaternion_P.DiscreteTimeIntegrator3_gainval;
 
   // DiscreteIntegrator: '<Root>/Discrete-Time Integrator3'
@@ -1768,61 +1792,34 @@ void FxtD_Quaternion(const real_T rtu_pos[3], const real_T
 
   // Signum: '<Root>/Sign3'
   if (tmp_0) {
-    localB->rtb_Cv_m = (rtNaN);
+    localB->Sum_m = (rtNaN);
   } else if (localB->Sum_b < 0.0) {
-    localB->rtb_Cv_m = -1.0;
+    localB->Sum_m = -1.0;
   } else {
-    localB->rtb_Cv_m = (localB->Sum_b > 0.0);
+    localB->Sum_m = (localB->Sum_b > 0.0);
   }
 
   // Product: '<Root>/Product8' incorporates:
-  //   Abs: '<Root>/Abs4'
-  //   Math: '<Root>/Power5'
   //   Product: '<Root>/Product9'
   //   Signum: '<Root>/Sign3'
 
-  localB->Sum_d = rtu_PX4Params_FxTDiffg_G2[5] * localB->rtb_Cv_m;
-  localB->Sum_b = localB->Sum_d * rt_powd_snf(localB->Product3_eu, localB->Sum1
-    [5]);
+  localB->Sum = rtu_PX4Params_FxTDiffg_G2[5] * localB->Sum_m;
 
-  // Product: '<Root>/Product9' incorporates:
+  // DiscreteIntegrator: '<Root>/Discrete-Time Integrator2' incorporates:
   //   Abs: '<Root>/Abs4'
+  //   Math: '<Root>/Power5'
   //   Math: '<Root>/Power6'
+  //   Product: '<Root>/Product8'
+  //   Product: '<Root>/Product9'
+  //   Sum: '<Root>/Sum11'
 
-  localB->Product3_eu = localB->Sum_d * rt_powd_snf(localB->Product3_eu,
-    localB->Sum2[5]);
-  for (c_k = 0; c_k < 3; c_k++) {
-    // Product: '<Root>/Matrix Multiply3'
-    localB->Sum_d = localB->Cv[c_k];
-    localB->rtb_Cv_c = localB->Sum_d * localB->Sum;
+  localB->Sum = (localB->Sum * rt_powd_snf(localB->Product1_c, localB->Sum1[5])
+                 + localB->Sum * rt_powd_snf(localB->Product1_c, localB->Sum2[5]))
+    * FxtD_Quaternion_P.DiscreteTimeIntegrator2_gainval;
 
-    // Product: '<Root>/Matrix Multiply4'
-    localB->rtb_Cv_m = localB->Sum_d * localB->absx;
-
-    // Product: '<Root>/Matrix Multiply3'
-    localB->Sum_d = localB->Cv[c_k + 3];
-    localB->rtb_Cv_c += localB->Sum_d * localB->Sum_f;
-
-    // Product: '<Root>/Matrix Multiply4'
-    localB->rtb_Cv_m += localB->Sum_d * localB->Product1_c;
-
-    // Product: '<Root>/Matrix Multiply3'
-    localB->Sum_d = localB->Cv[c_k + 6];
-
-    // DiscreteIntegrator: '<Root>/Discrete-Time Integrator2' incorporates:
-    //   Product: '<Root>/Matrix Multiply3'
-    //   Product: '<Root>/Matrix Multiply4'
-    //   Sum: '<Root>/Sum11'
-
-    localB->Sum_d = ((localB->Sum_d * localB->Sum_b + localB->rtb_Cv_c) +
-                     (localB->Sum_d * localB->Product3_eu + localB->rtb_Cv_m)) *
-      FxtD_Quaternion_P.DiscreteTimeIntegrator2_gainval;
-    localB->rtb_Sum4_tmp[c_k] = localB->Sum_d;
-
-    // DiscreteIntegrator: '<Root>/Discrete-Time Integrator2'
-    localDW->Memory2_PreviousInput[c_k] =
-      localDW->DiscreteTimeIntegrator2_DSTATE[c_k] + localB->Sum_d;
-  }
+  // DiscreteIntegrator: '<Root>/Discrete-Time Integrator2'
+  localDW->Memory2_PreviousInput[2] = localDW->DiscreteTimeIntegrator2_DSTATE[2]
+    + localB->Sum;
 
   // Constant: '<Root>/Constant5'
   for (c_k = 0; c_k < 6; c_k++) {
@@ -1850,15 +1847,15 @@ void FxtD_Quaternion(const real_T rtu_pos[3], const real_T
   // Update for DiscreteIntegrator: '<Root>/Discrete-Time Integrator1' incorporates:
   //   Memory: '<Root>/Memory1'
 
-  localDW->DiscreteTimeIntegrator1_DSTATE[0] += localB->Product2_d;
+  localDW->DiscreteTimeIntegrator1_DSTATE[0] += localB->UnaryMinus1;
 
   // Update for DiscreteIntegrator: '<Root>/Discrete-Time Integrator3'
   localDW->DiscreteTimeIntegrator3_DSTATE[0] = localDW->Memory4_PreviousInput[0]
-    + localB->Product8[0];
+    + localB->Product9[0];
 
   // Update for DiscreteIntegrator: '<Root>/Discrete-Time Integrator2'
   localDW->DiscreteTimeIntegrator2_DSTATE[0] = localDW->Memory2_PreviousInput[0]
-    + localB->rtb_Sum4_tmp[0];
+    + localB->s[0];
 
   // Update for Memory: '<Root>/Memory1' incorporates:
   //   DiscreteIntegrator: '<Root>/Discrete-Time Integrator1'
@@ -1868,15 +1865,15 @@ void FxtD_Quaternion(const real_T rtu_pos[3], const real_T
   // Update for DiscreteIntegrator: '<Root>/Discrete-Time Integrator1' incorporates:
   //   Memory: '<Root>/Memory1'
 
-  localDW->DiscreteTimeIntegrator1_DSTATE[1] += localB->UnaryMinus1;
+  localDW->DiscreteTimeIntegrator1_DSTATE[1] += localB->absx;
 
   // Update for DiscreteIntegrator: '<Root>/Discrete-Time Integrator3'
   localDW->DiscreteTimeIntegrator3_DSTATE[1] = localDW->Memory4_PreviousInput[1]
-    + localB->Product8[1];
+    + localB->Product9[1];
 
   // Update for DiscreteIntegrator: '<Root>/Discrete-Time Integrator2'
   localDW->DiscreteTimeIntegrator2_DSTATE[1] = localDW->Memory2_PreviousInput[1]
-    + localB->rtb_Sum4_tmp[1];
+    + localB->s[1];
 
   // Update for Memory: '<Root>/Memory1' incorporates:
   //   DiscreteIntegrator: '<Root>/Discrete-Time Integrator1'
@@ -1886,7 +1883,7 @@ void FxtD_Quaternion(const real_T rtu_pos[3], const real_T
   // Update for DiscreteIntegrator: '<Root>/Discrete-Time Integrator1' incorporates:
   //   Memory: '<Root>/Memory1'
 
-  localDW->DiscreteTimeIntegrator1_DSTATE[2] += localB->Sum_m;
+  localDW->DiscreteTimeIntegrator1_DSTATE[2] += localB->rtb_Product9_tmp;
 
   // Update for DiscreteIntegrator: '<Root>/Discrete-Time Integrator3'
   localDW->DiscreteTimeIntegrator3_DSTATE[2] = localDW->Memory4_PreviousInput[2]
@@ -1894,7 +1891,7 @@ void FxtD_Quaternion(const real_T rtu_pos[3], const real_T
 
   // Update for DiscreteIntegrator: '<Root>/Discrete-Time Integrator2'
   localDW->DiscreteTimeIntegrator2_DSTATE[2] = localDW->Memory2_PreviousInput[2]
-    + localB->rtb_Sum4_tmp[2];
+    + localB->Sum;
 }
 
 // Model initialize function

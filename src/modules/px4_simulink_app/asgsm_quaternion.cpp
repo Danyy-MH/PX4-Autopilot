@@ -7,9 +7,9 @@
 //
 // Code generated for Simulink model 'asgsm_quaternion'.
 //
-// Model version                  : 1.43
+// Model version                  : 1.52
 // Simulink Coder version         : 24.2 (R2024b) 21-Jun-2024
-// C/C++ source code generated on : Tue Apr 29 18:08:38 2025
+// C/C++ source code generated on : Mon Jun  9 17:47:53 2025
 //
 // Target selection: ert.tlc
 // Embedded hardware selection: ARM Compatible->ARM Cortex
@@ -40,7 +40,7 @@ P_asgsm_quaternion_T asgsm_quaternion_P = {
   { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 },
 
   // Expression: 2
-  //  Referenced by: '<Root>/Gain1'
+  //  Referenced by: '<Root>/Gain3'
 
   2.0,
 
@@ -49,10 +49,10 @@ P_asgsm_quaternion_T asgsm_quaternion_P = {
 
   2.0,
 
-  // Expression: 1/2
-  //  Referenced by: '<Root>/Gain2'
+  // Expression: 2
+  //  Referenced by: '<Root>/Gain'
 
-  0.5,
+  2.0,
 
   // Computed Parameter: DiscreteTimeIntegrator_gainval
   //  Referenced by: '<Root>/Discrete-Time Integrator'
@@ -242,6 +242,7 @@ void asgsm_quaternion(const real_T rtu_qd_qd[6], const real_T rtu_qd_qd_dot[6],
                       rtu_PX4Params_ASGSMg_lambda2[6], const real_T
                       rtu_PX4Params_ASGSMg_alpha_u[6], const real_T
                       rtu_PX4Params_ASGSMg_beta_u[6], const real_T
+                      rtu_PX4Params_ASGSMg_epsilon_u[6], const real_T
                       rtu_PX4Params_MCg_MCData[5], real_T rty_u_Fu[6], real_T
                       rty_u_e[6], real_T rty_u_e_dot[6], real_T rty_u_sigma[6],
                       real_T rty_u_kt[6], real_T rty_u_qe[4],
@@ -268,50 +269,50 @@ void asgsm_quaternion(const real_T rtu_qd_qd[6], const real_T rtu_qd_qd_dot[6],
   // Sum: '<Root>/Sum14' incorporates:
   //   Math: '<Root>/Power5'
 
-  localB->rtb_Power5_f = rtu_qd_qd[0] - rtu_q_pos_hat[0];
-  localB->Power5[0] = localB->rtb_Power5_f;
+  localB->rtb_Power5_c = rtu_qd_qd[0] - rtu_q_pos_hat[0];
+  localB->Power5[0] = localB->rtb_Power5_c;
 
   // Sum: '<Root>/Sum15' incorporates:
   //   Product: '<Root>/Product24'
 
-  localB->rtb_Product24_g = rtu_qd_qd_dot[0] - rtu_q_pos_dot_hat[0];
-  localB->Product24[0] = localB->rtb_Product24_g;
+  localB->rtb_Product24_f = rtu_qd_qd_dot[0] - rtu_q_pos_dot_hat[0];
+  localB->Product24[0] = localB->rtb_Product24_f;
 
   // Abs: '<Root>/Abs' incorporates:
   //   Abs: '<Root>/Abs5'
   //   Math: '<Root>/Power5'
 
-  localB->rtb_Sum23_tmp = fabs(localB->rtb_Power5_f);
+  localB->rtb_Sum23_tmp = fabs(localB->rtb_Power5_c);
   localB->rtb_Sum23_tmp_idx_0 = localB->rtb_Sum23_tmp;
 
   // Signum: '<Root>/Sign1'
-  if (rtIsNaN(localB->rtb_Product24_g)) {
+  if (rtIsNaN(localB->rtb_Product24_f)) {
     // Signum: '<Root>/Sign2'
     localB->rtb_Sum23_tmp_g = (rtNaN);
-  } else if (localB->rtb_Product24_g < 0.0) {
+  } else if (localB->rtb_Product24_f < 0.0) {
     // Signum: '<Root>/Sign2'
     localB->rtb_Sum23_tmp_g = -1.0;
   } else {
     // Signum: '<Root>/Sign2'
-    localB->rtb_Sum23_tmp_g = (localB->rtb_Product24_g > 0.0);
+    localB->rtb_Sum23_tmp_g = (localB->rtb_Product24_f > 0.0);
   }
 
-  localB->rtb_Sum23_tmp_idx_0_m = localB->rtb_Sum23_tmp_g;
+  localB->rtb_Sum23_tmp_idx_0_g = localB->rtb_Sum23_tmp_g;
 
   // Abs: '<Root>/Abs1' incorporates:
   //   Abs: '<Root>/Abs2'
   //   Product: '<Root>/Product24'
 
-  localB->rtb_Product24_g = fabs(localB->rtb_Product24_g);
-  localB->rtb_Sum23_tmp_idx_0_n = localB->rtb_Product24_g;
+  localB->rtb_Product24_f = fabs(localB->rtb_Product24_f);
+  localB->rtb_Sum23_tmp_idx_0_m = localB->rtb_Product24_f;
 
   // Signum: '<Root>/Sign'
-  if (rtIsNaN(localB->rtb_Power5_f)) {
+  if (rtIsNaN(localB->rtb_Power5_c)) {
     localB->Product3_c = (rtNaN);
-  } else if (localB->rtb_Power5_f < 0.0) {
+  } else if (localB->rtb_Power5_c < 0.0) {
     localB->Product3_c = -1.0;
   } else {
-    localB->Product3_c = (localB->rtb_Power5_f > 0.0);
+    localB->Product3_c = (localB->rtb_Power5_c > 0.0);
   }
 
   // Sum: '<Root>/Sum9' incorporates:
@@ -328,57 +329,57 @@ void asgsm_quaternion(const real_T rtu_qd_qd[6], const real_T rtu_qd_qd_dot[6],
 
   localB->Sum23[0] = (rtu_PX4Params_ASGSMg_zeta1[0] * rt_powd_snf
                       (localB->rtb_Sum23_tmp, rtu_PX4Params_ASGSMg_lambda1[0]) *
-                      localB->Product3_c + localB->rtb_Power5_f) +
-    rtu_PX4Params_ASGSMg_zeta2[0] * rt_powd_snf(localB->rtb_Product24_g,
+                      localB->Product3_c + localB->rtb_Power5_c) +
+    rtu_PX4Params_ASGSMg_zeta2[0] * rt_powd_snf(localB->rtb_Product24_f,
     rtu_PX4Params_ASGSMg_lambda2[0]) * localB->rtb_Sum23_tmp_g;
 
   // Sum: '<Root>/Sum14' incorporates:
   //   Math: '<Root>/Power5'
 
-  localB->rtb_Power5_f = rtu_qd_qd[1] - rtu_q_pos_hat[1];
-  localB->Power5[1] = localB->rtb_Power5_f;
+  localB->rtb_Power5_c = rtu_qd_qd[1] - rtu_q_pos_hat[1];
+  localB->Power5[1] = localB->rtb_Power5_c;
 
   // Sum: '<Root>/Sum15' incorporates:
   //   Product: '<Root>/Product24'
 
-  localB->rtb_Product24_g = rtu_qd_qd_dot[1] - rtu_q_pos_dot_hat[1];
-  localB->Product24[1] = localB->rtb_Product24_g;
+  localB->rtb_Product24_f = rtu_qd_qd_dot[1] - rtu_q_pos_dot_hat[1];
+  localB->Product24[1] = localB->rtb_Product24_f;
 
   // Abs: '<Root>/Abs' incorporates:
   //   Abs: '<Root>/Abs5'
   //   Math: '<Root>/Power5'
 
-  localB->rtb_Sum23_tmp = fabs(localB->rtb_Power5_f);
+  localB->rtb_Sum23_tmp = fabs(localB->rtb_Power5_c);
   localB->rtb_Sum23_tmp_idx_1 = localB->rtb_Sum23_tmp;
 
   // Signum: '<Root>/Sign1'
-  if (rtIsNaN(localB->rtb_Product24_g)) {
+  if (rtIsNaN(localB->rtb_Product24_f)) {
     // Signum: '<Root>/Sign2'
     localB->rtb_Sum23_tmp_g = (rtNaN);
-  } else if (localB->rtb_Product24_g < 0.0) {
+  } else if (localB->rtb_Product24_f < 0.0) {
     // Signum: '<Root>/Sign2'
     localB->rtb_Sum23_tmp_g = -1.0;
   } else {
     // Signum: '<Root>/Sign2'
-    localB->rtb_Sum23_tmp_g = (localB->rtb_Product24_g > 0.0);
+    localB->rtb_Sum23_tmp_g = (localB->rtb_Product24_f > 0.0);
   }
 
-  localB->rtb_Sum23_tmp_idx_1_p = localB->rtb_Sum23_tmp_g;
+  localB->rtb_Sum23_tmp_idx_1_n = localB->rtb_Sum23_tmp_g;
 
   // Abs: '<Root>/Abs1' incorporates:
   //   Abs: '<Root>/Abs2'
   //   Product: '<Root>/Product24'
 
-  localB->rtb_Product24_g = fabs(localB->rtb_Product24_g);
-  localB->rtb_Sum23_tmp_idx_1_l = localB->rtb_Product24_g;
+  localB->rtb_Product24_f = fabs(localB->rtb_Product24_f);
+  localB->rtb_Sum23_tmp_idx_1_p = localB->rtb_Product24_f;
 
   // Signum: '<Root>/Sign'
-  if (rtIsNaN(localB->rtb_Power5_f)) {
+  if (rtIsNaN(localB->rtb_Power5_c)) {
     localB->Product3_c = (rtNaN);
-  } else if (localB->rtb_Power5_f < 0.0) {
+  } else if (localB->rtb_Power5_c < 0.0) {
     localB->Product3_c = -1.0;
   } else {
-    localB->Product3_c = (localB->rtb_Power5_f > 0.0);
+    localB->Product3_c = (localB->rtb_Power5_c > 0.0);
   }
 
   // Sum: '<Root>/Sum9' incorporates:
@@ -395,53 +396,53 @@ void asgsm_quaternion(const real_T rtu_qd_qd[6], const real_T rtu_qd_qd_dot[6],
 
   localB->Sum23[1] = (rtu_PX4Params_ASGSMg_zeta1[1] * rt_powd_snf
                       (localB->rtb_Sum23_tmp, rtu_PX4Params_ASGSMg_lambda1[1]) *
-                      localB->Product3_c + localB->rtb_Power5_f) +
-    rtu_PX4Params_ASGSMg_zeta2[1] * rt_powd_snf(localB->rtb_Product24_g,
+                      localB->Product3_c + localB->rtb_Power5_c) +
+    rtu_PX4Params_ASGSMg_zeta2[1] * rt_powd_snf(localB->rtb_Product24_f,
     rtu_PX4Params_ASGSMg_lambda2[1]) * localB->rtb_Sum23_tmp_g;
 
   // Sum: '<Root>/Sum14' incorporates:
   //   Math: '<Root>/Power5'
 
-  localB->rtb_Power5_f = rtu_qd_qd[2] - rtu_q_pos_hat[2];
-  localB->Power5[2] = localB->rtb_Power5_f;
+  localB->rtb_Power5_c = rtu_qd_qd[2] - rtu_q_pos_hat[2];
+  localB->Power5[2] = localB->rtb_Power5_c;
 
   // Sum: '<Root>/Sum15' incorporates:
   //   Product: '<Root>/Product24'
 
-  localB->rtb_Product24_g = rtu_qd_qd_dot[2] - rtu_q_pos_dot_hat[2];
-  localB->Product24[2] = localB->rtb_Product24_g;
+  localB->rtb_Product24_f = rtu_qd_qd_dot[2] - rtu_q_pos_dot_hat[2];
+  localB->Product24[2] = localB->rtb_Product24_f;
 
   // Abs: '<Root>/Abs' incorporates:
   //   Abs: '<Root>/Abs5'
   //   Math: '<Root>/Power5'
 
-  localB->rtb_Sum23_tmp = fabs(localB->rtb_Power5_f);
+  localB->rtb_Sum23_tmp = fabs(localB->rtb_Power5_c);
 
   // Signum: '<Root>/Sign1'
-  if (rtIsNaN(localB->rtb_Product24_g)) {
+  if (rtIsNaN(localB->rtb_Product24_f)) {
     // Signum: '<Root>/Sign2'
     localB->rtb_Sum23_tmp_g = (rtNaN);
-  } else if (localB->rtb_Product24_g < 0.0) {
+  } else if (localB->rtb_Product24_f < 0.0) {
     // Signum: '<Root>/Sign2'
     localB->rtb_Sum23_tmp_g = -1.0;
   } else {
     // Signum: '<Root>/Sign2'
-    localB->rtb_Sum23_tmp_g = (localB->rtb_Product24_g > 0.0);
+    localB->rtb_Sum23_tmp_g = (localB->rtb_Product24_f > 0.0);
   }
 
   // Abs: '<Root>/Abs1' incorporates:
   //   Abs: '<Root>/Abs2'
   //   Product: '<Root>/Product24'
 
-  localB->rtb_Product24_g = fabs(localB->rtb_Product24_g);
+  localB->rtb_Product24_f = fabs(localB->rtb_Product24_f);
 
   // Signum: '<Root>/Sign'
-  if (rtIsNaN(localB->rtb_Power5_f)) {
+  if (rtIsNaN(localB->rtb_Power5_c)) {
     localB->Product3_c = (rtNaN);
-  } else if (localB->rtb_Power5_f < 0.0) {
+  } else if (localB->rtb_Power5_c < 0.0) {
     localB->Product3_c = -1.0;
   } else {
-    localB->Product3_c = (localB->rtb_Power5_f > 0.0);
+    localB->Product3_c = (localB->rtb_Power5_c > 0.0);
   }
 
   // Sum: '<Root>/Sum9' incorporates:
@@ -458,8 +459,8 @@ void asgsm_quaternion(const real_T rtu_qd_qd[6], const real_T rtu_qd_qd_dot[6],
 
   localB->Sum23[2] = (rtu_PX4Params_ASGSMg_zeta1[2] * rt_powd_snf
                       (localB->rtb_Sum23_tmp, rtu_PX4Params_ASGSMg_lambda1[2]) *
-                      localB->Product3_c + localB->rtb_Power5_f) +
-    rtu_PX4Params_ASGSMg_zeta2[2] * rt_powd_snf(localB->rtb_Product24_g,
+                      localB->Product3_c + localB->rtb_Power5_c) +
+    rtu_PX4Params_ASGSMg_zeta2[2] * rt_powd_snf(localB->rtb_Product24_f,
     rtu_PX4Params_ASGSMg_lambda2[2]) * localB->rtb_Sum23_tmp_g;
 
   // MATLAB Function: '<S3>/Kronecker_product' incorporates:
@@ -485,14 +486,14 @@ void asgsm_quaternion(const real_T rtu_qd_qd[6], const real_T rtu_qd_qd_dot[6],
   localB->rtb_TmpSignalConversionAtSFun_m[11] = -rtu_q_q_hat[1];
   localB->rtb_TmpSignalConversionAtSFun_m[15] = rtu_q_q_hat[0];
   localB->Product3_c = rtu_qd_quaternion_d[1];
-  localB->rtb_Power5_f = rtu_qd_quaternion_d[0];
+  localB->rtb_Power5_c = rtu_qd_quaternion_d[0];
   rtu_qd_quaternion_d_0 = rtu_qd_quaternion_d[2];
   rtu_qd_quaternion_d_1 = rtu_qd_quaternion_d[3];
   for (i = 0; i < 4; i++) {
     localB->r_o[i] = ((localB->rtb_TmpSignalConversionAtSFun_m[i + 4] *
                        localB->Product3_c +
                        localB->rtb_TmpSignalConversionAtSFun_m[i] *
-                       localB->rtb_Power5_f) +
+                       localB->rtb_Power5_c) +
                       localB->rtb_TmpSignalConversionAtSFun_m[i + 8] *
                       rtu_qd_quaternion_d_0) +
       localB->rtb_TmpSignalConversionAtSFun_m[i + 12] * rtu_qd_quaternion_d_1;
@@ -534,17 +535,17 @@ void asgsm_quaternion(const real_T rtu_qd_qd[6], const real_T rtu_qd_qd_dot[6],
     localB->lnq[1] = 0.0;
     localB->lnq[2] = 0.0;
   } else {
-    localB->rtb_Power5_f = acos(rty_u_qe[0]);
-    localB->lnq[0] = rty_u_qe[1] / localB->Product3_c * localB->rtb_Power5_f;
-    localB->lnq[1] = rty_u_qe[2] / localB->Product3_c * localB->rtb_Power5_f;
-    localB->lnq[2] = rty_u_qe[3] / localB->Product3_c * localB->rtb_Power5_f;
+    localB->rtb_Power5_c = acos(rty_u_qe[0]);
+    localB->lnq[0] = rty_u_qe[1] / localB->Product3_c * localB->rtb_Power5_c;
+    localB->lnq[1] = rty_u_qe[2] / localB->Product3_c * localB->rtb_Power5_c;
+    localB->lnq[2] = rty_u_qe[3] / localB->Product3_c * localB->rtb_Power5_c;
   }
 
   // Gain: '<Root>/Gain4' incorporates:
   //   Sum: '<Root>/Sum20'
 
-  localB->rtb_Power5_f = asgsm_quaternion_P.Gain4_Gain * localB->lnq[0];
-  localB->lnq[0] = localB->rtb_Power5_f;
+  localB->rtb_Power5_c = asgsm_quaternion_P.Gain4_Gain * localB->lnq[0];
+  localB->lnq[0] = localB->rtb_Power5_c;
 
   // Sum: '<Root>/Sum16' incorporates:
   //   Saturate: '<Root>/tau'
@@ -556,7 +557,7 @@ void asgsm_quaternion(const real_T rtu_qd_qd[6], const real_T rtu_qd_qd_dot[6],
   //   Abs: '<Root>/Abs7'
   //   Sum: '<Root>/Sum20'
 
-  rtu_qd_quaternion_d_0 = fabs(localB->rtb_Power5_f);
+  rtu_qd_quaternion_d_0 = fabs(localB->rtb_Power5_c);
   localB->rtb_Saturation1_tmp[0] = rtu_qd_quaternion_d_0;
 
   // Signum: '<Root>/Sign6' incorporates:
@@ -573,22 +574,22 @@ void asgsm_quaternion(const real_T rtu_qd_qd[6], const real_T rtu_qd_qd_dot[6],
     rtu_qd_quaternion_d_1 = (localB->Product3_c > 0.0);
   }
 
-  localB->rtb_Saturation1_tmp_b[0] = rtu_qd_quaternion_d_1;
+  localB->rtb_Saturation1_tmp_c[0] = rtu_qd_quaternion_d_1;
 
   // Abs: '<Root>/Abs9' incorporates:
   //   Abs: '<Root>/Abs6'
   //   Saturate: '<Root>/tau'
 
-  localB->rtb_Saturation1_tmp_c = fabs(localB->Product3_c);
-  localB->rtb_Saturation1_tmp_p[0] = localB->rtb_Saturation1_tmp_c;
+  localB->rtb_Saturation1_tmp_p = fabs(localB->Product3_c);
+  localB->rtb_Saturation1_tmp_b[0] = localB->rtb_Saturation1_tmp_p;
 
   // Signum: '<Root>/Sign5'
-  if (rtIsNaN(localB->rtb_Power5_f)) {
+  if (rtIsNaN(localB->rtb_Power5_c)) {
     localB->Product3_c = (rtNaN);
-  } else if (localB->rtb_Power5_f < 0.0) {
+  } else if (localB->rtb_Power5_c < 0.0) {
     localB->Product3_c = -1.0;
   } else {
-    localB->Product3_c = (localB->rtb_Power5_f > 0.0);
+    localB->Product3_c = (localB->rtb_Power5_c > 0.0);
   }
 
   // Sum: '<Root>/Sum24' incorporates:
@@ -605,20 +606,20 @@ void asgsm_quaternion(const real_T rtu_qd_qd[6], const real_T rtu_qd_qd_dot[6],
 
   localB->Product3_c = (rtu_PX4Params_ASGSMg_zeta1[3] * rt_powd_snf
                         (rtu_qd_quaternion_d_0, rtu_PX4Params_ASGSMg_lambda1[3])
-                        * localB->Product3_c + localB->rtb_Power5_f) +
-    rtu_PX4Params_ASGSMg_zeta2[3] * rt_powd_snf(localB->rtb_Saturation1_tmp_c,
+                        * localB->Product3_c + localB->rtb_Power5_c) +
+    rtu_PX4Params_ASGSMg_zeta2[3] * rt_powd_snf(localB->rtb_Saturation1_tmp_p,
     rtu_PX4Params_ASGSMg_lambda2[3]) * rtu_qd_quaternion_d_1;
   localB->Saturation1[0] = localB->Product3_c;
 
-  // Abs: '<Root>/Abs3'
+  // Abs: '<Root>/Abs4'
   localB->rtb_Sum23_c[0] = localB->Sum23[0];
   localB->rtb_Sum23_c[3] = localB->Product3_c;
 
   // Gain: '<Root>/Gain4' incorporates:
   //   Sum: '<Root>/Sum20'
 
-  localB->rtb_Power5_f = asgsm_quaternion_P.Gain4_Gain * localB->lnq[1];
-  localB->lnq[1] = localB->rtb_Power5_f;
+  localB->rtb_Power5_c = asgsm_quaternion_P.Gain4_Gain * localB->lnq[1];
+  localB->lnq[1] = localB->rtb_Power5_c;
 
   // Sum: '<Root>/Sum16' incorporates:
   //   Saturate: '<Root>/tau'
@@ -630,7 +631,7 @@ void asgsm_quaternion(const real_T rtu_qd_qd[6], const real_T rtu_qd_qd_dot[6],
   //   Abs: '<Root>/Abs7'
   //   Sum: '<Root>/Sum20'
 
-  rtu_qd_quaternion_d_0 = fabs(localB->rtb_Power5_f);
+  rtu_qd_quaternion_d_0 = fabs(localB->rtb_Power5_c);
   localB->rtb_Saturation1_tmp[1] = rtu_qd_quaternion_d_0;
 
   // Signum: '<Root>/Sign6' incorporates:
@@ -647,22 +648,22 @@ void asgsm_quaternion(const real_T rtu_qd_qd[6], const real_T rtu_qd_qd_dot[6],
     rtu_qd_quaternion_d_1 = (localB->Product3_c > 0.0);
   }
 
-  localB->rtb_Saturation1_tmp_b[1] = rtu_qd_quaternion_d_1;
+  localB->rtb_Saturation1_tmp_c[1] = rtu_qd_quaternion_d_1;
 
   // Abs: '<Root>/Abs9' incorporates:
   //   Abs: '<Root>/Abs6'
   //   Saturate: '<Root>/tau'
 
-  localB->rtb_Saturation1_tmp_c = fabs(localB->Product3_c);
-  localB->rtb_Saturation1_tmp_p[1] = localB->rtb_Saturation1_tmp_c;
+  localB->rtb_Saturation1_tmp_p = fabs(localB->Product3_c);
+  localB->rtb_Saturation1_tmp_b[1] = localB->rtb_Saturation1_tmp_p;
 
   // Signum: '<Root>/Sign5'
-  if (rtIsNaN(localB->rtb_Power5_f)) {
+  if (rtIsNaN(localB->rtb_Power5_c)) {
     localB->Product3_c = (rtNaN);
-  } else if (localB->rtb_Power5_f < 0.0) {
+  } else if (localB->rtb_Power5_c < 0.0) {
     localB->Product3_c = -1.0;
   } else {
-    localB->Product3_c = (localB->rtb_Power5_f > 0.0);
+    localB->Product3_c = (localB->rtb_Power5_c > 0.0);
   }
 
   // Sum: '<Root>/Sum24' incorporates:
@@ -679,20 +680,20 @@ void asgsm_quaternion(const real_T rtu_qd_qd[6], const real_T rtu_qd_qd_dot[6],
 
   localB->Product3_c = (rtu_PX4Params_ASGSMg_zeta1[4] * rt_powd_snf
                         (rtu_qd_quaternion_d_0, rtu_PX4Params_ASGSMg_lambda1[4])
-                        * localB->Product3_c + localB->rtb_Power5_f) +
-    rtu_PX4Params_ASGSMg_zeta2[4] * rt_powd_snf(localB->rtb_Saturation1_tmp_c,
+                        * localB->Product3_c + localB->rtb_Power5_c) +
+    rtu_PX4Params_ASGSMg_zeta2[4] * rt_powd_snf(localB->rtb_Saturation1_tmp_p,
     rtu_PX4Params_ASGSMg_lambda2[4]) * rtu_qd_quaternion_d_1;
   localB->Saturation1[1] = localB->Product3_c;
 
-  // Abs: '<Root>/Abs3'
+  // Abs: '<Root>/Abs4'
   localB->rtb_Sum23_c[1] = localB->Sum23[1];
   localB->rtb_Sum23_c[4] = localB->Product3_c;
 
   // Gain: '<Root>/Gain4' incorporates:
   //   Sum: '<Root>/Sum20'
 
-  localB->rtb_Power5_f = asgsm_quaternion_P.Gain4_Gain * localB->lnq[2];
-  localB->lnq[2] = localB->rtb_Power5_f;
+  localB->rtb_Power5_c = asgsm_quaternion_P.Gain4_Gain * localB->lnq[2];
+  localB->lnq[2] = localB->rtb_Power5_c;
 
   // Sum: '<Root>/Sum16' incorporates:
   //   Saturate: '<Root>/tau'
@@ -704,7 +705,7 @@ void asgsm_quaternion(const real_T rtu_qd_qd[6], const real_T rtu_qd_qd_dot[6],
   //   Abs: '<Root>/Abs7'
   //   Sum: '<Root>/Sum20'
 
-  rtu_qd_quaternion_d_0 = fabs(localB->rtb_Power5_f);
+  rtu_qd_quaternion_d_0 = fabs(localB->rtb_Power5_c);
   localB->rtb_Saturation1_tmp[2] = rtu_qd_quaternion_d_0;
 
   // Signum: '<Root>/Sign6' incorporates:
@@ -721,22 +722,22 @@ void asgsm_quaternion(const real_T rtu_qd_qd[6], const real_T rtu_qd_qd_dot[6],
     rtu_qd_quaternion_d_1 = (localB->Product3_c > 0.0);
   }
 
-  localB->rtb_Saturation1_tmp_b[2] = rtu_qd_quaternion_d_1;
+  localB->rtb_Saturation1_tmp_c[2] = rtu_qd_quaternion_d_1;
 
   // Abs: '<Root>/Abs9' incorporates:
   //   Abs: '<Root>/Abs6'
   //   Saturate: '<Root>/tau'
 
-  localB->rtb_Saturation1_tmp_c = fabs(localB->Product3_c);
-  localB->rtb_Saturation1_tmp_p[2] = localB->rtb_Saturation1_tmp_c;
+  localB->rtb_Saturation1_tmp_p = fabs(localB->Product3_c);
+  localB->rtb_Saturation1_tmp_b[2] = localB->rtb_Saturation1_tmp_p;
 
   // Signum: '<Root>/Sign5'
-  if (rtIsNaN(localB->rtb_Power5_f)) {
+  if (rtIsNaN(localB->rtb_Power5_c)) {
     localB->Product3_c = (rtNaN);
-  } else if (localB->rtb_Power5_f < 0.0) {
+  } else if (localB->rtb_Power5_c < 0.0) {
     localB->Product3_c = -1.0;
   } else {
-    localB->Product3_c = (localB->rtb_Power5_f > 0.0);
+    localB->Product3_c = (localB->rtb_Power5_c > 0.0);
   }
 
   // Sum: '<Root>/Sum24' incorporates:
@@ -753,64 +754,64 @@ void asgsm_quaternion(const real_T rtu_qd_qd[6], const real_T rtu_qd_qd_dot[6],
 
   localB->Product3_c = (rtu_PX4Params_ASGSMg_zeta1[5] * rt_powd_snf
                         (rtu_qd_quaternion_d_0, rtu_PX4Params_ASGSMg_lambda1[5])
-                        * localB->Product3_c + localB->rtb_Power5_f) +
-    rtu_PX4Params_ASGSMg_zeta2[5] * rt_powd_snf(localB->rtb_Saturation1_tmp_c,
+                        * localB->Product3_c + localB->rtb_Power5_c) +
+    rtu_PX4Params_ASGSMg_zeta2[5] * rt_powd_snf(localB->rtb_Saturation1_tmp_p,
     rtu_PX4Params_ASGSMg_lambda2[5]) * rtu_qd_quaternion_d_1;
   localB->Saturation1[2] = localB->Product3_c;
 
-  // Abs: '<Root>/Abs3'
+  // Abs: '<Root>/Abs4'
   localB->rtb_Sum23_c[2] = localB->Sum23[2];
   localB->rtb_Sum23_c[5] = localB->Product3_c;
 
-  // Signum: '<Root>/Sign3'
+  // Signum: '<Root>/Sign4'
   localB->rtb_Sum23_k[0] = localB->Sum23[0];
   localB->rtb_Sum23_k[3] = localB->Saturation1[0];
 
-  // Product: '<Root>/Product10' incorporates:
-  //   Signum: '<Root>/Sign3'
+  // Product: '<Root>/Product2' incorporates:
+  //   Gain: '<Root>/Gain'
+  //   Signum: '<Root>/Sign4'
 
-  localB->rtb_Sum23_cx[0] = localB->Sum23[0];
-  localB->rtb_Sum23_cx[3] = localB->Saturation1[0];
+  localB->dv1[0] = asgsm_quaternion_P.Gain_Gain * localB->Sum23[0];
+  localB->dv1[3] = asgsm_quaternion_P.Gain_Gain * localB->Saturation1[0];
 
-  // Signum: '<Root>/Sign3'
+  // Signum: '<Root>/Sign4'
   localB->rtb_Sum23_k[1] = localB->Sum23[1];
   localB->rtb_Sum23_k[4] = localB->Saturation1[1];
 
-  // Product: '<Root>/Product10' incorporates:
-  //   Signum: '<Root>/Sign3'
+  // Product: '<Root>/Product2' incorporates:
+  //   Gain: '<Root>/Gain'
+  //   Signum: '<Root>/Sign4'
 
-  localB->rtb_Sum23_cx[1] = localB->Sum23[1];
-  localB->rtb_Sum23_cx[4] = localB->Saturation1[1];
+  localB->dv1[1] = asgsm_quaternion_P.Gain_Gain * localB->Sum23[1];
+  localB->dv1[4] = asgsm_quaternion_P.Gain_Gain * localB->Saturation1[1];
 
-  // Signum: '<Root>/Sign3' incorporates:
+  // Signum: '<Root>/Sign4' incorporates:
   //   Saturate: '<Root>/Saturation1'
   //   Sum: '<Root>/Sum24'
 
   localB->rtb_Sum23_k[2] = localB->Sum23[2];
   localB->rtb_Sum23_k[5] = localB->Product3_c;
 
-  // Product: '<Root>/Product10' incorporates:
+  // Product: '<Root>/Product2' incorporates:
+  //   Gain: '<Root>/Gain'
   //   Saturate: '<Root>/Saturation1'
-  //   Signum: '<Root>/Sign3'
+  //   Signum: '<Root>/Sign4'
   //   Sum: '<Root>/Sum24'
 
-  localB->rtb_Sum23_cx[2] = localB->Sum23[2];
-  localB->rtb_Sum23_cx[5] = localB->Product3_c;
+  localB->dv1[2] = asgsm_quaternion_P.Gain_Gain * localB->Sum23[2];
+  localB->dv1[5] = asgsm_quaternion_P.Gain_Gain * localB->Product3_c;
   for (i = 0; i < 6; i++) {
-    // Sqrt: '<Root>/Sqrt3' incorporates:
-    //   Abs: '<Root>/Abs3'
+    // Sqrt: '<Root>/Sqrt4' incorporates:
+    //   Abs: '<Root>/Abs4'
     //   Sqrt: '<Root>/Sqrt2'
 
-    localB->rtb_Power5_f = sqrt(fabs(localB->rtb_Sum23_c[i]));
+    localB->rtb_Power5_c = sqrt(fabs(localB->rtb_Sum23_c[i]));
 
-    // Math: '<Root>/Power3' incorporates:
-    //   Math: '<Root>/Power2'
-
+    // Gain: '<Root>/Gain3'
     rtu_qd_quaternion_d_0 = rty_u_kt[i];
-    rtu_qd_quaternion_d_1 = rtu_qd_quaternion_d_0 * rtu_qd_quaternion_d_0;
 
-    // Signum: '<Root>/Sign3' incorporates:
-    //   Gain: '<Root>/Gain1'
+    // Signum: '<Root>/Sign4' incorporates:
+    //   Gain: '<Root>/Gain3'
 
     localB->Product3_c = localB->rtb_Sum23_k[i];
     if (rtIsNaN(localB->Product3_c)) {
@@ -821,42 +822,41 @@ void asgsm_quaternion(const real_T rtu_qd_qd[6], const real_T rtu_qd_qd_dot[6],
       localB->Product3_c = (localB->Product3_c > 0.0);
     }
 
-    // Sum: '<Root>/Sum4' incorporates:
-    //   Gain: '<Root>/Gain1'
-    //   Gain: '<Root>/Gain2'
-    //   Math: '<Root>/Power3'
-    //   Product: '<Root>/Product10'
-    //   Product: '<Root>/Product8'
-    //   Signum: '<Root>/Sign3'
-    //   Sqrt: '<Root>/Sqrt3'
+    // Sum: '<Root>/Sum1' incorporates:
+    //   Gain: '<Root>/Gain3'
+    //   Product: '<Root>/Product1'
+    //   Product: '<Root>/Product2'
+    //   Signum: '<Root>/Sign4'
+    //   Sqrt: '<Root>/Sqrt4'
 
-    localB->Sum4[i] = (0.0 - asgsm_quaternion_P.Gain1_Gain *
-                       rtu_qd_quaternion_d_0 * localB->rtb_Power5_f *
-                       localB->Product3_c) - asgsm_quaternion_P.Gain2_Gain *
-      rtu_qd_quaternion_d_1 * localB->rtb_Sum23_cx[i];
+    localB->Sum1[i] = (0.0 - asgsm_quaternion_P.Gain3_Gain *
+                       rtu_qd_quaternion_d_0 * localB->rtb_Power5_c *
+                       localB->Product3_c) - localB->dv1[i] *
+      rtu_qd_quaternion_d_0 * rtu_PX4Params_ASGSMg_epsilon_u[i];
 
     // DiscreteIntegrator: '<Root>/Discrete-Time Integrator' incorporates:
-    //   Math: '<Root>/Power3'
+    //   Math: '<Root>/Power2'
     //   Product: '<Root>/Product11'
     //   Product: '<Root>/Product9'
     //   Sqrt: '<Root>/Sqrt'
     //   Sqrt: '<Root>/Sqrt1'
-    //   Sqrt: '<Root>/Sqrt3'
+    //   Sqrt: '<Root>/Sqrt4'
     //   Sum: '<Root>/Sum11'
 
-    localB->rtb_Power5_f = (sqrt(rtu_PX4Params_ASGSMg_alpha_u[i]) *
-      localB->rtb_Power5_f - sqrt(rtu_PX4Params_ASGSMg_beta_u[i]) *
-      rtu_qd_quaternion_d_1) * asgsm_quaternion_P.DiscreteTimeIntegrator_gainval;
-    localB->rtb_Sum4_tmp[i] = localB->rtb_Power5_f;
+    localB->rtb_Power5_c = (sqrt(rtu_PX4Params_ASGSMg_alpha_u[i]) *
+      localB->rtb_Power5_c - rtu_qd_quaternion_d_0 * rtu_qd_quaternion_d_0 *
+      sqrt(rtu_PX4Params_ASGSMg_beta_u[i])) *
+      asgsm_quaternion_P.DiscreteTimeIntegrator_gainval;
+    localB->rtb_Sum1_tmp[i] = localB->rtb_Power5_c;
 
     // DiscreteIntegrator: '<Root>/Discrete-Time Integrator'
     localDW->Memory_PreviousInput[i] = localDW->DiscreteTimeIntegrator_DSTATE[i]
-      + localB->rtb_Power5_f;
+      + localB->rtb_Power5_c;
   }
 
   // Product: '<Root>/Product19'
   localB->Product3_c = rtu_q_pos_dot_hat[4];
-  localB->rtb_Power5_f = rtu_q_pos_dot_hat[3];
+  localB->rtb_Power5_c = rtu_q_pos_dot_hat[3];
   rtu_qd_quaternion_d_0 = rtu_q_pos_dot_hat[5];
   for (i = 0; i < 3; i++) {
     // SignalConversion generated from: '<Root>/u_Outport_1'
@@ -875,7 +875,7 @@ void asgsm_quaternion(const real_T rtu_qd_qd[6], const real_T rtu_qd_qd_dot[6],
     //   Saturate: '<Root>/Saturation1'
 
     localB->Saturation1[i] = (localB->J[i + 3] * localB->Product3_c + localB->
-      J[i] * localB->rtb_Power5_f) + localB->J[i + 6] * rtu_qd_quaternion_d_0;
+      J[i] * localB->rtb_Power5_c) + localB->J[i + 6] * rtu_qd_quaternion_d_0;
   }
 
   // MATLAB Function: '<S4>/Kronecker_product' incorporates:
@@ -931,11 +931,11 @@ void asgsm_quaternion(const real_T rtu_qd_qd[6], const real_T rtu_qd_qd_dot[6],
     rtu_PX4Params_ASGSMg_lambda1[0] - asgsm_quaternion_P.Constant3_Value[0]) *
     (rtu_PX4Params_ASGSMg_lambda1[0] * rtu_PX4Params_ASGSMg_zeta1[0]) +
     asgsm_quaternion_P.Constant5_Value[0]) * (rt_powd_snf
-    (localB->rtb_Sum23_tmp_idx_0_n, asgsm_quaternion_P.Constant4_Value[0] -
-     rtu_PX4Params_ASGSMg_lambda2[0]) * localB->rtb_Sum23_tmp_idx_0_m /
+    (localB->rtb_Sum23_tmp_idx_0_m, asgsm_quaternion_P.Constant4_Value[0] -
+     rtu_PX4Params_ASGSMg_lambda2[0]) * localB->rtb_Sum23_tmp_idx_0_g /
     (rtu_PX4Params_ASGSMg_zeta2[0] * rtu_PX4Params_ASGSMg_lambda2[0])) -
     rtu_q_pos_ddot_hat[0]) - asgsm_quaternion_P.Constant_Value[0]) -
-    localB->Sum4[0]) * rtu_PX4Params_MCg_MCData[0];
+    localB->Sum1[0]) * rtu_PX4Params_MCg_MCData[0];
   if (localB->rtb_Sum23_tmp_idx_0 > asgsm_quaternion_P.Saturation_UpperSat[0]) {
     // MATLAB Function: '<S4>/Kronecker_product'
     localB->rtb_Sum23_tmp_idx_0 = asgsm_quaternion_P.Saturation_UpperSat[0];
@@ -949,11 +949,11 @@ void asgsm_quaternion(const real_T rtu_qd_qd[6], const real_T rtu_qd_qd_dot[6],
     rtu_PX4Params_ASGSMg_lambda1[1] - asgsm_quaternion_P.Constant3_Value[1]) *
     (rtu_PX4Params_ASGSMg_lambda1[1] * rtu_PX4Params_ASGSMg_zeta1[1]) +
     asgsm_quaternion_P.Constant5_Value[1]) * (rt_powd_snf
-    (localB->rtb_Sum23_tmp_idx_1_l, asgsm_quaternion_P.Constant4_Value[1] -
-     rtu_PX4Params_ASGSMg_lambda2[1]) * localB->rtb_Sum23_tmp_idx_1_p /
+    (localB->rtb_Sum23_tmp_idx_1_p, asgsm_quaternion_P.Constant4_Value[1] -
+     rtu_PX4Params_ASGSMg_lambda2[1]) * localB->rtb_Sum23_tmp_idx_1_n /
     (rtu_PX4Params_ASGSMg_zeta2[1] * rtu_PX4Params_ASGSMg_lambda2[1])) -
     rtu_q_pos_ddot_hat[1]) - asgsm_quaternion_P.Constant_Value[1]) -
-    localB->Sum4[1]) * rtu_PX4Params_MCg_MCData[0];
+    localB->Sum1[1]) * rtu_PX4Params_MCg_MCData[0];
   if (localB->rtb_Sum23_tmp_idx_1 > asgsm_quaternion_P.Saturation_UpperSat[1]) {
     // MATLAB Function: '<S4>/Kronecker_product'
     localB->rtb_Sum23_tmp_idx_1 = asgsm_quaternion_P.Saturation_UpperSat[1];
@@ -967,11 +967,11 @@ void asgsm_quaternion(const real_T rtu_qd_qd[6], const real_T rtu_qd_qd_dot[6],
     rtu_PX4Params_ASGSMg_lambda1[2] - asgsm_quaternion_P.Constant3_Value[2]) *
     (rtu_PX4Params_ASGSMg_lambda1[2] * rtu_PX4Params_ASGSMg_zeta1[2]) +
     asgsm_quaternion_P.Constant5_Value[2]) * (rt_powd_snf
-    (localB->rtb_Product24_g, asgsm_quaternion_P.Constant4_Value[2] -
+    (localB->rtb_Product24_f, asgsm_quaternion_P.Constant4_Value[2] -
      rtu_PX4Params_ASGSMg_lambda2[2]) * localB->rtb_Sum23_tmp_g /
     (rtu_PX4Params_ASGSMg_zeta2[2] * rtu_PX4Params_ASGSMg_lambda2[2])) -
     rtu_q_pos_ddot_hat[2]) - asgsm_quaternion_P.Constant_Value[2]) -
-    localB->Sum4[2]) * rtu_PX4Params_MCg_MCData[0];
+    localB->Sum1[2]) * rtu_PX4Params_MCg_MCData[0];
   if (localB->rtb_Sum23_tmp > asgsm_quaternion_P.Saturation_UpperSat[2]) {
     // MATLAB Function: '<S4>/Kronecker_product'
     localB->rtb_Sum23_tmp = asgsm_quaternion_P.Saturation_UpperSat[2];
@@ -1012,7 +1012,7 @@ void asgsm_quaternion(const real_T rtu_qd_qd[6], const real_T rtu_qd_qd_dot[6],
   localB->rtb_TmpSignalConversionAtSFun_m[15] = localB->r_o[0];
   localB->rtb_Sum23_tmp = rtu_q_q_hat[1];
   localB->rtb_Sum23_tmp_g = rtu_q_q_hat[0];
-  localB->rtb_Product24_g = rtu_q_q_hat[2];
+  localB->rtb_Product24_f = rtu_q_q_hat[2];
   localB->rtb_Sum23_tmp_idx_1 = rtu_q_q_hat[3];
   for (i = 0; i < 4; i++) {
     localB->r_o[i] = ((localB->rtb_TmpSignalConversionAtSFun_m[i + 4] *
@@ -1020,7 +1020,7 @@ void asgsm_quaternion(const real_T rtu_qd_qd[6], const real_T rtu_qd_qd_dot[6],
                        localB->rtb_TmpSignalConversionAtSFun_m[i] *
                        localB->rtb_Sum23_tmp_g) +
                       localB->rtb_TmpSignalConversionAtSFun_m[i + 8] *
-                      localB->rtb_Product24_g) +
+                      localB->rtb_Product24_f) +
       localB->rtb_TmpSignalConversionAtSFun_m[i + 12] *
       localB->rtb_Sum23_tmp_idx_1;
   }
@@ -1037,7 +1037,7 @@ void asgsm_quaternion(const real_T rtu_qd_qd[6], const real_T rtu_qd_qd_dot[6],
     localB->Saturation1[1] * rtu_q_pos_dot_hat[5];
   localB->rtb_Sum23_tmp_g = localB->Saturation1[0] * rtu_q_pos_dot_hat[5] -
     localB->Saturation1[2] * rtu_q_pos_dot_hat[3];
-  localB->rtb_Product24_g = localB->Saturation1[1] * rtu_q_pos_dot_hat[3] -
+  localB->rtb_Product24_f = localB->Saturation1[1] * rtu_q_pos_dot_hat[3] -
     localB->Saturation1[0] * rtu_q_pos_dot_hat[4];
 
   // Sum: '<Root>/Sum23' incorporates:
@@ -1072,18 +1072,18 @@ void asgsm_quaternion(const real_T rtu_qd_qd[6], const real_T rtu_qd_qd_dot[6],
     //   Product: '<Root>/Matrix Multiply2'
     //   Sum: '<Root>/Sum20'
 
-    localB->rtb_Sum23_tmp_idx_1_p = rtu_PX4Params_ASGSMg_lambda2[i + 3];
+    localB->rtb_Sum23_tmp_idx_1_n = rtu_PX4Params_ASGSMg_lambda2[i + 3];
     localB->Sum23[i] = ((((localB->dv[i + 3] * localB->rtb_Sum23_tmp_g +
       localB->dv[i] * localB->rtb_Sum23_tmp) + localB->dv[i + 6] *
-                          localB->rtb_Product24_g) - rtu_q_pos_ddot_hat[i + 3])
-                        - localB->Sum4[i + 3]) + (rtu_PX4Params_ASGSMg_zeta1[i +
+                          localB->rtb_Product24_f) - rtu_q_pos_ddot_hat[i + 3])
+                        - localB->Sum1[i + 3]) + (rtu_PX4Params_ASGSMg_zeta1[i +
       3] * localB->rtb_Sum23_tmp_idx_1 * rt_powd_snf(localB->
       rtb_Saturation1_tmp[i], localB->rtb_Sum23_tmp_idx_1 -
       asgsm_quaternion_P.Constant7_Value[i]) +
       asgsm_quaternion_P.Constant9_Value[i]) * (rt_powd_snf
-      (localB->rtb_Saturation1_tmp_p[i], asgsm_quaternion_P.Constant8_Value[i] -
-       localB->rtb_Sum23_tmp_idx_1_p) * localB->rtb_Saturation1_tmp_b[i] /
-      (rtu_PX4Params_ASGSMg_zeta2[i + 3] * localB->rtb_Sum23_tmp_idx_1_p));
+      (localB->rtb_Saturation1_tmp_b[i], asgsm_quaternion_P.Constant8_Value[i] -
+       localB->rtb_Sum23_tmp_idx_1_n) * localB->rtb_Saturation1_tmp_c[i] /
+      (rtu_PX4Params_ASGSMg_zeta2[i + 3] * localB->rtb_Sum23_tmp_idx_1_n));
   }
 
   // End of Sum: '<Root>/Sum23'
@@ -1093,16 +1093,16 @@ void asgsm_quaternion(const real_T rtu_qd_qd[6], const real_T rtu_qd_qd_dot[6],
   localB->rtb_Sum23_tmp = localB->Sum23[0];
   localB->rtb_Sum23_tmp_g = localB->Sum23[2];
   for (i = 0; i < 3; i++) {
-    localB->rtb_Product24_g = (localB->J[i + 3] * localB->Product3_c + localB->
+    localB->rtb_Product24_f = (localB->J[i + 3] * localB->Product3_c + localB->
       J[i] * localB->rtb_Sum23_tmp) + localB->J[i + 6] * localB->rtb_Sum23_tmp_g;
 
     // Saturate: '<Root>/Saturation1'
     localB->rtb_Sum23_tmp_idx_0 = localB->r_o[i + 1];
     localB->rtb_Sum23_tmp_idx_1 = asgsm_quaternion_P.Saturation1_LowerSat[i];
-    localB->rtb_Sum23_tmp_idx_1_p = asgsm_quaternion_P.Saturation1_UpperSat[i];
-    if (localB->rtb_Sum23_tmp_idx_0 > localB->rtb_Sum23_tmp_idx_1_p) {
+    localB->rtb_Sum23_tmp_idx_1_n = asgsm_quaternion_P.Saturation1_UpperSat[i];
+    if (localB->rtb_Sum23_tmp_idx_0 > localB->rtb_Sum23_tmp_idx_1_n) {
       // SignalConversion generated from: '<Root>/u_Outport_1'
-      rty_u_Fu[i] = localB->rtb_Sum23_tmp_idx_1_p;
+      rty_u_Fu[i] = localB->rtb_Sum23_tmp_idx_1_n;
     } else if (localB->rtb_Sum23_tmp_idx_0 < localB->rtb_Sum23_tmp_idx_1) {
       // SignalConversion generated from: '<Root>/u_Outport_1'
       rty_u_Fu[i] = localB->rtb_Sum23_tmp_idx_1;
@@ -1114,15 +1114,15 @@ void asgsm_quaternion(const real_T rtu_qd_qd[6], const real_T rtu_qd_qd_dot[6],
     // End of Saturate: '<Root>/Saturation1'
 
     // Saturate: '<Root>/tau'
-    if (localB->rtb_Product24_g > asgsm_quaternion_P.tau_UpperSat) {
+    if (localB->rtb_Product24_f > asgsm_quaternion_P.tau_UpperSat) {
       // SignalConversion generated from: '<Root>/u_Outport_1'
       rty_u_Fu[i + 3] = asgsm_quaternion_P.tau_UpperSat;
-    } else if (localB->rtb_Product24_g < asgsm_quaternion_P.tau_LowerSat) {
+    } else if (localB->rtb_Product24_f < asgsm_quaternion_P.tau_LowerSat) {
       // SignalConversion generated from: '<Root>/u_Outport_1'
       rty_u_Fu[i + 3] = asgsm_quaternion_P.tau_LowerSat;
     } else {
       // SignalConversion generated from: '<Root>/u_Outport_1'
-      rty_u_Fu[i + 3] = localB->rtb_Product24_g;
+      rty_u_Fu[i + 3] = localB->rtb_Product24_f;
     }
 
     // End of Saturate: '<Root>/tau'
@@ -1146,7 +1146,7 @@ void asgsm_quaternion(const real_T rtu_qd_qd[6], const real_T rtu_qd_qd_dot[6],
   // Update for DiscreteIntegrator: '<Root>/Discrete-Time Integrator'
   for (i = 0; i < 6; i++) {
     localDW->DiscreteTimeIntegrator_DSTATE[i] = localDW->Memory_PreviousInput[i]
-      + localB->rtb_Sum4_tmp[i];
+      + localB->rtb_Sum1_tmp[i];
   }
 }
 
